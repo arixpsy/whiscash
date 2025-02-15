@@ -6,6 +6,38 @@
 	font-style: normal;
 }
 
+@keyframes swim {
+	0% {
+		rotate: 45deg;
+	}
+	33% {
+		translate: 0 -50px;
+	}
+	66% {
+		rotate: -45deg;
+	}
+	100% {
+		translate: 0 50px;
+	}
+}
+
+@keyframes left-right {
+	0% {
+		transform: translateX(0px) rotateY(0deg);
+	}
+
+	50% {
+		transform: translateX(-200px) rotateY(0deg);
+	}
+	51% {
+		transform: translateX(-200px) rotateY(180deg);
+	}
+
+	100% {
+		transform: translateX(0px) rotateY(180deg);
+	}
+}
+
 @theme {
 	--color-primary-50: #e5f2ff;
 	--color-primary-100: #cce5ff;
