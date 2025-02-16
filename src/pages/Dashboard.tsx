@@ -1,6 +1,6 @@
 import { AuthPage } from '@/components/commons'
 import { MdFastfood } from 'react-icons/md'
-import { ActionBar, Header } from '@/components/Dashboard'
+import { Header } from '@/components/Dashboard'
 import { cn } from '@/utils/functions'
 
 const Dashboard = () => {
