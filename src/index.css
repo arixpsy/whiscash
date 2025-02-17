@@ -11,7 +11,7 @@
 		rotate: 45deg;
 	}
 	33% {
-		translate: 0 -50px;
+		translate: 0 -70px;
 	}
 	66% {
 		rotate: -45deg;
@@ -27,10 +27,10 @@
 	}
 
 	50% {
-		transform: translateX(-200px) rotateY(0deg);
+		transform: translateX(-190px) rotateY(0deg);
 	}
 	51% {
-		transform: translateX(-200px) rotateY(180deg);
+		transform: translateX(-190px) rotateY(180deg);
 	}
 
 	100% {
