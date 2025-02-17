@@ -7,65 +7,71 @@ import { Routes } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 
 const ActionBar = () => {
-	const { pathname } = useLocation()
-	const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
 
-	const navItems = useMemo(
-		() => [
-			{
-				icon: FaHome,
-				route: Routes.DASHBOARD,
-			},
-			{
-				icon: MdWallet,
-				route: Routes.WALLETS,
-			},
-			{
-				icon: RiCalendarEventFill,
-				route: Routes.HISTORY,
-			},
-		],
-		[]
-	)
+  const navItems = useMemo(
+    () => [
+      {
+        icon: FaHome,
+        route: Routes.DASHBOARD,
+      },
+      {
+        icon: MdWallet,
+        route: Routes.WALLETS,
+      },
+      {
+        icon: RiCalendarEventFill,
+        route: Routes.HISTORY,
+      },
+    ],
+    []
+  )
 
-	const handleClickAddButton = () => {
-		if (pathname === Routes.WALLETS) {
-			// TODO: open new wallet modal
-			return
-		}
-		// TODO: open new expense modal
-	}
+  const handleClickAddButton = () => {
+    if (pathname === Routes.WALLETS) {
+      // TODO: open new wallet modal
+      return
+    }
+    // TODO: open new expense modal
+  }
 
-	return (
-		<div className="fixed right-0 bottom-6 left-0 grid place-items-center">
-			<div className="flex items-center gap-3">
-				<div className="grid grid-cols-3 gap-2 rounded-full bg-white p-3 shadow-2xl">
-					{navItems.map(({ icon: Icon, route }) => {
-						const active = route === pathname
+  return (
+    <div className="fixed right-0 bottom-6 left-0 grid place-items-center">
+      <div className="flex items-center gap-3">
+        <div className="grid grid-cols-3 gap-2 rounded-full bg-white p-3 shadow-2xl">
+          {navItems.map(({ icon: Icon, route }) => {
+            const active = route === pathname
 
-						return (
-							<button
-								className={cn(
-									'rounded-full p-3 text-gray-300',
-									active && 'bg-primary-100 text-primary-500'
-								)}
-								onClick={() => navigate(route)}
-							>
-								<Icon className="h-6 w-6" />
-							</button>
-						)
-					})}
-				</div>
+            return (
+              <button
+                className={cn(
+                  'relative isolate grid place-items-center text-gray-300 [&>*]:col-start-1 [&>*]:row-start-1',
+                  active && 'text-primary-500'
+                )}
+                onClick={() => navigate(route)}
+              >
+                <div
+                  className={cn(
+                    'bg-primary-100 h-full w-full scale-0 rounded-full transition-transform',
+                    active && 'scale-100'
+                  )}
+                />
+                <Icon className="z-10 m-3 h-6 w-6" />
+              </button>
+            )
+          })}
+        </div>
 
-				<button
-					className="bg-primary-500 rounded-full p-3 text-white shadow-2xl"
-					onClick={handleClickAddButton}
-				>
-					<FaPlus className="h-6 w-6" />
-				</button>
-			</div>
-		</div>
-	)
+        <button
+          className="bg-primary-500 rounded-full p-3 text-white shadow-2xl"
+          onClick={handleClickAddButton}
+        >
+          <FaPlus className="h-6 w-6" />
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default ActionBar
