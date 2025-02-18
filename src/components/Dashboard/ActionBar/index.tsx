@@ -3,7 +3,7 @@ import { FaHome, FaPlus } from 'react-icons/fa'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router'
-import { Routes } from '@/utils/constants/routes'
+import { Route } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 
 const ActionBar = () => {
@@ -14,22 +14,22 @@ const ActionBar = () => {
     () => [
       {
         icon: FaHome,
-        route: Routes.DASHBOARD,
+        route: Route.DASHBOARD,
       },
       {
         icon: MdWallet,
-        route: Routes.WALLETS,
+        route: Route.WALLETS,
       },
       {
         icon: RiCalendarEventFill,
-        route: Routes.HISTORY,
+        route: Route.HISTORY,
       },
     ],
     []
   )
 
   const handleClickAddButton = () => {
-    if (pathname === Routes.WALLETS) {
+    if (pathname === Route.WALLETS) {
       // TODO: open new wallet modal
       return
     }

@@ -1,8 +1,8 @@
-export const Routes = {
+export const Route = {
   LOGIN: '/',
   DASHBOARD: '/dashboard',
   HISTORY: '/history',
   WALLETS: '/wallets',
 } as const
 
-type Routes = (typeof Routes)[keyof typeof Routes]
+type Route = (typeof Route)[keyof typeof Route]
