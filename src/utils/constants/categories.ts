@@ -8,6 +8,7 @@ export const Category = {
   Hobbies: 'HOBBIES',
   Insurance: 'INSURANCE',
   Medical: 'MEDICAL',
+  Others: 'OTHERS',
   Pet: 'PET',
   Shopping: 'SHOPPING',
   Transport: 'TRANSPORT',
