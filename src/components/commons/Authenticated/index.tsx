@@ -1,16 +1,17 @@
 import { useAuth, useClerk, SignedIn } from '@clerk/clerk-react'
 import { Outlet } from 'react-router'
+import { PageLoader } from '@/components/commons'
 
 const Authenticated = () => {
   const { isLoaded, isSignedIn } = useAuth()
   const clerk = useClerk()
 
-  if (!isLoaded) return <div>LOADING</div>
+  if (!isLoaded) return <PageLoader />
 
   if (!isSignedIn) {
     clerk.openSignIn()
 
-    return <div>LOADING</div>
+    return <PageLoader />
   }
 
   return (

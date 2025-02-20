@@ -8,4 +8,3 @@ export const SpendingPeriod = {
 
 export type SpendingPeriod =
   (typeof SpendingPeriod)[keyof typeof SpendingPeriod]
-  
