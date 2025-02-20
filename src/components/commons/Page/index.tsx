@@ -9,7 +9,7 @@ const Page = (props: PageProps) => {
   return (
     <div
       className={cn(
-        'relative m-auto min-h-svh max-w-md bg-white text-gray-700',
+        'relative m-auto min-h-svh max-w-md bg-white text-gray-700 isolate',
         className
       )}
     >

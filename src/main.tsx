@@ -2,9 +2,8 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router'
-import { ActionBarLayout, Authenticated } from '@/components/commons'
-import { Dashboard, Login, Wallets } from '@/pages'
+import { BrowserRouter } from 'react-router'
+import App from '@/App'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -25,16 +24,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={client}>
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <BrowserRouter>
-          <Routes>
-            <Route index element={<Login />} />
-            <Route element={<Authenticated />}>
-              <Route element={<ActionBarLayout />}>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="history" element={<div>history</div>} />
-                <Route path="wallets" element={<Wallets />} />
-              </Route>
-            </Route>
-          </Routes>
+          <App />
         </BrowserRouter>
       </ClerkProvider>
     </QueryClientProvider>

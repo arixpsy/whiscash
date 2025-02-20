@@ -29,11 +29,18 @@ const ActionBar = () => {
   )
 
   const handleClickAddButton = () => {
+    const navigateOptions = {
+      state: {
+        backgroundLocation: pathname,
+      },
+    }
+
     if (pathname === Route.WALLETS) {
-      // TODO: open new wallet modal
+      navigate(Route.CREATE_WALLET, navigateOptions)
       return
     }
-    // TODO: open new expense modal
+
+    navigate(Route.CREATE_TRANSACTION, navigateOptions)
   }
 
   return (
