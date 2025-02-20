@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router'
-import { ActionBar } from '@/components/Dashboard'
+import ActionBar from '../ActionBar'
 
 const ActionBarLayout = () => (
   <>

@@ -45,6 +45,7 @@ const ActionBar = () => {
 
             return (
               <button
+                key={route}
                 className={cn(
                   'relative isolate grid place-items-center text-gray-300 [&>*]:col-start-1 [&>*]:row-start-1',
                   active && 'text-primary-500'
