@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'motion/react'
 import { Routes, Route, useLocation } from 'react-router'
 import { Route as RoutePath } from '@/utils/constants/routes'
 import { ActionBarLayout, Authenticated } from '@/components/commons'
@@ -7,8 +8,9 @@ import Modal from '@/components/commons/Modal'
 const App = () => {
   const location = useLocation()
   const backgroundLocation = location.state?.backgroundLocation
+
   return (
-    <>
+    <AnimatePresence>
       <Routes location={backgroundLocation || location}>
         <Route index element={<Login />} />
         <Route element={<Authenticated />}>
@@ -21,11 +23,11 @@ const App = () => {
       </Routes>
 
       {backgroundLocation && (
-        <Routes>
+        <Routes location={location} key="modal-routes">
           <Route path={RoutePath.CREATE_WALLET} element={<Modal />} />
         </Routes>
       )}
-    </>
+    </AnimatePresence>
   )
 }
 

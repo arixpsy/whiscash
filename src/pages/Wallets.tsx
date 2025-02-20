@@ -22,7 +22,7 @@ const Wallets = () => {
 
       <div className="p-3">
         {wallets.map((wallet) => (
-          <WalletTile wallet={wallet} />
+          <WalletTile key={wallet.id} wallet={wallet} />
         ))}
       </div>
     </Page>
