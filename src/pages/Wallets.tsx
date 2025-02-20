@@ -1,4 +1,4 @@
-import { AuthPage } from '@/components/commons'
+import { Page } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 
 const Wallets = () => {
@@ -16,10 +16,10 @@ const Wallets = () => {
   }
 
   return (
-    <AuthPage>
+    <Page>
       {JSON.stringify(wallets)}
       <button onClick={handleCreateWallet}>Create Wallet</button>
-    </AuthPage>
+    </Page>
   )
 }
 

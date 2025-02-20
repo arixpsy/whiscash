@@ -1,11 +1,11 @@
-import { AuthPage } from '@/components/commons'
+import { Page } from '@/components/commons'
 import { MdFastfood } from 'react-icons/md'
 import { Header } from '@/components/Dashboard'
 import { cn } from '@/utils/functions'
 
 const Dashboard = () => {
   return (
-    <AuthPage className="flex flex-col">
+    <Page className="flex flex-col">
       <Header>
         <div className="mx-auto">
           <div className="relative isolate mx-auto mb-6">
@@ -60,7 +60,7 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-    </AuthPage>
+    </Page>
   )
 }
 
