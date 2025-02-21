@@ -1,10 +1,32 @@
 import { motion } from 'motion/react'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import { AnimatePresence } from 'motion/react'
+import { useSearchParams } from 'react-router'
 
-const Modal = (props: PropsWithChildren) => {
-  const { children } = props
+type ModalProps = {
+  portalKey?: 'route' | 'field'
+  paramKey: string
+  paramValue: string
+} & PropsWithChildren
+
+const Modal = (props: ModalProps) => {
+  const { portalKey, paramKey, paramValue, children } = props
+  const [searchParams] = useSearchParams()
 
   return (
+    <AnimatePresence>
+      {searchParams.get(paramKey) === paramValue && (
+        <_Modal portalKey={portalKey}>{children}</_Modal>
+      )}
+    </AnimatePresence>
+  )
+}
+
+const _Modal = (props: { portalKey?: string; children: ReactNode }) => {
+  const { portalKey = 'route', children } = props
+
+  return createPortal(
     <div className="fixed inset-0 grid place-items-center [&>*]:z-0 [&>*]:col-start-1 [&>*]:row-start-1">
       <motion.div
         onClick={() => window.history.back()}
@@ -14,8 +36,22 @@ const Modal = (props: PropsWithChildren) => {
         exit={{ opacity: 0 }}
       />
       {children}
-    </div>
+    </div>,
+    document.getElementById(portalKey)!
   )
 }
 
 export default Modal
+
+// type SearchParamModalProps = {} & PropsWithChildren
+
+// export const SearchParamModal = (props: SearchParamModalProps) => {
+//   const { paramKey, paramValue, children } = props
+//   const [searchParams] = useSearchParams()
+
+//   return (
+//     <AnimatePresence>
+//       {searchParams.get(paramKey) === paramValue && children}
+//     </AnimatePresence>
+//   )
+// }

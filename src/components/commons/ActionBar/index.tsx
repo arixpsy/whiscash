@@ -2,11 +2,12 @@ import { useMemo } from 'react'
 import { FaHome, FaPlus } from 'react-icons/fa'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { Route } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 
 const ActionBar = () => {
+  const [, setSearchParams] = useSearchParams()
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -28,20 +29,7 @@ const ActionBar = () => {
     []
   )
 
-  const handleClickAddButton = () => {
-    const navigateOptions = {
-      state: {
-        backgroundLocation: pathname,
-      },
-    }
-
-    if (pathname === Route.WALLETS) {
-      navigate(Route.CREATE_WALLET, navigateOptions)
-      return
-    }
-
-    navigate(Route.CREATE_TRANSACTION, navigateOptions)
-  }
+  const handleClickAddButton = () => setSearchParams({ create: 'new' })
 
   return (
     <div className="fixed right-0 bottom-6 left-0 grid place-items-center">
