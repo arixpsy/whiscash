@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { motion } from 'motion/react'
-import { FocusEvent, useEffect } from 'react'
+import { motion, TargetAndTransition } from 'motion/react'
+import { FocusEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoClose } from 'react-icons/io5'
 import { MdWallet } from 'react-icons/md'
@@ -12,7 +12,7 @@ import CountryCurrencySelector from './CountryCurrencySelector'
 const CreateWalletModal = () => {
   const { useCreateWalletMutation } = useWallet()
   const createWallet = useCreateWalletMutation()
-  const { control, handleSubmit, register, setFocus, setValue, watch } =
+  const { control, handleSubmit, register, setFocus, setValue, watch, reset } =
     useForm({
       defaultValues: {
         name: '',
@@ -46,7 +46,12 @@ const CreateWalletModal = () => {
     }
   }
 
-  useEffect(() => setFocus('name'), [setFocus])
+  const handleModalAnimationComplete = ({
+    translateY,
+  }: TargetAndTransition) => {
+    if (translateY === '0%') setFocus('name')
+    if (translateY === '100%') reset()
+  }
 
   return (
     <Modal paramKey="create" paramValue="new">
@@ -56,6 +61,7 @@ const CreateWalletModal = () => {
         animate={{ translateY: '0%' }}
         exit={{ translateY: '100%' }}
         transition={{ type: 'tween', ease: 'easeOut' }}
+        onAnimationComplete={handleModalAnimationComplete}
       >
         <div className="flex items-center justify-between">
           <button type="button" onClick={handleCloseModal}>
