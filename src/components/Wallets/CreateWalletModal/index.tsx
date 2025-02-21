@@ -7,20 +7,22 @@ import { MdWallet } from 'react-icons/md'
 import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/wallet'
 import { Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
+import CountryCurrencySelector from './CountryCurrencySelector'
 
 const CreateWalletModal = () => {
   const { useCreateWalletMutation } = useWallet()
   const createWallet = useCreateWalletMutation()
-  const { handleSubmit, register, setFocus, setValue, watch } = useForm({
-    defaultValues: {
-      name: '',
-      defaultSpendingPeriod: undefined,
-      currency: undefined,
-      country: undefined,
-      subWalletOf: undefined,
-    },
-    resolver: zodResolver(CreateWalletRequestSchema),
-  })
+  const { control, handleSubmit, register, setFocus, setValue, watch } =
+    useForm({
+      defaultValues: {
+        name: '',
+        defaultSpendingPeriod: undefined,
+        currency: undefined,
+        country: undefined,
+        subWalletOf: undefined,
+      },
+      resolver: zodResolver(CreateWalletRequestSchema),
+    })
   const numOfChars = watch('name').length
 
   const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
@@ -57,7 +59,7 @@ const CreateWalletModal = () => {
       >
         <div className="flex items-center justify-between">
           <button type="button" onClick={handleCloseModal}>
-            <IoClose className="h-8 w-8" />
+            <IoClose className="h-6 w-6" />
           </button>
           <button
             type="button"
@@ -89,13 +91,13 @@ const CreateWalletModal = () => {
             </label>
           </div>
 
-          {/* <div className="mt-10 grid w-full gap-2">
+          <div className="mt-10 grid w-full gap-2">
             <label className="block text-sm text-gray-500">
               Country & Currency:
             </label>
 
             <CountryCurrencySelector control={control} />
-          </div> */}
+          </div>
 
           {/* <div className="mt-3 grid w-full gap-2">
             <label className="block text-sm text-gray-500">
