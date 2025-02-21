@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-react'
+import { SignOutButton, useUser } from '@clerk/clerk-react'
 import { PropsWithChildren } from 'react'
 import { FaSearch } from 'react-icons/fa'
 
@@ -11,7 +11,9 @@ const Header = (props: PropsWithChildren) => {
       <div className="bg-primary-500 sticky top-0 z-10 flex items-center justify-between p-3 text-white">
         {/* Profile and Search Bar */}
         <div className="flex items-center gap-3">
-          <img src={user?.imageUrl} className="h-10 w-10 rounded-full" />
+          <SignOutButton>
+            <img src={user?.imageUrl} className="h-10 w-10 rounded-full" />
+          </SignOutButton>
 
           <div>
             <p className="text-xs">Welcome back,</p>
