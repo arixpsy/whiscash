@@ -6,6 +6,15 @@
   font-style: normal;
 }
 
+.grid-stack {
+  display: grid;
+}
+
+.grid-stack > * {
+  grid-area: 1 / 1;
+  z-index: 0;
+}
+
 @keyframes swim {
   0% {
     rotate: 45deg;

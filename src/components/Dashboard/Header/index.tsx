@@ -28,7 +28,7 @@ const Header = (props: PropsWithChildren) => {
 
       {/* Wave Section */}
       <div className="bg-primary-500 pt-18">
-        <div className="grid bg-white [&>*]:col-start-1 [&>*]:row-start-1">
+        <div className="grid-stack bg-white">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path
               fill="var(--color-primary-500)"

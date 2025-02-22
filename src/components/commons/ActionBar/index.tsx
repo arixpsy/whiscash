@@ -42,7 +42,7 @@ const ActionBar = () => {
               <button
                 key={route}
                 className={cn(
-                  'relative isolate grid place-items-center text-gray-300 [&>*]:col-start-1 [&>*]:row-start-1',
+                  'grid-stack relative isolate place-items-center text-gray-300',
                   active && 'text-primary-500'
                 )}
                 onClick={() => navigate(route)}

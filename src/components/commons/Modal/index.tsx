@@ -27,7 +27,7 @@ const _Modal = (props: { portalKey?: string; children: ReactNode }) => {
   const { portalKey = 'route', children } = props
 
   return createPortal(
-    <div className="fixed inset-0 grid place-items-center text-gray-700 [&>*]:z-0 [&>*]:col-start-1 [&>*]:row-start-1">
+    <div className="grid-stack fixed inset-0 place-items-center text-gray-700">
       <motion.div
         onClick={() => window.history.back()}
         className="h-full w-full max-w-md bg-black"
