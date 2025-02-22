@@ -7,8 +7,9 @@ import { MdWallet } from 'react-icons/md'
 import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/wallet'
 import { FormField, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
-// import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
+import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import CountryCurrencySelector from './CountryCurrencySelector'
+import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
 
 const CreateWalletModal = () => {
   const { useCreateWalletMutation } = useWallet()
@@ -25,7 +26,7 @@ const CreateWalletModal = () => {
   } = useForm({
     defaultValues: {
       name: '',
-      defaultSpendingPeriod: undefined,
+      defaultSpendingPeriod: SpendingPeriod.Month,
       currency: undefined,
       country: undefined,
       subWalletOf: undefined,
@@ -114,20 +115,22 @@ const CreateWalletModal = () => {
               <CountryCurrencySelector control={control} />
             </FormField>
 
-            {/* <FormField
+            <FormField
               label="Tracking Period"
               hasError={!!errors.defaultSpendingPeriod?.message}
             >
-              {Object.values(SpendingPeriod).map((spendingPeriod) => (
-                <div key={spendingPeriod}>{spendingPeriod}</div>
-              ))}
-            </FormField> */}
-          </div>
+              <div className="flex flex-wrap gap-2">
+                {Object.values(SpendingPeriod).map((spendingPeriod) => (
+                  <SpendingPeriodRadioInput
+                    register={register}
+                    spendingPeriod={spendingPeriod}
+                  />
+                ))}
+              </div>
+            </FormField>
 
-          {/* <div className="mt-3 grid w-full gap-2">
-            <label className="block text-sm text-gray-500">Main Wallet</label>
-            <WalletSelector control={control} />
-          </div> */}
+            <FormField label="Main Wallet"></FormField>
+          </div>
         </form>
       </motion.div>
     </Modal>
