@@ -5,24 +5,33 @@ import { useForm } from 'react-hook-form'
 import { IoClose } from 'react-icons/io5'
 import { MdWallet } from 'react-icons/md'
 import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/wallet'
-import { Modal } from '@/components/commons'
+import { FormField, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
+// import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import CountryCurrencySelector from './CountryCurrencySelector'
 
 const CreateWalletModal = () => {
   const { useCreateWalletMutation } = useWallet()
   const createWallet = useCreateWalletMutation()
-  const { control, handleSubmit, register, setFocus, setValue, watch, reset } =
-    useForm({
-      defaultValues: {
-        name: '',
-        defaultSpendingPeriod: undefined,
-        currency: undefined,
-        country: undefined,
-        subWalletOf: undefined,
-      },
-      resolver: zodResolver(CreateWalletRequestSchema),
-    })
+  const {
+    control,
+    handleSubmit,
+    register,
+    setFocus,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: '',
+      defaultSpendingPeriod: undefined,
+      currency: undefined,
+      country: undefined,
+      subWalletOf: undefined,
+    },
+    resolver: zodResolver(CreateWalletRequestSchema),
+  })
   const numOfChars = watch('name').length
 
   const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
@@ -97,32 +106,23 @@ const CreateWalletModal = () => {
             </label>
           </div>
 
-          <div className="mt-10 grid w-full gap-2">
-            <label className="block text-sm text-gray-500">
-              Country & Currency:
-            </label>
-
-            <CountryCurrencySelector control={control} />
-          </div>
-
-          {/* <div className="mt-3 grid w-full gap-2">
-            <label className="block text-sm text-gray-500">
-              Tracking period
-            </label>
-            <button
-              type="button"
-              className="w-full rounded-lg bg-gray-100 px-3 py-2"
+          <div className="mt-12 grid w-full gap-4">
+            <FormField
+              label="Country & Currency"
+              hasError={!!errors.country?.message}
             >
-              Select
-            </button>
-            <select {...register('defaultSpendingPeriod')}>
+              <CountryCurrencySelector control={control} />
+            </FormField>
+
+            {/* <FormField
+              label="Tracking Period"
+              hasError={!!errors.defaultSpendingPeriod?.message}
+            >
               {Object.values(SpendingPeriod).map((spendingPeriod) => (
-                <option key={spendingPeriod} value={spendingPeriod}>
-                  {spendingPeriod}
-                </option>
+                <div key={spendingPeriod}>{spendingPeriod}</div>
               ))}
-            </select>
-          </div> */}
+            </FormField> */}
+          </div>
 
           {/* <div className="mt-3 grid w-full gap-2">
             <label className="block text-sm text-gray-500">Main Wallet</label>

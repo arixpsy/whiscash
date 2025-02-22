@@ -1,12 +1,13 @@
 import { Currency, getAllISOCodes, getParamByISO } from 'iso-country-currency'
-import { motion } from 'motion/react'
-import { useCallback, useMemo } from 'react'
+import { motion, TargetAndTransition } from 'motion/react'
+import { useCallback, useMemo, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
-import { FaSearch } from 'react-icons/fa'
+import { FaQuestionCircle } from 'react-icons/fa'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
+import { useDebounce } from 'use-debounce'
 import { CreateWalletRequest } from '@/@types/wallet'
-import { Modal } from '@/components/commons'
+import { Modal, SearchBar } from '@/components/commons'
 import 'country-flag-icons/3x2/flags.css'
 
 type CountryCurrencySelectorProps = {
@@ -16,6 +17,8 @@ type CountryCurrencySelectorProps = {
 const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
   const { control } = props
   const [searchParam, setSearchParams] = useSearchParams()
+  const [searchPhrase, setSearchPhrase] = useState('')
+  const [debouceSearchPhrase] = useDebounce(searchPhrase, 250)
   const { field: countryField } = useController({
     name: 'country',
     control,
@@ -41,65 +44,99 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
     [countryField, currencyField]
   )
 
+  const handleModalAnimationComplete = ({
+    translateY,
+  }: TargetAndTransition) => {
+    if (translateY === '100%') setSearchPhrase('')
+  }
+
   const options = useMemo(
     () =>
-      getAllISOCodes().map((option) => (
-        <button
-          type="button"
-          key={option.iso}
-          className="flex items-center gap-3"
-          onClick={() => handleSelectOption(option)}
-        >
-          <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-gray-200 p-2">
-            <div
-              className={`flag:${option.iso}`}
-              style={
-                { '--CountryFlagIcon-height': '21.33px' } as React.CSSProperties
-              }
-            />
-          </div>
-          <div className="flex w-full justify-between gap-3">
-            <p className="text-left">{option.countryName}</p>
-            <b>{option.currency}</b>
-          </div>
-        </button>
-      )),
-    [handleSelectOption]
+      getAllISOCodes()
+        .filter(
+          (option) =>
+            option.currency
+              .toLowerCase()
+              .includes(debouceSearchPhrase.toLowerCase()) ||
+            option.countryName
+              .toLowerCase()
+              .includes(debouceSearchPhrase.toLowerCase())
+        )
+        .map((option) => (
+          <button
+            type="button"
+            key={option.iso}
+            className="flex w-full items-center gap-3"
+            onClick={() => handleSelectOption(option)}
+          >
+            <div className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 p-2">
+              <div
+                className={`flag:${option.iso}`}
+                style={
+                  {
+                    '--CountryFlagIcon-height': '21.33px',
+                  } as React.CSSProperties
+                }
+              />
+            </div>
+            <div className="flex w-full justify-between gap-3 pr-3">
+              <p className="text-left">{option.countryName}</p>
+              <b>{option.currency}</b>
+            </div>
+          </button>
+        )),
+    [handleSelectOption, debouceSearchPhrase]
   )
 
   return (
     <>
-      {/* TODO: */}
       <button
         type="button"
         onClick={handleOpenSelector}
         className="w-full rounded-lg bg-gray-100 px-3 py-2"
       >
-        {countryField.value && currencyField.value
-          ? `${getParamByISO(countryField.value, 'countryName')} - ${currencyField.value}`
-          : 'Select'}
+        {countryField.value && currencyField.value ? (
+          <div className="flex items-center justify-center gap-3">
+            <div className={`flag:${countryField.value}`} />
+            <p className="max-w-[180px] truncate">
+              {getParamByISO(countryField.value, 'countryName')}
+            </p>
+            <p>{currencyField.value}</p>
+          </div>
+        ) : (
+          'Select'
+        )}
       </button>
 
       <Modal portalKey="field" paramKey="field" paramValue="currency">
         <motion.div
-          className="grid h-full w-full max-w-md grid-rows-[auto_auto_auto_1fr] self-end overflow-auto rounded-t-2xl bg-white p-3"
+          className="grid h-full w-full max-w-md grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
           initial={{ translateY: '100%' }}
           animate={{ translateY: '0%' }}
           exit={{ translateY: '100%' }}
           transition={{ type: 'tween', ease: 'easeOut' }}
+          onAnimationComplete={handleModalAnimationComplete}
         >
-          <button type="button" onClick={handleCloseSelector}>
-            <TbArrowBackUp className="h-6 w-6" />
-          </button>
+          <div className="p-3">
+            <button type="button" onClick={handleCloseSelector}>
+              <TbArrowBackUp className="h-6 w-6" />
+            </button>
 
-          <div className="text-center text-lg font-bold">Select Currency</div>
+            <div className="text-center text-lg font-bold">Select Currency</div>
 
-          {/* TODO: extract to component */}
-          <div className="my-3 flex h-10 items-center gap-3 rounded-full bg-gray-100 px-3 text-gray-500">
-            <FaSearch /> Search
+            <SearchBar className="my-3" setValue={setSearchPhrase} />
           </div>
 
-          <div className="grid h-full gap-3 overflow-auto">{options}</div>
+          <div className="grid h-full auto-rows-min gap-3 overflow-auto pl-3">
+            {options.length > 0 ? (
+              options
+            ) : (
+              <div className="flex h-[200px] w-full flex-col items-center justify-center gap-3 text-sm text-gray-500">
+                <FaQuestionCircle className="h-16 w-16 text-gray-500" />
+                Unable to find country or currency
+              </div>
+            )}
+          </div>
         </motion.div>
       </Modal>
     </>
