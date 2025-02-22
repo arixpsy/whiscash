@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Wallet } from '@/@types/wallet'
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -6,9 +7,10 @@ import { QUERY_KEYS } from '@/utils/constants/queryKey'
 const useWallet = () => {
   const { createRequestConfig } = useToken()
 
-  const useCreateWalletMutation = () =>
+  const useCreateWalletMutation = (onSuccess: (data: Wallet) => void) =>
     useMutation({
       mutationFn: whiscashApi.createWallet(createRequestConfig()),
+      onSuccess,
     })
 
   const useGetWalletsQuery = () =>

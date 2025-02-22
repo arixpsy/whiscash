@@ -4,16 +4,24 @@ import { FocusEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoClose } from 'react-icons/io5'
 import { MdWallet } from 'react-icons/md'
-import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/wallet'
+import {
+  CreateWalletRequest,
+  CreateWalletRequestSchema,
+  GetWalletsResponse,
+  Wallet,
+} from '@/@types/wallet'
 import { FormField, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '@/utils/constants/queryKey'
 
 const CreateWalletModal = () => {
+  const queryClient = useQueryClient()
   const { useCreateWalletMutation } = useWallet()
-  const createWallet = useCreateWalletMutation()
+  const createWallet = useCreateWalletMutation(createWalletSuccessCB)
   const {
     control,
     handleSubmit,
@@ -35,18 +43,9 @@ const CreateWalletModal = () => {
   })
   const numOfChars = watch('name').length
 
-  const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
-    // TODO:
-    console.log(data)
-
-    createWallet.mutate({
-      name: 'Wallet',
-      currency: 'SGD',
-      defaultSpendingPeriod: 'MONTH',
-      country: 'SG',
-      subWalletOf: undefined,
-    })
-  })
+  const handleFormSubmit = handleSubmit((data: CreateWalletRequest) =>
+    createWallet.mutate(data)
+  )
 
   const handleCloseModal = () => window.history.back()
 
@@ -61,6 +60,16 @@ const CreateWalletModal = () => {
   }: TargetAndTransition) => {
     if (translateY === '0%') setFocus('name')
     if (translateY === '100%') reset()
+  }
+
+  function createWalletSuccessCB(wallet: Wallet) {
+    queryClient.setQueryData(
+      QUERY_KEYS.WALLETS,
+      (current: GetWalletsResponse) => {
+        return [...current, wallet]
+      }
+    )
+    handleCloseModal()
   }
 
   return (

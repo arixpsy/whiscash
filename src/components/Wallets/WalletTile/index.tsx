@@ -8,7 +8,7 @@ const WalletTile = (props: WalletTileProps) => {
   const { wallet } = props
 
   return (
-    <div className="mb-2 flex gap-3 py-2" key={wallet.id}>
+    <div className="flex gap-3" key={wallet.id}>
       <div className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 p-2">
         <img
           alt="Singapore"

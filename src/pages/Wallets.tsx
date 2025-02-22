@@ -1,11 +1,12 @@
-import { Page } from '@/components/commons'
+import { useState } from 'react'
+import { Page, SearchBar } from '@/components/commons'
 import { CreateWalletModal, WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
-import { FaSearch } from 'react-icons/fa'
 
 const Wallets = () => {
   const { useGetWalletsQuery } = useWallet()
   const getWallets = useGetWalletsQuery()
+  const [, setSearchPhrase] = useState('')
   const wallets = getWallets?.data || []
 
   return (
@@ -15,13 +16,9 @@ const Wallets = () => {
           <h1 className="text-center text-2xl font-bold">Wallets</h1>
         </div>
 
-        <div className="p-3">
-          <div className="flex h-8 items-center gap-3 rounded-full bg-gray-100 px-3 text-gray-500">
-            <FaSearch /> Search
-          </div>
-        </div>
+        <SearchBar className="m-3" setValue={setSearchPhrase} />
 
-        <div className="p-3">
+        <div className="flex flex-col gap-4 p-3 pb-28">
           {wallets.map((wallet) => (
             <WalletTile key={wallet.id} wallet={wallet} />
           ))}
