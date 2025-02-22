@@ -1,9 +1,20 @@
+import { useEffect } from 'react'
 import { Page } from '@/components/commons'
 import { MdFastfood } from 'react-icons/md'
 import { Header } from '@/components/Dashboard'
 import { cn } from '@/utils/functions'
 
 const Dashboard = () => {
+  useEffect(() => {
+    const metaElement: HTMLMetaElement = document.querySelector(
+      "meta[name='theme-color']"
+    )!
+    if (metaElement) {
+      // metaElement.content = '#007bff'
+      metaElement.content = 'transparent'
+    }
+  }, [])
+
   return (
     <Page className="flex flex-col">
       <Header>
