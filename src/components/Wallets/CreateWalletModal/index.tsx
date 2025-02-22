@@ -49,10 +49,7 @@ const CreateWalletModal = () => {
     createWallet.mutate(data)
   })
 
-  const handleCloseModal = () => {
-    if (createWallet.isPending) return
-    window.history.back()
-  }
+  const handleCloseModal = () => window.history.back()
 
   const handleNameInputBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value.trim() === '') {
@@ -88,7 +85,10 @@ const CreateWalletModal = () => {
         onAnimationComplete={handleModalAnimationComplete}
       >
         <div className="flex items-center justify-between">
-          <button type="button" onClick={handleCloseModal}>
+          <button
+            type="button"
+            onClick={!createWallet.isPending ? handleCloseModal : undefined}
+          >
             <IoClose className="h-6 w-6" />
           </button>
 
