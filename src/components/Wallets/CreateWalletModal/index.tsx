@@ -10,13 +10,14 @@ import {
   GetWalletsResponse,
   Wallet,
 } from '@/@types/wallet'
-import { FormField, Modal } from '@/components/commons'
+import { FormField, Loader, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
 import { useQueryClient } from '@tanstack/react-query'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
+import { cn } from '@/utils/functions'
 
 const CreateWalletModal = () => {
   const queryClient = useQueryClient()
@@ -43,11 +44,15 @@ const CreateWalletModal = () => {
   })
   const numOfChars = watch('name').length
 
-  const handleFormSubmit = handleSubmit((data: CreateWalletRequest) =>
+  const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
+    if (createWallet.isPending) return
     createWallet.mutate(data)
-  )
+  })
 
-  const handleCloseModal = () => window.history.back()
+  const handleCloseModal = () => {
+    if (createWallet.isPending) return
+    window.history.back()
+  }
 
   const handleNameInputBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value.trim() === '') {
@@ -86,12 +91,18 @@ const CreateWalletModal = () => {
           <button type="button" onClick={handleCloseModal}>
             <IoClose className="h-6 w-6" />
           </button>
+
           <button
             type="button"
-            className="font-bold"
+            className="grid-stack place-items-center font-bold"
             onClick={handleFormSubmit}
           >
-            Create
+            <Loader
+              size="xs"
+              color="inherit"
+              className={cn(!createWallet.isPending && 'invisible')}
+            />
+            <p className={cn(createWallet.isPending && 'invisible')}>Create</p>
           </button>
         </div>
 
