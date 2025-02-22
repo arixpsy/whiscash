@@ -5,6 +5,7 @@ const WalletSchema = z.object({
   id: z.number(),
   name: z.string(),
   currency: z.string(),
+  country: z.string(),
   defaultSpendingPeriod: z.nativeEnum(SpendingPeriod),
   orderIndex: z.number(),
   archivedAt: z.string().nullable(),
