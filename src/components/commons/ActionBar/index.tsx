@@ -3,6 +3,7 @@ import { FaHome, FaPlus } from 'react-icons/fa'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
+import { FeedbackButton } from '@/components/commons'
 import { Route } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 
@@ -39,7 +40,8 @@ const ActionBar = () => {
             const active = route === pathname
 
             return (
-              <button
+              <FeedbackButton
+                type="button"
                 key={route}
                 className={cn(
                   'grid-stack relative isolate place-items-center text-gray-300',
@@ -54,17 +56,18 @@ const ActionBar = () => {
                   )}
                 />
                 <Icon className="z-10 m-3 h-6 w-6" />
-              </button>
+              </FeedbackButton>
             )
           })}
         </div>
 
-        <button
+        <FeedbackButton
+          type="button"
           className="bg-primary-500 rounded-full p-3 text-white shadow-2xl"
           onClick={handleClickAddButton}
         >
           <FaPlus className="h-6 w-6" />
-        </button>
+        </FeedbackButton>
       </div>
     </div>
   )
