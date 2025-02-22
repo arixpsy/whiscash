@@ -1,6 +1,7 @@
 export { default as ActionBar } from './ActionBar'
 export { default as ActionBarLayout } from './ActionBarLayout'
 export { default as Authenticated } from './Authenticated'
+export { default as FormField } from './FormField'
 export { default as Loader } from './Loader'
 export { default as MetaThemeColorRouter } from './MetaThemeColorRouter'
 export { default as Modal } from './Modal'
