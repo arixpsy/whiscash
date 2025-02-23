@@ -8,7 +8,6 @@ import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import { CreateWalletRequest } from '@/@types/wallet'
 import { Modal, SearchBar } from '@/components/commons'
-import 'country-flag-icons/3x2/flags.css'
 
 type CountryCurrencySelectorProps = {
   control: Control<CreateWalletRequest>

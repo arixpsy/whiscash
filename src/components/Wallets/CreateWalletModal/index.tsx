@@ -1,23 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion, TargetAndTransition } from 'motion/react'
 import { FocusEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoClose } from 'react-icons/io5'
 import { MdWallet } from 'react-icons/md'
-import {
-  CreateWalletRequest,
-  CreateWalletRequestSchema,
-  GetWalletsResponse,
-  Wallet,
-} from '@/@types/wallet'
+import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/wallet'
 import { FormField, Loader, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
+import { cn } from '@/utils/functions'
 import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
-import { useQueryClient } from '@tanstack/react-query'
-import { QUERY_KEYS } from '@/utils/constants/queryKey'
-import { cn } from '@/utils/functions'
 
 const CreateWalletModal = () => {
   const queryClient = useQueryClient()
@@ -64,13 +58,8 @@ const CreateWalletModal = () => {
     if (translateY === '100%') reset()
   }
 
-  function createWalletSuccessCB(wallet: Wallet) {
-    queryClient.setQueryData(
-      QUERY_KEYS.WALLETS,
-      (current: GetWalletsResponse) => {
-        return [...current, wallet]
-      }
-    )
+  function createWalletSuccessCB() {
+    queryClient.invalidateQueries({ queryKey: ['whiscash', 'wallets'] })
     handleCloseModal()
   }
 

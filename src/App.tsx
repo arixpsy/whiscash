@@ -6,6 +6,7 @@ import {
 } from '@/components/commons'
 import { Dashboard, Login, Wallets } from '@/pages'
 import { Route as RoutePath } from '@/utils/constants/routes'
+import 'country-flag-icons/3x2/flags.css'
 
 const App = () => {
   const location = useLocation()
