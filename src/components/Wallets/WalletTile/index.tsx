@@ -1,15 +1,21 @@
 import { Wallet } from '@/@types/wallet'
 import { SPENDING_PERIOD_WALLET_LABELS } from '@/utils/constants/spendingPeriod'
+import { HTMLAttributes } from 'react'
 
 type WalletTileProps = {
   wallet: Wallet
-}
+} & HTMLAttributes<HTMLButtonElement>
 
 const WalletTile = (props: WalletTileProps) => {
-  const { wallet } = props
+  const { onClick, wallet } = props
 
   return (
-    <div className="flex gap-3" key={wallet.id}>
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex gap-3"
+      key={wallet.id}
+    >
       <div className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 p-2">
         <div
           className={`flag:${wallet.country}`}
@@ -35,7 +41,7 @@ const WalletTile = (props: WalletTileProps) => {
           Sub Wallet
         </div>
       )}
-    </div>
+    </button>
   )
 }
 
