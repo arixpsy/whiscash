@@ -6,22 +6,23 @@ import { cn } from '@/utils/functions'
 type FormFieldProps = {
   label: string
   hasError?: boolean
+  isOptional?: boolean
 } & PropsWithChildren &
   HTMLAttributes<HTMLDivElement>
 
 const FormField = (props: FormFieldProps) => {
-  const { children, hasError, label, className } = props
+  const { children, hasError, isOptional, label, className } = props
 
   return (
     <div className={cn('w-full', className)}>
       <div className="mb-2 flex justify-between">
         <label
           className={cn(
-            'text-sm font-bold transition-colors',
+            'flex items-center gap-1 text-sm font-bold transition-colors',
             !!hasError && 'text-red-400'
           )}
         >
-          {label}
+          {label} {isOptional && <span className="text-xs">(Optional)</span>}
         </label>
 
         {hasError && (
