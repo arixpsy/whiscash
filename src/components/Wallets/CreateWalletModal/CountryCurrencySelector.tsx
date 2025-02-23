@@ -18,7 +18,7 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
   const { control } = props
   const [searchParam, setSearchParams] = useSearchParams()
   const [searchPhrase, setSearchPhrase] = useState('')
-  const [debouceSearchPhrase] = useDebounce(searchPhrase, 250)
+  const [debounceSearchPhrase] = useDebounce(searchPhrase, 250)
   const { field: countryField } = useController({
     name: 'country',
     control,
@@ -57,10 +57,10 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
           (option) =>
             option.currency
               .toLowerCase()
-              .includes(debouceSearchPhrase.toLowerCase()) ||
+              .includes(debounceSearchPhrase.toLowerCase()) ||
             option.countryName
               .toLowerCase()
-              .includes(debouceSearchPhrase.toLowerCase())
+              .includes(debounceSearchPhrase.toLowerCase())
         )
         .map((option) => (
           <button
@@ -85,7 +85,7 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
             </div>
           </button>
         )),
-    [handleSelectOption, debouceSearchPhrase]
+    [handleSelectOption, debounceSearchPhrase]
   )
 
   return (

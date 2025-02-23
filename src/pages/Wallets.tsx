@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import { useDebounce } from 'use-debounce'
 import { Page, SearchBar } from '@/components/commons'
 import { CreateWalletModal, WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
 
 const Wallets = () => {
   const { useGetWalletsQuery } = useWallet()
-  const getWallets = useGetWalletsQuery()
-  const [, setSearchPhrase] = useState('')
+  const [searchPhrase, setSearchPhrase] = useState('')
+  const [debounceSearchPhrase] = useDebounce(searchPhrase, 250)
+  const getWallets = useGetWalletsQuery({ searchPhrase: debounceSearchPhrase })
   const wallets = getWallets?.data || []
 
   return (

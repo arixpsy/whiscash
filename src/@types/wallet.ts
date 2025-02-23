@@ -25,6 +25,11 @@ export const CreateWalletRequestSchema = z.object({
 
 export const GetWalletsResponseSchema = z.array(WalletSchema)
 
+export const GetWalletsRequestSchema = z.object({
+  searchPhrase: z.string(),
+})
+
 export type CreateWalletRequest = z.infer<typeof CreateWalletRequestSchema>
 export type GetWalletsResponse = z.infer<typeof GetWalletsResponseSchema>
+export type GetWalletsRequest = z.infer<typeof GetWalletsRequestSchema>
 export type Wallet = z.infer<typeof WalletSchema>

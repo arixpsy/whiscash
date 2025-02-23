@@ -23,6 +23,11 @@ const createWallet =
   async (data: CreateWalletRequest): Promise<Wallet> =>
     whiscashApi.post('/wallet', data, await config).then((res) => res.data)
 
+const getMainWallets =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (): Promise<GetWalletsResponse> =>
+    whiscashApi.get('/wallet/main', await config).then((res) => res.data)
+
 const getWallets =
   (config: Promise<AxiosRequestConfig>) =>
   async (): Promise<GetWalletsResponse> =>
@@ -31,5 +36,6 @@ const getWallets =
 export default {
   createTransaction,
   createWallet,
+  getMainWallets,
   getWallets,
 }
