@@ -1,8 +1,8 @@
-import { ButtonHTMLAttributes, MouseEvent } from 'react'
+import { HTMLAttributes, MouseEvent } from 'react'
 
 type FeedbackButtonProps = {
   vibratePattern?: number | Array<number>
-} & ButtonHTMLAttributes<HTMLButtonElement>
+} & HTMLAttributes<HTMLButtonElement>
 
 const FeedbackButton = (props: FeedbackButtonProps) => {
   const { children, onClick, vibratePattern = 50, ...rest } = props
