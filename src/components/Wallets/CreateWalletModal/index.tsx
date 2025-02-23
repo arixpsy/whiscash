@@ -12,6 +12,7 @@ import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import { cn } from '@/utils/functions'
 import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
+import WalletSelector from './WalletSelector'
 
 const CreateWalletModal = () => {
   const queryClient = useQueryClient()
@@ -37,6 +38,7 @@ const CreateWalletModal = () => {
     resolver: zodResolver(CreateWalletRequestSchema),
   })
   const numOfChars = watch('name').length
+  const currency = watch('currency')
 
   const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
     if (createWallet.isPending) return
@@ -124,6 +126,12 @@ const CreateWalletModal = () => {
               <CountryCurrencySelector control={control} />
             </FormField>
 
+            {currency && (
+              <FormField label="Main Wallet" isOptional>
+                <WalletSelector control={control} currency={currency} />
+              </FormField>
+            )}
+
             <FormField
               label="Tracking Period"
               hasError={!!errors.defaultSpendingPeriod?.message}
@@ -137,8 +145,6 @@ const CreateWalletModal = () => {
                 ))}
               </div>
             </FormField>
-
-            <FormField label="Main Wallet"></FormField>
           </div>
         </form>
       </motion.div>

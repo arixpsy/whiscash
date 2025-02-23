@@ -27,10 +27,8 @@ const WalletTile = (props: WalletTileProps) => {
         />
       </div>
 
-      <div>
-        <div className="flex gap-3">
-          <p className="font-bold">{wallet.name}</p>
-        </div>
+      <div className="text-left">
+        <p className="font-bold">{wallet.name}</p>
         <p className="text-xs text-gray-500">
           {SPENDING_PERIOD_WALLET_LABELS[wallet.defaultSpendingPeriod]}
         </p>
