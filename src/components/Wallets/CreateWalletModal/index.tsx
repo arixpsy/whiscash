@@ -20,13 +20,13 @@ const CreateWalletModal = () => {
   const createWallet = useCreateWalletMutation(createWalletSuccessCB)
   const {
     control,
+    formState: { errors },
     handleSubmit,
     register,
     setFocus,
     setValue,
     watch,
     reset,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       name: '',
