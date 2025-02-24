@@ -139,6 +139,7 @@ const CreateWalletModal = () => {
               <div className="flex flex-wrap gap-2">
                 {Object.values(SpendingPeriod).map((spendingPeriod) => (
                   <SpendingPeriodRadioInput
+                    key={spendingPeriod}
                     register={register}
                     spendingPeriod={spendingPeriod}
                   />

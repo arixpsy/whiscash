@@ -1,7 +1,6 @@
-import { motion } from 'motion/react'
-import { PropsWithChildren, ReactNode } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { PropsWithChildren, ReactNode, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { AnimatePresence } from 'motion/react'
 import { useSearchParams } from 'react-router'
 
 type ModalProps = {
@@ -17,23 +16,26 @@ const Modal = (props: ModalProps) => {
   return (
     <AnimatePresence>
       {searchParams.get(paramKey) === paramValue && (
-        <_Modal portalKey={portalKey}>{children}</_Modal>
+        <Modal_ portalKey={portalKey}>{children}</Modal_>
       )}
     </AnimatePresence>
   )
 }
 
-const _Modal = (props: { portalKey?: string; children: ReactNode }) => {
+const Modal_ = (props: { portalKey?: string; children: ReactNode }) => {
   const { portalKey = 'route', children } = props
+  const isAnimationLocked = useRef(false)
 
   return createPortal(
-    <div className="grid-stack fixed inset-0 place-items-center text-gray-700">
+    <div className="grid-stack fixed inset-0 place-items-end text-gray-700 ">
       <motion.div
-        onClick={() => window.history.back()}
+        onClick={() => !isAnimationLocked.current && window.history.back()}
         className="h-full w-full max-w-md bg-black"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
         exit={{ opacity: 0 }}
+        onAnimationStart={() => (isAnimationLocked.current = true)}
+        onAnimationComplete={() => (isAnimationLocked.current = false)}
       />
       {children}
     </div>,
@@ -42,16 +44,3 @@ const _Modal = (props: { portalKey?: string; children: ReactNode }) => {
 }
 
 export default Modal
-
-// type SearchParamModalProps = {} & PropsWithChildren
-
-// export const SearchParamModal = (props: SearchParamModalProps) => {
-//   const { paramKey, paramValue, children } = props
-//   const [searchParams] = useSearchParams()
-
-//   return (
-//     <AnimatePresence>
-//       {searchParams.get(paramKey) === paramValue && children}
-//     </AnimatePresence>
-//   )
-// }
