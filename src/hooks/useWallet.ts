@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { GetWalletsRequest, Wallet } from '@/@types/wallet'
+import { GetDashboardWalletsRequest, GetWalletsRequest, Wallet } from '@/@types/wallet'
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -12,6 +12,12 @@ const useWallet = () => {
       mutationFn: whiscashApi.createWallet(createRequestConfig()),
       onSuccess,
     })
+
+  const useGetDashboardWalletsQuery = (req: GetDashboardWalletsRequest) =>
+      useQuery({
+        queryKey: QUERY_KEYS.DASHBOARD,
+        queryFn: whiscashApi.getDashboardWallets(createRequestConfig({ params: req })),
+      })
 
   const useGetMainWalletsQuery = (req: GetWalletsRequest) =>
     useQuery({
@@ -27,6 +33,7 @@ const useWallet = () => {
 
   return {
     useCreateWalletMutation,
+    useGetDashboardWalletsQuery,
     useGetMainWalletsQuery,
     useGetWalletsQuery,
   }

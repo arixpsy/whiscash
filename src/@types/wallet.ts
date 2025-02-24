@@ -23,6 +23,13 @@ export const CreateWalletRequestSchema = z.object({
   subWalletOf: z.number().optional(),
 })
 
+// TODO:
+export const GetDashboardWalletsResponse = z.array(z.object({}))
+
+export const GetDashboardWalletsRequest = z.object({
+  timezone: z.string()
+})
+
 export const GetWalletsResponseSchema = z.array(WalletSchema)
 
 export const GetWalletsRequestSchema = z.object({
@@ -31,6 +38,8 @@ export const GetWalletsRequestSchema = z.object({
 })
 
 export type CreateWalletRequest = z.infer<typeof CreateWalletRequestSchema>
+export type GetDashboardWalletsResponse = z.infer<typeof GetDashboardWalletsResponse>
+export type GetDashboardWalletsRequest = z.infer<typeof GetDashboardWalletsRequest>
 export type GetWalletsResponse = z.infer<typeof GetWalletsResponseSchema>
 export type GetWalletsRequest = z.infer<typeof GetWalletsRequestSchema>
 export type Wallet = z.infer<typeof WalletSchema>

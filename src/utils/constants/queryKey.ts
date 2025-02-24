@@ -3,7 +3,7 @@ import { GetWalletsRequest } from '@/@types/wallet'
 const WHISCASH = 'whiscash'
 
 export const QUERY_KEYS = {
-  DASHBOARD: [WHISCASH, 'dashboard'],
+  DASHBOARD: [WHISCASH, 'wallets', 'dashboard'],
   MAIN_WALLETS: (data: GetWalletsRequest) => [
     WHISCASH,
     'wallets',
