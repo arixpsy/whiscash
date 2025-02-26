@@ -5,7 +5,7 @@ import {
   GetDashboardWalletsResponse,
   GetWalletsResponse,
   Wallet,
-} from '@/@types/wallet'
+} from '@/@types/shared'
 
 const whiscashApi = axios.create({
   baseURL: `${import.meta.env.VITE_WHISCASH_BE_URL}/api`,

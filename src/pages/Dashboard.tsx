@@ -49,7 +49,7 @@ const Dashboard = () => {
           </div>
         </Header>
 
-        <div>{wallets.map(() => 'wallet')}</div>
+        <div>{wallets.map(() => 'w')}</div>
 
         <div className="px-3">
           <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
