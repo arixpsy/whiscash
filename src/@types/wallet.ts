@@ -6,7 +6,7 @@ const WalletSchema = z.object({
   name: z.string(),
   currency: z.string(),
   country: z.string(),
-  defaultSpendingPeriod: z.nativeEnum(SpendingPeriod),
+  spendingPeriod: z.nativeEnum(SpendingPeriod),
   orderIndex: z.number(),
   archivedAt: z.string().nullable(),
   subWalletOf: z.number().nullable(),
@@ -19,7 +19,7 @@ export const CreateWalletRequestSchema = z.object({
   name: z.string().min(1).max(50),
   currency: z.string().length(3),
   country: z.string().length(2),
-  defaultSpendingPeriod: z.nativeEnum(SpendingPeriod),
+  spendingPeriod: z.nativeEnum(SpendingPeriod),
   subWalletOf: z.number().optional(),
 })
 

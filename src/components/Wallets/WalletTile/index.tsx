@@ -30,7 +30,7 @@ const WalletTile = (props: WalletTileProps) => {
       <div className="text-left">
         <p className="font-bold">{wallet.name}</p>
         <p className="text-xs text-gray-500">
-          {SPENDING_PERIOD_WALLET_LABELS[wallet.defaultSpendingPeriod]}
+          {SPENDING_PERIOD_WALLET_LABELS[wallet.spendingPeriod]}
         </p>
       </div>
 

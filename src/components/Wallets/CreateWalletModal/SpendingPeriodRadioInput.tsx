@@ -15,7 +15,7 @@ const SpendingPeriodRadioInput = (props: SpendingPeriodRadioInputprops) => {
   return (
     <label className="relative rounded-lg bg-gray-100 px-3 py-0.5 transition-colors has-checked:bg-gray-500 has-checked:text-white">
       <input
-        {...register('defaultSpendingPeriod')}
+        {...register('spendingPeriod')}
         type="radio"
         value={spendingPeriod}
         className="absolute hidden"

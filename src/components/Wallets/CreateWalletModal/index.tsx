@@ -30,7 +30,7 @@ const CreateWalletModal = () => {
   } = useForm({
     defaultValues: {
       name: '',
-      defaultSpendingPeriod: SpendingPeriod.Month,
+      spendingPeriod: SpendingPeriod.Month,
       currency: undefined,
       country: undefined,
       subWalletOf: undefined,
@@ -134,7 +134,7 @@ const CreateWalletModal = () => {
 
             <FormField
               label="Tracking Period"
-              hasError={!!errors.defaultSpendingPeriod?.message}
+              hasError={!!errors.spendingPeriod?.message}
             >
               <div className="flex flex-wrap gap-2">
                 {Object.values(SpendingPeriod).map((spendingPeriod) => (
