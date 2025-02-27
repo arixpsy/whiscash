@@ -13,8 +13,8 @@ const WalletCard = (props: WalletCardProps) => {
   const { name, country, currency, spendingPeriod, spendingPeriodTotal } = props
 
   return (
-    <div className="relative z-20 mb-10 w-[250px] rounded-2xl bg-white p-3 shadow-lg">
-      <div className="flex items-center justify-between">
+    <div className="relative z-20 mb-10 w-[250px] h-[140px] rounded-2xl bg-white p-3 shadow-lg grid">
+      <div className="flex items-center justify-between self-start">
         <p className="truncate text-xl">{name}</p>
 
         <div className="grid h-9 w-11 shrink-0 place-items-center rounded-lg bg-gray-200">
@@ -29,7 +29,7 @@ const WalletCard = (props: WalletCardProps) => {
         </div>
       </div>
 
-      <div className="mt-6 flex items-end justify-between">
+      <div className="flex items-end justify-between self-end">
         <div>
           <p className="mb-1 text-xs text-gray-500">
             {SPENDING_PERIOD_DASHBOARD_LABELS[spendingPeriod]}
@@ -49,13 +49,13 @@ const WalletCard = (props: WalletCardProps) => {
 }
 
 const Skeleton = () => (
-  <div className="relative z-20 mb-10 w-[250px] rounded-2xl bg-white p-3 shadow-lg">
-    <div className="flex items-center justify-between">
+  <div className="relative z-20 mb-10 w-[250px] h-[140px] grid rounded-2xl bg-white p-3 shadow-lg">
+    <div className="flex items-center justify-between self-start">
       <div className="h-7 w-30 animate-pulse rounded-lg bg-gray-200" />
       <div className="grid h-9 w-11 shrink-0 animate-pulse place-items-center rounded-lg bg-gray-200" />
     </div>
 
-    <div className="mt-6 flex items-end justify-between">
+    <div className="flex items-end justify-between self-end">
       <div>
         <div className="mb-1 h-4 w-14 animate-pulse rounded bg-gray-200" />
         <div className="h-8 w-24 animate-pulse rounded-lg bg-gray-200" />
