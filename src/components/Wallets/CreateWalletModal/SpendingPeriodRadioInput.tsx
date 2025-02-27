@@ -1,5 +1,5 @@
 import { UseFormRegister } from 'react-hook-form'
-import { CreateWalletRequest } from '@/@types/wallet'
+import { CreateWalletRequest } from '@/@types/shared'
 import {
   SPENDING_PERIOD_INPUT_LABELS,
   SpendingPeriod,

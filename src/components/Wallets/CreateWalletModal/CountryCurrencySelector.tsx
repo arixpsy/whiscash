@@ -6,7 +6,7 @@ import { FaQuestionCircle } from 'react-icons/fa'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
-import { CreateWalletRequest } from '@/@types/wallet'
+import { CreateWalletRequest } from '@/@types/shared'
 import { Modal, SearchBar } from '@/components/commons'
 
 type CountryCurrencySelectorProps = {

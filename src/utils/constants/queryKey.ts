@@ -1,4 +1,4 @@
-import { GetWalletsRequest } from '@/@types/wallet'
+import { GetWalletsRequest } from '@/@types/shared'
 
 const WHISCASH = 'whiscash'
 

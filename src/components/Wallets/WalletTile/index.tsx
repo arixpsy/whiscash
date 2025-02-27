@@ -1,4 +1,4 @@
-import { Wallet } from '@/@types/wallet'
+import { Wallet } from '@/@types/shared'
 import { SPENDING_PERIOD_WALLET_LABELS } from '@/utils/constants/spendingPeriod'
 import { HTMLAttributes } from 'react'
 
