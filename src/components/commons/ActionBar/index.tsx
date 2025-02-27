@@ -30,7 +30,14 @@ const ActionBar = () => {
     []
   )
 
-  const handleClickAddButton = () => setSearchParams({ create: 'new' })
+  const handleClickAddButton = () => {
+    if (pathname === Route.WALLETS) {
+      setSearchParams({ create: 'wallet' })
+      return
+    }
+
+    setSearchParams({ create: 'transaction' })
+  }
 
   return (
     <div className="fixed right-0 bottom-6 left-0 grid place-items-center">

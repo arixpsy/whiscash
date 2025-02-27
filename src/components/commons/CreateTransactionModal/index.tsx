@@ -49,7 +49,7 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   }
 
   return (
-    <Modal paramKey="create" paramValue="new">
+    <Modal paramKey="create" paramValue="transaction">
       <motion.div
         className="h-full w-full max-w-md self-end rounded-t-2xl bg-white p-3"
         initial={{ translateY: '100%' }}
