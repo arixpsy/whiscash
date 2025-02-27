@@ -1,6 +1,7 @@
 export { default as ActionBar } from './ActionBar'
 export { default as ActionBarLayout } from './ActionBarLayout'
 export { default as Authenticated } from './Authenticated'
+export { default as Banner } from './Banner'
 export { default as CreateTransactionModal } from './CreateTransactionModal'
 export { default as FeedbackButton } from './FeedbackButton'
 export { default as FormField } from './FormField'
