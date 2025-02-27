@@ -13,9 +13,9 @@ const WalletCard = (props: WalletCardProps) => {
   return (
     <motion.div
       className="relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg"
-      initial={{ scale: '0%' }}
-      animate={{ scale: '100%' }}
-      exit={{ scale: '0%' }}
+      initial={{ opacity: '0%' }}
+      animate={{ opacity: '100%' }}
+      exit={{ opacity: '0%' }}
       transition={{ type: 'tween', ease: 'easeOut' }}
     >
       <div className="flex items-center justify-between self-start">

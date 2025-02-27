@@ -51,13 +51,12 @@ const Dashboard = () => {
         <div className="px-3 pb-28">
           <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
           <div className="grid gap-4">
-            {getDashboardWallets.isPending ||
+            {(getDashboardWallets.isPending ||
               transactions.length === 0 ||
-              (transactions.length > 0 &&
-                activeTransactionQuery.isPending &&
-                Array.from({ length: 4 }).map((_, index) => (
-                  <TransactionTile.Skeleton key={index} />
-                )))}
+              (transactions.length > 0 && activeTransactionQuery.isPending)) &&
+              Array.from({ length: 4 }).map((_, index) => (
+                <TransactionTile.Skeleton key={index} />
+              ))}
 
             {transactions.length > 0 &&
               activeTransactionQuery.data &&
