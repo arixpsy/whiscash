@@ -16,7 +16,6 @@ const WalletCard = (props: WalletCardProps) => {
       initial={{ opacity: '0%' }}
       animate={{ opacity: '100%' }}
       exit={{ opacity: '0%' }}
-      transition={{ type: 'tween', ease: 'easeOut' }}
     >
       <div className="flex items-center justify-between self-start">
         <p className="truncate text-xl">{wallet.name}</p>
@@ -59,6 +58,7 @@ const Skeleton = () => (
     initial={{ scale: '0%' }}
     animate={{ scale: '100%' }}
     exit={{ scale: '0%' }}
+    transition={{ type: 'tween', ease: 'easeOut' }}
   >
     <div className="flex items-center justify-between self-start">
       <div className="h-7 w-30 animate-pulse rounded-lg bg-gray-200" />
