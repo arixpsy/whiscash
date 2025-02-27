@@ -1,12 +1,11 @@
 import { motion, TargetAndTransition } from 'motion/react'
 import { useMemo, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
-import { FaQuestionCircle } from 'react-icons/fa'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import { CreateWalletRequest } from '@/@types/shared'
-import { Modal, SearchBar } from '@/components/commons'
+import { Banner, Modal, SearchBar } from '@/components/commons'
 import WalletTile from '@/components/Wallets/WalletTile'
 import useWallet from '@/hooks/useWallet'
 
@@ -54,6 +53,11 @@ const WalletSelector = (props: WalletSelectorProps) => {
     if (translateY === '100%') setSearchPhrase('')
   }
 
+  // display states
+  const shouldDisplaySkeleton = getWallets.isPending
+  const shouldDisplayWalletsData = !getWallets.isPending && wallets.length > 0
+  const shouldDisplayEmptyBanner = !getWallets.isPending && wallets.length === 0
+
   return (
     <>
       <button
@@ -92,19 +96,25 @@ const WalletSelector = (props: WalletSelectorProps) => {
           </div>
 
           <div className="grid h-full auto-rows-min gap-3 overflow-auto pl-3">
-            {wallets.length > 0 ? (
+            {shouldDisplaySkeleton &&
+              Array.from({ length: 3 }).map((_, index) => (
+                <WalletTile.Skeleton key={index} />
+              ))}
+
+            {shouldDisplayEmptyBanner && (
+              <div className="flex h-[200px] w-full items-center justify-center">
+                <Banner.NoWalletsFound />
+              </div>
+            )}
+
+            {shouldDisplayWalletsData &&
               wallets.map((wallet) => (
                 <WalletTile
+                  key={wallet.id}
                   wallet={wallet}
                   onClick={() => handleClickOption(wallet.id)}
                 />
-              ))
-            ) : (
-              <div className="flex h-[200px] w-full flex-col items-center justify-center gap-3 text-sm text-gray-500">
-                <FaQuestionCircle className="h-16 w-16 text-gray-500" />
-                Unable to find wallet
-              </div>
-            )}
+              ))}
           </div>
         </motion.div>
       </Modal>
