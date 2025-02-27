@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import { Banner, Page, SearchBar } from '@/components/commons'
-import { CreateWalletModal, WalletTile } from '@/components/Wallets'
+import { Banner, CreateWalletModal, Page, SearchBar } from '@/components/commons'
+import { WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
 
 const Wallets = () => {

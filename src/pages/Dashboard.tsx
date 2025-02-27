@@ -3,13 +3,13 @@ import { Wallet } from '@/@types/shared'
 import {
   Banner,
   CreateTransactionModal,
+  CreateWalletModal,
   Page,
   TransactionTile,
 } from '@/components/commons'
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
-import { CreateWalletModal } from '@/components/Wallets'
 
 const Dashboard = () => {
   const { useGetDashboardWalletTransactionsQuery } = useTransaction()
