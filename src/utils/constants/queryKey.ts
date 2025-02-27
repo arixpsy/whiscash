@@ -11,5 +11,10 @@ export const QUERY_KEYS = {
     data,
   ],
   WALLETS: (data: GetWalletsRequest) => [WHISCASH, 'wallets', data],
+  WALLET_TRANSACTIONS: (walletId: number) => [
+    WHISCASH,
+    'transactions',
+    walletId,
+  ],
   TRANSACTIONS: [WHISCASH, 'transactions'],
 } as const
