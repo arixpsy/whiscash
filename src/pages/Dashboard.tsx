@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { Wallet } from '@/@types/shared'
 import {
   CreateTransactionModal,
   Page,
@@ -15,6 +16,14 @@ const Dashboard = () => {
   const wallets = getDashboardWallets.data || []
   const [activeIndex, setActiveIndex] = useState<number>(0)
 
+  const activeWallet = useMemo<Wallet | undefined>(
+    () =>
+      getDashboardWallets.data
+        ? getDashboardWallets.data[activeIndex]
+        : undefined,
+    [activeIndex, getDashboardWallets.data]
+  )
+
   return (
     <>
       <Page className="flex flex-col">
@@ -29,15 +38,15 @@ const Dashboard = () => {
 
         <div className="px-3 pb-28">
           <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
-
-          {/* {wallets[activeIndex] &&
-            wallets[activeIndex].transactions.map((t) => (
-              <TransactionTile transaction={t} />
-            ))} */}
         </div>
       </Page>
 
-      <CreateTransactionModal walletId={1} currency="SGD" />
+      {activeWallet && (
+        <CreateTransactionModal
+          walletId={activeWallet.id}
+          currency={activeWallet.currency}
+        />
+      )}
     </>
   )
 }
