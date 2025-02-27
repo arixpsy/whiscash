@@ -2,10 +2,8 @@ import { useMemo, useState } from 'react'
 import { Wallet } from '@/@types/shared'
 import {
   CreateTransactionModal,
-  Loader,
   Page,
   TransactionTile,
-  // TransactionTile,
 } from '@/components/commons'
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
@@ -40,6 +38,8 @@ const Dashboard = () => {
     <>
       <Page className="flex flex-col">
         <Header>
+          {/* TODO: add no wallet banner */}
+          {/* TODO: add update wallet modal params */}
           <WalletCarousel
             activeIndex={activeIndex}
             isLoading={getDashboardWallets.isPending}
@@ -50,18 +50,23 @@ const Dashboard = () => {
 
         <div className="px-3 pb-28">
           <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
+          <div className="grid gap-4">
+            {getDashboardWallets.isPending ||
+              transactions.length === 0 ||
+              (transactions.length > 0 &&
+                activeTransactionQuery.isPending &&
+                Array.from({ length: 4 }).map((_, index) => (
+                  <TransactionTile.Skeleton key={index} />
+                )))}
 
-          {transactions.length > 0 && activeTransactionQuery.isPending && (
-            <Loader />
-          )}
+            {transactions.length > 0 &&
+              activeTransactionQuery.data &&
+              activeTransactionQuery.data.map((t) => (
+                <TransactionTile key={t.id} transaction={t} />
+              ))}
 
-          <TransactionTile.Skeleton />
-
-          {transactions.length > 0 &&
-            activeTransactionQuery.data &&
-            activeTransactionQuery.data?.map((t) => (
-              <TransactionTile transaction={t} />
-            ))}
+            {/* TODO: add no transaction banner */}
+          </div>
         </div>
       </Page>
 

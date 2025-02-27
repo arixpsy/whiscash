@@ -1,5 +1,5 @@
 import { UseFormRegister, UseFormSetFocus, UseFormWatch } from 'react-hook-form'
-import { CreateTransactionRequest } from '@/@types/transaction'
+import { CreateTransactionRequest } from '@/@types/shared'
 
 type TransactionAmountInputProps = {
   currency: string

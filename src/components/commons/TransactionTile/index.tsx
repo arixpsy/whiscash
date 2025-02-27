@@ -1,5 +1,7 @@
+import { motion } from 'motion/react'
 import { TransactionWithCurrency } from '@/@types/shared'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
+import { amountWithCurrency } from '@/utils/functions'
 
 type TransactionTileProps = {
   transaction: TransactionWithCurrency
@@ -9,7 +11,12 @@ const TransactionTile = (props: TransactionTileProps) => {
   const CategoryIcon = CATEGORY_ICON[transaction.category]
 
   return (
-    <div className="grid grid-cols-[auto_1fr] gap-3 py-2">
+    <motion.div
+      className="grid grid-cols-[auto_1fr] gap-3"
+      initial={{ opacity: '0%' }}
+      animate={{ opacity: '100%' }}
+      exit={{ opacity: '0%' }}
+    >
       <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
         {CategoryIcon && <CategoryIcon className="text-primary-500 h-6 w-6" />}
       </div>
@@ -22,14 +29,25 @@ const TransactionTile = (props: TransactionTileProps) => {
           <p className="text-sm text-gray-500">{transaction.description}</p>
         </div>
 
-        <p className="text-xl">${transaction.amount}</p>
+        <p className="text-xl">
+          {amountWithCurrency(
+            transaction.amount,
+            transaction.country,
+            transaction.currency
+          )}
+        </p>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 const Skeleton = () => (
-  <div className="grid grid-cols-[auto_1fr] gap-3 py-2">
+  <motion.div
+    className="grid grid-cols-[auto_1fr] gap-3"
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+  >
     <div className="h-12 w-12 animate-pulse rounded-lg bg-gray-200" />
 
     <div className="flex w-full items-center justify-between">
@@ -40,7 +58,7 @@ const Skeleton = () => (
 
       <div className="h-7 w-18 animate-pulse rounded-lg bg-gray-200" />
     </div>
-  </div>
+  </motion.div>
 )
 
 TransactionTile.Skeleton = Skeleton

@@ -22,6 +22,7 @@ const Wallets = () => {
         <SearchBar className="m-3" setValue={setSearchPhrase} />
 
         <div className="flex flex-1 flex-col gap-4 p-3 pb-28">
+          {/* TODO: wallet tile skeleton */}
           {getWallets.isPending ? (
             <div className="grid h-full flex-1 place-items-center">
               <Loader />

@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { Wallet } from '@/@types/shared'
 import { SPENDING_PERIOD_WALLET_LABELS } from '@/utils/constants/spendingPeriod'
 import { HTMLAttributes } from 'react'
@@ -10,11 +11,14 @@ const WalletTile = (props: WalletTileProps) => {
   const { onClick, wallet } = props
 
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onClick}
       className="flex gap-3"
       key={wallet.id}
+      initial={{ opacity: '0%' }}
+      animate={{ opacity: '100%' }}
+      exit={{ opacity: '0%' }}
     >
       <div className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 p-2">
         <div
@@ -39,7 +43,7 @@ const WalletTile = (props: WalletTileProps) => {
           Sub Wallet
         </div>
       )}
-    </button>
+    </motion.button>
   )
 }
 
