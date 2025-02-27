@@ -21,6 +21,7 @@ const Dashboard = () => {
         <Header>
           <WalletCarousel
             activeIndex={activeIndex}
+            isLoading={getDashboardWallets.isPending}
             setActiveIndex={setActiveIndex}
             wallets={wallets}
           />

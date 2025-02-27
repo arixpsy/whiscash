@@ -9,6 +9,15 @@ export const SpendingPeriod = {
 export type SpendingPeriod =
   (typeof SpendingPeriod)[keyof typeof SpendingPeriod]
 
+export const SPENDING_PERIOD_DASHBOARD_LABELS: Record<SpendingPeriod, string> =
+  {
+    [SpendingPeriod.Day]: 'Today',
+    [SpendingPeriod.Week]: 'This Week',
+    [SpendingPeriod.Month]: 'This Month',
+    [SpendingPeriod.Year]: 'This Year',
+    [SpendingPeriod.All]: 'All Time',
+  }
+
 export const SPENDING_PERIOD_INPUT_LABELS: Record<SpendingPeriod, string> = {
   [SpendingPeriod.Day]: 'Daily',
   [SpendingPeriod.Week]: 'Weekly',
@@ -24,4 +33,3 @@ export const SPENDING_PERIOD_WALLET_LABELS: Record<SpendingPeriod, string> = {
   [SpendingPeriod.Year]: 'Yearly Tracking',
   [SpendingPeriod.All]: 'All Time Tracking',
 }
-

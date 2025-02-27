@@ -6,12 +6,13 @@ import 'swiper/swiper-bundle.css'
 
 type WalletCarouselProps = {
   activeIndex: number
+  isLoading: boolean
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>
   wallets: GetDashboardWalletsResponse
 }
 
 const WalletCarousel = (props: WalletCarouselProps) => {
-  const { activeIndex, setActiveIndex, wallets } = props
+  const { activeIndex, isLoading, setActiveIndex, wallets } = props
 
   const handleSlideChange = (swiper: SwiperClass) =>
     setActiveIndex(swiper.activeIndex)
@@ -19,12 +20,19 @@ const WalletCarousel = (props: WalletCarouselProps) => {
   return (
     <div className="grid-stack isolate">
       <Swiper className="w-full" onSlideChange={handleSlideChange}>
+        {isLoading && (
+          <SwiperSlide className="grid place-items-center">
+            <WalletCard.Skeleton />
+          </SwiperSlide>
+        )}
+
         {wallets.map((w) => (
           <SwiperSlide key={w.id} className="grid place-items-center">
             <WalletCard
               name={w.name}
               country={w.country}
               currency={w.currency}
+              spendingPeriod={w.spendingPeriod}
               spendingPeriodTotal={w.spendingPeriodTotal}
             />
           </SwiperSlide>
