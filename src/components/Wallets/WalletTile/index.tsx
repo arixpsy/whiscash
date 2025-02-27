@@ -47,4 +47,24 @@ const WalletTile = (props: WalletTileProps) => {
   )
 }
 
+const Skeleton = () => (
+  <motion.div
+    className="flex gap-3"
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+  >
+    <div className="h-12 w-12 animate-pulse rounded-full bg-gray-200" />
+
+    <div className="space-y-1 text-left">
+      <div className="h-6 w-26 animate-pulse rounded-lg bg-gray-200" />
+      <p className="h-4 w-14 animate-pulse rounded bg-gray-200" />
+    </div>
+
+    <div className="my-auto ml-auto h-6 w-19 animate-pulse rounded-full bg-gray-200" />
+  </motion.div>
+)
+
+WalletTile.Skeleton = Skeleton
+
 export default WalletTile

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Wallet } from '@/@types/shared'
 import {
+  Banner,
   CreateTransactionModal,
   Page,
   TransactionTile,
@@ -8,6 +9,7 @@ import {
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
+import { CreateWalletModal } from '@/components/Wallets'
 
 const Dashboard = () => {
   const { useGetDashboardWalletTransactionsQuery } = useTransaction()
@@ -34,6 +36,18 @@ const Dashboard = () => {
     [activeIndex, transactions]
   )
 
+  // display states
+  const shouldDisplaySkeleton =
+    getDashboardWallets.isPending ||
+    transactions.length === 0 ||
+    (transactions.length > 0 && activeTransactionQuery.isPending)
+  const shouldDisplayTransactionData =
+    transactions.length > 0 && activeTransactionQuery.data
+  const shouldDisplayEmptyBanner =
+    transactions.length > 0 &&
+    activeTransactionQuery.data &&
+    activeTransactionQuery.data.length === 0
+
   return (
     <>
       <Page className="flex flex-col">
@@ -51,20 +65,17 @@ const Dashboard = () => {
         <div className="px-3 pb-28">
           <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
           <div className="grid gap-4">
-            {(getDashboardWallets.isPending ||
-              transactions.length === 0 ||
-              (transactions.length > 0 && activeTransactionQuery.isPending)) &&
+            {shouldDisplaySkeleton &&
               Array.from({ length: 4 }).map((_, index) => (
                 <TransactionTile.Skeleton key={index} />
               ))}
 
-            {transactions.length > 0 &&
-              activeTransactionQuery.data &&
+            {shouldDisplayTransactionData &&
               activeTransactionQuery.data.map((t) => (
                 <TransactionTile key={t.id} transaction={t} />
               ))}
 
-            {/* TODO: add no transaction banner */}
+            {shouldDisplayEmptyBanner && <Banner.NoTransactionsFound />}
           </div>
         </div>
       </Page>
@@ -75,6 +86,8 @@ const Dashboard = () => {
           currency={activeWallet.currency}
         />
       )}
+
+      <CreateWalletModal />
     </>
   )
 }
