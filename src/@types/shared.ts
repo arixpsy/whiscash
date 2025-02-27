@@ -1,7 +1,7 @@
 import { Category, SpendingPeriod } from '@/utils/enum'
 import { z } from 'zod'
 
-const TransactionSchema = z.object({
+export const TransactionSchema = z.object({
   id: z.number(),
   walletId: z.number(),
   amount: z.string(),
@@ -44,8 +44,7 @@ export const GetDashboardWalletsRequest = z.object({
 export const GetDashboardWalletsResponse = z.array(
   WalletSchema.merge(
     z.object({
-      spendingPeriodTotal: z.number(),
-      transactions: z.array(TransactionSchema),
+      spendingPeriodTotal: z.string(),
     })
   )
 )
