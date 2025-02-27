@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import {
   CreateTransactionRequest,
   GetTransactionRequest,
@@ -26,8 +26,21 @@ const useTransaction = () => {
       ),
     })
 
+  const useGetDashboardWalletTransactionsQuery = (
+    reqs: Array<GetTransactionRequest>
+  ) =>
+    useQueries({
+      queries: reqs.map((req) => ({
+        queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(req.walletId),
+        queryFn: whiscashApi.getWalletTransactions(
+          createRequestConfig({ params: req })
+        ),
+      })),
+    })
+
   return {
     useCreateTransactionMutation,
+    useGetDashboardWalletTransactionsQuery,
     useGetWalletTransactionsQuery,
   }
 }

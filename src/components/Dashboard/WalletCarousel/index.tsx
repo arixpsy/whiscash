@@ -28,13 +28,7 @@ const WalletCarousel = (props: WalletCarouselProps) => {
 
         {wallets.map((w) => (
           <SwiperSlide key={w.id} className="grid place-items-center">
-            <WalletCard
-              name={w.name}
-              country={w.country}
-              currency={w.currency}
-              spendingPeriod={w.spendingPeriod}
-              spendingPeriodTotal={w.spendingPeriodTotal}
-            />
+            <WalletCard wallet={w} />
           </SwiperSlide>
         ))}
       </Swiper>

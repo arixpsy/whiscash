@@ -43,7 +43,7 @@ const getWallets =
 const getWalletTransactions =
   (config: Promise<AxiosRequestConfig>) =>
   async (): Promise<GetTransactionsResponse> =>
-    whiscashApi.get('/transactions', await config).then((res) => res.data)
+    whiscashApi.get('/transaction', await config).then((res) => res.data)
 
 export default {
   createTransaction,

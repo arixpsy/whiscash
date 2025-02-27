@@ -1,25 +1,21 @@
+import { WalletWithSpendingPeriodTotal } from '@/@types/shared'
 import { SPENDING_PERIOD_DASHBOARD_LABELS } from '@/utils/constants/spendingPeriod'
-import { SpendingPeriod } from '@/utils/enum'
 
 type WalletCardProps = {
-  name: string
-  country: string
-  currency: string
-  spendingPeriod: SpendingPeriod
-  spendingPeriodTotal: string
+  wallet: WalletWithSpendingPeriodTotal
 }
 
 const WalletCard = (props: WalletCardProps) => {
-  const { name, country, currency, spendingPeriod, spendingPeriodTotal } = props
+  const { wallet } = props
 
   return (
-    <div className="relative z-20 mb-10 w-[250px] h-[140px] rounded-2xl bg-white p-3 shadow-lg grid">
+    <div className="relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg">
       <div className="flex items-center justify-between self-start">
-        <p className="truncate text-xl">{name}</p>
+        <p className="truncate text-xl">{wallet.name}</p>
 
         <div className="grid h-9 w-11 shrink-0 place-items-center rounded-lg bg-gray-200">
           <div
-            className={`flag:${country}`}
+            className={`flag:${wallet.country}`}
             style={
               {
                 '--CountryFlagIcon-height': '21.33px',
@@ -32,24 +28,24 @@ const WalletCard = (props: WalletCardProps) => {
       <div className="flex items-end justify-between self-end">
         <div>
           <p className="mb-1 text-xs text-gray-500">
-            {SPENDING_PERIOD_DASHBOARD_LABELS[spendingPeriod]}
+            {SPENDING_PERIOD_DASHBOARD_LABELS[wallet.spendingPeriod]}
           </p>
           <p className="text-2xl font-bold">
-            {new Intl.NumberFormat(`en-${country}`, {
+            {new Intl.NumberFormat(`en-${wallet.country}`, {
               style: 'currency',
-              currency,
-            }).format(parseFloat(spendingPeriodTotal))}
+              currency: wallet.currency,
+            }).format(parseFloat(wallet.spendingPeriodTotal))}
           </p>
         </div>
 
-        <p>{currency}</p>
+        <p>{wallet.currency}</p>
       </div>
     </div>
   )
 }
 
 const Skeleton = () => (
-  <div className="relative z-20 mb-10 w-[250px] h-[140px] grid rounded-2xl bg-white p-3 shadow-lg">
+  <div className="relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg">
     <div className="flex items-center justify-between self-start">
       <div className="h-7 w-30 animate-pulse rounded-lg bg-gray-200" />
       <div className="grid h-9 w-11 shrink-0 animate-pulse place-items-center rounded-lg bg-gray-200" />
