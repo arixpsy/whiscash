@@ -6,7 +6,7 @@ import { IoClose } from 'react-icons/io5'
 import {
   CreateTransactionRequest,
   CreateTransactionRequestSchema,
-} from '@/@types/transaction'
+} from '@/@types/shared'
 import { FormField, Modal } from '@/components/commons'
 import TransactionAmountInput from './TransactionAmountInput'
 
