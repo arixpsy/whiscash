@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
-import { FaHome, FaPlus } from 'react-icons/fa'
+import { FaHome } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa6'
+import { LuDot } from 'react-icons/lu'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { FeedbackButton } from '@/components/commons'
+import useWallet from '@/hooks/useWallet'
 import { Route } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 
@@ -11,6 +14,10 @@ const ActionBar = () => {
   const [, setSearchParams] = useSearchParams()
   const { pathname } = useLocation()
   const navigate = useNavigate()
+  const { useGetDashboardWalletsQuery } = useWallet()
+  const getDashboardWallets = useGetDashboardWalletsQuery({
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  })
 
   const navItems = useMemo(
     () => [
@@ -36,7 +43,10 @@ const ActionBar = () => {
       return
     }
 
-    setSearchParams({ create: 'transaction' })
+    if (!getDashboardWallets.data) return
+
+    if (getDashboardWallets.data.length > 0)
+      setSearchParams({ create: 'transaction' })
   }
 
   return (
@@ -73,7 +83,21 @@ const ActionBar = () => {
           className="bg-primary-500 rounded-full p-3 text-white shadow-2xl"
           onClick={handleClickAddButton}
         >
-          <FaPlus className="h-6 w-6" />
+          {getDashboardWallets.isPending ? (
+            <div className="grid-stack h-6 w-6 place-items-center">
+              <LuDot className="mr-[9px] animate-bounce" />
+              <LuDot
+                className="animate-bounce"
+                style={{ animationDelay: '100ms' }}
+              />
+              <LuDot
+                className="ml-[9px] animate-bounce"
+                style={{ animationDelay: '200ms' }}
+              />
+            </div>
+          ) : (
+            <FaPlus className="h-6 w-6" />
+          )}
         </FeedbackButton>
       </div>
     </div>
