@@ -52,8 +52,6 @@ const Dashboard = () => {
     <>
       <Page className="flex flex-col">
         <Header>
-          {/* TODO: add no wallet banner */}
-          {/* TODO: add update wallet modal params */}
           <WalletCarousel
             activeIndex={activeIndex}
             isLoading={getDashboardWallets.isPending}

@@ -1,5 +1,6 @@
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
 import { GetDashboardWalletsResponse } from '@/@types/shared'
+import { Banner } from '@/components/commons'
 import { cn } from '@/utils/functions'
 import WalletCard from './WalletCard'
 import 'swiper/swiper-bundle.css'
@@ -23,6 +24,12 @@ const WalletCarousel = (props: WalletCarouselProps) => {
         {isLoading && (
           <SwiperSlide className="grid place-items-center">
             <WalletCard.Skeleton />
+          </SwiperSlide>
+        )}
+
+        {!isLoading && wallets.length === 0 && (
+          <SwiperSlide className="grid place-items-center">
+            <Banner.AddWalletCard />
           </SwiperSlide>
         )}
 
