@@ -4,46 +4,44 @@ import { Control, useController } from 'react-hook-form'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
-import { CreateWalletRequest } from '@/@types/shared'
+import { CreateTransactionRequest } from '@/@types/shared'
 import { Banner, Modal, SearchBar } from '@/components/commons'
 import WalletTile from '@/components/Wallets/WalletTile'
 import useWallet from '@/hooks/useWallet'
 
 type WalletSelectorProps = {
-  currency?: string
-  control: Control<CreateWalletRequest>
+  control: Control<CreateTransactionRequest>
 }
 
 const WalletSelector = (props: WalletSelectorProps) => {
-  const { control, currency } = props
+  const { control } = props
   const [searchParam, setSearchParams] = useSearchParams()
-  const { useGetMainWalletsQuery } = useWallet()
+  const { useGetWalletsQuery } = useWallet()
   const [searchPhrase, setSearchPhrase] = useState('')
   const [debounceSearchPhrase] = useDebounce(searchPhrase, 250)
-  const getWallets = useGetMainWalletsQuery({
+  const getWallets = useGetWalletsQuery({
     searchPhrase: debounceSearchPhrase,
-    currency,
   })
-  const { field: subWalletOfField } = useController({
-    name: 'subWalletOf',
+  const { field: walletIdField } = useController({
+    name: 'walletId',
     control,
   })
 
   const wallets = useMemo(() => getWallets.data || [], [getWallets.data])
   const selectedWallet = useMemo(
-    () => wallets.find((wallet) => wallet.id === subWalletOfField.value),
-    [subWalletOfField.value, wallets]
+    () => wallets.find((wallet) => wallet.id === walletIdField.value),
+    [walletIdField.value, wallets]
   )
 
   const handleOpenSelector = () => {
-    searchParam.append('field', 'subWalletOf')
+    searchParam.append('field', 'walletId')
     setSearchParams(searchParam)
   }
 
   const handleCloseSelector = () => window.history.back()
 
   const handleClickOption = (id: number) => {
-    subWalletOfField.onChange(id)
+    walletIdField.onChange(id)
     handleCloseSelector()
   }
 
@@ -65,7 +63,8 @@ const WalletSelector = (props: WalletSelectorProps) => {
         onClick={handleOpenSelector}
         className="w-full rounded-lg bg-gray-100 px-3 py-2"
       >
-        {subWalletOfField.value ? (
+        {/* TODO: might need a loader */}
+        {walletIdField.value && !getWallets.isPending ? (
           <div className="flex items-center justify-center gap-3">
             <p>{selectedWallet?.name}</p>
           </div>
@@ -74,7 +73,7 @@ const WalletSelector = (props: WalletSelectorProps) => {
         )}
       </button>
 
-      <Modal portalKey="field" paramKey="field" paramValue="subWalletOf">
+      <Modal portalKey="field" paramKey="field" paramValue="walletId">
         <motion.div
           className="grid h-full w-full max-w-md grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
           initial={{ translateY: '100%' }}
@@ -88,9 +87,7 @@ const WalletSelector = (props: WalletSelectorProps) => {
               <TbArrowBackUp className="h-6 w-6" />
             </button>
 
-            <div className="text-center text-lg font-bold">
-              Select Main Wallet
-            </div>
+            <div className="text-center text-lg font-bold">Select Wallet</div>
 
             <SearchBar className="my-3" setValue={setSearchPhrase} />
           </div>
