@@ -39,14 +39,14 @@ const Dashboard = () => {
   // display states
   const shouldDisplaySkeleton =
     getDashboardWallets.isPending ||
-    transactions.length === 0 ||
     (transactions.length > 0 && activeTransactionQuery.isPending)
   const shouldDisplayTransactionData =
     transactions.length > 0 && activeTransactionQuery.data
   const shouldDisplayEmptyBanner =
-    transactions.length > 0 &&
-    activeTransactionQuery.data &&
-    activeTransactionQuery.data.length === 0
+    (transactions.length > 0 &&
+      activeTransactionQuery.data &&
+      activeTransactionQuery.data.length === 0) ||
+    (getDashboardWallets.data && getDashboardWallets.data.length === 0)
 
   return (
     <>

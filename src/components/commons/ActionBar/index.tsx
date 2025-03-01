@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
-import { LuDot } from 'react-icons/lu'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
@@ -80,18 +79,18 @@ const ActionBar = () => {
 
         <FeedbackButton
           type="button"
-          className="bg-primary-500 rounded-full p-3 text-white shadow-2xl"
+          className="bg-primary-500 h-12 w-12 rounded-full p-3 text-white shadow-2xl"
           onClick={handleClickAddButton}
         >
           {getDashboardWallets.isPending ? (
-            <div className="grid-stack h-6 w-6 place-items-center">
-              <LuDot className="mr-[9px] animate-bounce" />
-              <LuDot
-                className="animate-bounce"
+            <div className="mx-auto flex h-6 w-5 items-center justify-between">
+              <div className="h-[5px] w-[5px] animate-bounce justify-self-start rounded-full bg-white" />
+              <div
+                className="h-[5px] w-[5px] animate-bounce rounded-full bg-white"
                 style={{ animationDelay: '100ms' }}
               />
-              <LuDot
-                className="ml-[9px] animate-bounce"
+              <div
+                className="h-[5px] w-[5px] animate-bounce justify-self-end rounded-full bg-white"
                 style={{ animationDelay: '200ms' }}
               />
             </div>
