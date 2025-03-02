@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion, TargetAndTransition } from 'motion/react'
 import { useForm } from 'react-hook-form'
 import { FaFileInvoiceDollar } from 'react-icons/fa6'
@@ -7,8 +8,11 @@ import {
   CreateTransactionRequest,
   CreateTransactionRequestSchema,
 } from '@/@types/shared'
-import { FormField, Modal } from '@/components/commons'
+import { FormField, Loader, Modal } from '@/components/commons'
 import TransactionAmountInput from './TransactionAmountInput'
+import useTransaction from '@/hooks/useTransaction'
+import { cn } from '@/utils/functions'
+import WalletSelector from './WalletSelector'
 
 type CreateTransactionModalProps = {
   walletId: number
@@ -17,7 +21,13 @@ type CreateTransactionModalProps = {
 
 const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   const { walletId, currency } = props
+  const queryClient = useQueryClient()
+  const { useCreateTransactionMutation } = useTransaction()
+  const createTransaction = useCreateTransactionMutation(
+    createTransactionSuccessCB
+  )
   const {
+    control,
     formState: { errors },
     handleSubmit,
     register,
@@ -27,16 +37,18 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   } = useForm({
     defaultValues: {
       amount: 1,
+      category: undefined,
+      description: '',
+      paidAt: undefined,
       walletId,
     },
     resolver: zodResolver(CreateTransactionRequestSchema),
   })
+  const formWalletId = watch('walletId')
 
   const handleFormSubmit = handleSubmit((data: CreateTransactionRequest) => {
-    // TODO:
-    console.log(data)
-    // if (createWallet.isPending) return
-    // createWallet.mutate(data)
+    if (createTransaction.isPending) return
+    createTransaction.mutate(data)
   })
 
   const handleCloseModal = () => window.history.back()
@@ -46,6 +58,16 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   }: TargetAndTransition) => {
     if (translateY === '0%') setFocus('amount')
     if (translateY === '100%') reset()
+  }
+
+  function createTransactionSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'transactions', formWalletId.toString()],
+    })
+    queryClient.setQueryData(['whiscash', 'wallets', 'dashboard'], () => {
+      // TODO: update dashboard wallet amount if paidAt falls under period
+    })
+    handleCloseModal()
   }
 
   return (
@@ -68,15 +90,17 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
             className="grid-stack place-items-center font-bold"
             onClick={handleFormSubmit}
           >
-            {/* TODO: */}
-            {/* <Loader
+            <Loader
               size="xs"
               color="inherit"
-              className={cn('invisible')}
-            /> */}
-            <p>Add</p>
+              className={cn(!createTransaction.isPending && 'invisible')}
+            />
+            <p className={cn(createTransaction.isPending && 'invisible')}>
+              Add
+            </p>
           </button>
         </div>
+
         <form onSubmit={handleFormSubmit} className="grid place-items-center">
           <FaFileInvoiceDollar className="text-primary-300 mt-9 mb-3 h-16 w-16" />
 
@@ -88,12 +112,6 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
           />
 
           <div className="mt-6 grid w-full gap-4">
-            {/* TODO: */}
-            <FormField
-              label="Category"
-              hasError={!!errors.category?.message}
-            ></FormField>
-
             <FormField label="Description" isOptional>
               <input
                 {...register('description')}
@@ -102,8 +120,13 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
               />
             </FormField>
 
-            {/* TODO: */}
             <FormField
+              label="Category"
+              hasError={!!errors.category?.message}
+            ></FormField>
+
+            {/* TODO: */}
+            {/* <FormField
               label="Payment made on"
               hasError={!!errors.paidAt?.message}
             >
@@ -113,16 +136,10 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
               >
                 Select
               </button>
-            </FormField>
+            </FormField> */}
 
-            {/* TODO: */}
             <FormField label="Wallet" hasError={!!errors.walletId?.message}>
-              <button
-                type="button"
-                className="w-full rounded-lg bg-gray-100 px-3 py-2"
-              >
-                Select
-              </button>
+              <WalletSelector control={control} />
             </FormField>
           </div>
         </form>

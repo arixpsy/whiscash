@@ -80,6 +80,7 @@ const Dashboard = () => {
 
       {activeWallet && (
         <CreateTransactionModal
+          key={activeWallet.id}
           walletId={activeWallet.id}
           currency={activeWallet.currency}
         />
