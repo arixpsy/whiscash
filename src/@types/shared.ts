@@ -4,7 +4,7 @@ import { z } from 'zod'
 const TransactionSchema = z.object({
   id: z.number(),
   walletId: z.number(),
-  amount: z.string(),
+  amount: z.number(),
   category: z.nativeEnum(Category),
   description: z.string(),
   paidAt: z.string(),
