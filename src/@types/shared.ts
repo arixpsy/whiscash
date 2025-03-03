@@ -46,7 +46,7 @@ export const CreateTransactionRequestSchema = z.object({
   walletId: z.number(),
   amount: z.number(),
   category: z.nativeEnum(Category),
-  description: z.string(),
+  description: z.string().min(1),
   paidAt: z.string().optional(),
 })
 

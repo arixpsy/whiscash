@@ -11,6 +11,7 @@ import {
 import { FormField, Loader, Modal } from '@/components/commons'
 import TransactionAmountInput from './TransactionAmountInput'
 import useTransaction from '@/hooks/useTransaction'
+import { Category } from '@/utils/enum'
 import { cn } from '@/utils/functions'
 import WalletSelector from './WalletSelector'
 
@@ -73,7 +74,7 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   return (
     <Modal paramKey="create" paramValue="transaction">
       <motion.div
-        className="h-full w-full max-w-md self-end rounded-t-2xl bg-white p-3"
+        className="h-full w-full rounded-t-2xl bg-white p-3"
         initial={{ translateY: '100%' }}
         animate={{ translateY: '0%' }}
         exit={{ translateY: '100%' }}
@@ -112,7 +113,10 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
           />
 
           <div className="mt-6 grid w-full gap-4">
-            <FormField label="Description" isOptional>
+            <FormField
+              label="Description"
+              hasError={!!errors.description?.message}
+            >
               <input
                 {...register('description')}
                 className="w-full rounded-lg bg-gray-100 px-3 py-2 outline-none"
@@ -120,10 +124,34 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
               />
             </FormField>
 
-            <FormField
-              label="Category"
-              hasError={!!errors.category?.message}
-            ></FormField>
+            <FormField label="Category" hasError={!!errors.category?.message}>
+              <select
+                {...register('category')}
+                className="w-full rounded-lg bg-gray-100 px-3 py-2 outline-none"
+              >
+                {Object.values(Category).map((c) => (
+                  <option value={c}>{c.toLowerCase()}</option>
+                ))}
+              </select>
+
+              {/* <div className="flex gap-2 overflow-x-auto pb-2">
+                {Object.values(Category).map((c) => {
+                  const CategoryIcon = CATEGORY_ICON[c]
+
+                  return (
+                    <div className='flex gap-2 bg-gray-100 py-1 px-3 rounded-full items-center'>
+                        {CategoryIcon && (
+                          <CategoryIcon className="h-5 w-5" />
+                        )}
+                      <p className="font-bold capitalize ">
+                        {c.toLowerCase()}
+                      </p>
+                      
+                    </div>
+                  )
+                })}
+              </div> */}
+            </FormField>
 
             {/* TODO: */}
             {/* <FormField
