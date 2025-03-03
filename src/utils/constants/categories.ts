@@ -1,14 +1,16 @@
 import { AiFillInsurance } from 'react-icons/ai'
+import { BiHappyBeaming, BiSolidMoviePlay } from 'react-icons/bi'
 import { FaBriefcaseMedical, FaCar } from 'react-icons/fa'
-import { FaBagShopping, FaPlaneDeparture } from 'react-icons/fa6'
+import { FaBagShopping, FaGamepad, FaPlaneDeparture } from 'react-icons/fa6'
 import { GrStatusUnknown } from 'react-icons/gr'
 import { MdFastfood, MdPets, MdWork } from 'react-icons/md'
-import { IoFitness, IoGift } from 'react-icons/io5'
+import { IoFitness, IoGift, IoHammer } from 'react-icons/io5'
 
 export const Category = {
   Entertainment: 'ENTERTAINMENT',
   Fitness: 'FITNESS',
   Food: 'FOOD',
+  Games: 'GAMES',
   Gifts: 'GIFTS',
   Hobbies: 'HOBBIES',
   Insurance: 'INSURANCE',
@@ -25,11 +27,12 @@ export const Category = {
 export type Category = (typeof Category)[keyof typeof Category]
 
 export const CATEGORY_ICON = {
-  [Category.Entertainment]: undefined,
+  [Category.Entertainment]: BiSolidMoviePlay,
   [Category.Fitness]: IoFitness,
   [Category.Food]: MdFastfood,
+  [Category.Games]: FaGamepad,
   [Category.Gifts]: IoGift,
-  [Category.Hobbies]: undefined,
+  [Category.Hobbies]: BiHappyBeaming,
   [Category.Insurance]: AiFillInsurance,
   [Category.Medical]: FaBriefcaseMedical,
   [Category.Others]: GrStatusUnknown,
@@ -37,6 +40,6 @@ export const CATEGORY_ICON = {
   [Category.Shopping]: FaBagShopping,
   [Category.Transport]: FaCar,
   [Category.Travel]: FaPlaneDeparture,
-  [Category.Utilities]: undefined,
+  [Category.Utilities]: IoHammer,
   [Category.Work]: MdWork,
 }
