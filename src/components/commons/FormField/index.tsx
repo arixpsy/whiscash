@@ -14,7 +14,7 @@ const FormField = (props: FormFieldProps) => {
   const { children, hasError, isOptional, label, className } = props
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('grid w-full', className)}>
       <div className="mb-2 flex justify-between">
         <label
           className={cn(

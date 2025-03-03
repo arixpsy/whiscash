@@ -35,13 +35,10 @@ const Modal_ = (props: {
   const isAnimationLocked = useRef(false)
 
   return createPortal(
-    <div className="grid-stack fixed inset-0 place-items-end justify-items-center text-gray-700">
+    <div className="grid-stack fixed inset-0 mx-auto max-w-md place-items-end justify-items-center text-gray-700">
       <motion.div
         onClick={() => !isAnimationLocked.current && window.history.back()}
-        className={cn(
-          'h-full w-full max-w-md',
-          !withoutBackground && 'bg-black'
-        )}
+        className={cn('h-full w-full', !withoutBackground && 'bg-black')}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
         exit={{ opacity: 0 }}
