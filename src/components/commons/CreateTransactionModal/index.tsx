@@ -7,12 +7,14 @@ import { IoClose } from 'react-icons/io5'
 import {
   CreateTransactionRequest,
   CreateTransactionRequestSchema,
+  GetDashboardWalletsResponse,
+  Transaction,
 } from '@/@types/shared'
 import { FormField, Loader, Modal } from '@/components/commons'
-import TransactionAmountInput from './TransactionAmountInput'
 import useTransaction from '@/hooks/useTransaction'
-import { Category } from '@/utils/enum'
 import { cn } from '@/utils/functions'
+import CategorySelector from './CategorySelector'
+import TransactionAmountInput from './TransactionAmountInput'
 import WalletSelector from './WalletSelector'
 
 type CreateTransactionModalProps = {
@@ -61,13 +63,19 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
     if (translateY === '100%') reset()
   }
 
-  function createTransactionSuccessCB() {
+  function createTransactionSuccessCB(data: Transaction) {
     queryClient.invalidateQueries({
       queryKey: ['whiscash', 'transactions', formWalletId.toString()],
     })
-    queryClient.setQueryData(['whiscash', 'wallets', 'dashboard'], () => {
-      // TODO: update dashboard wallet amount if paidAt falls under period
-    })
+    queryClient.setQueryData(
+      ['whiscash', 'wallets', 'dashboard'],
+      (current: GetDashboardWalletsResponse) => {
+        // TODO: update dashboard wallet amount if paidAt falls under period
+        const walletIndex = current.findIndex((w) => w.id === data.walletId)
+        current[walletIndex].spendingPeriodTotal += data.amount
+        return current
+      }
+    )
     handleCloseModal()
   }
 
@@ -125,32 +133,7 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
             </FormField>
 
             <FormField label="Category" hasError={!!errors.category?.message}>
-              <select
-                {...register('category')}
-                className="w-full rounded-lg bg-gray-100 px-3 py-2 outline-none"
-              >
-                {Object.values(Category).map((c) => (
-                  <option value={c}>{c.toLowerCase()}</option>
-                ))}
-              </select>
-
-              {/* <div className="flex gap-2 overflow-x-auto pb-2">
-                {Object.values(Category).map((c) => {
-                  const CategoryIcon = CATEGORY_ICON[c]
-
-                  return (
-                    <div className='flex gap-2 bg-gray-100 py-1 px-3 rounded-full items-center'>
-                        {CategoryIcon && (
-                          <CategoryIcon className="h-5 w-5" />
-                        )}
-                      <p className="font-bold capitalize ">
-                        {c.toLowerCase()}
-                      </p>
-                      
-                    </div>
-                  )
-                })}
-              </div> */}
+              <CategorySelector control={control} />
             </FormField>
 
             {/* TODO: */}

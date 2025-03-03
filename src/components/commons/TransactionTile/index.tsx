@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { createElement } from 'react'
 import { TransactionWithCurrency } from '@/@types/shared'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency } from '@/utils/functions'
@@ -8,7 +9,6 @@ type TransactionTileProps = {
 }
 const TransactionTile = (props: TransactionTileProps) => {
   const { transaction } = props
-  const CategoryIcon = CATEGORY_ICON[transaction.category]
 
   return (
     <motion.div
@@ -18,7 +18,9 @@ const TransactionTile = (props: TransactionTileProps) => {
       exit={{ opacity: '0%' }}
     >
       <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
-        {CategoryIcon && <CategoryIcon className="text-primary-500 h-6 w-6" />}
+        {createElement(CATEGORY_ICON[transaction.category], {
+          className: 'text-primary-500 h-6 w-6',
+        })}
       </div>
 
       <div className="flex w-full items-center justify-between">

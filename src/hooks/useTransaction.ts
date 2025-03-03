@@ -1,8 +1,5 @@
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
-import {
-  CreateTransactionRequest,
-  GetTransactionRequest,
-} from '@/@types/shared'
+import { GetTransactionRequest, Transaction } from '@/@types/shared'
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -11,7 +8,7 @@ const useTransaction = () => {
   const { createRequestConfig } = useToken()
 
   const useCreateTransactionMutation = (
-    onSuccess: (data: CreateTransactionRequest) => void
+    onSuccess: (data: Transaction) => void
   ) =>
     useMutation({
       mutationFn: whiscashApi.createTransaction(createRequestConfig()),

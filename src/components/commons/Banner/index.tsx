@@ -8,6 +8,9 @@ const Banner = () => {
   return <div />
 }
 
+// TODO: country currency
+// TODO: category
+
 const AddWalletCard = () => {
   const [, setSearchParams] = useSearchParams()
 

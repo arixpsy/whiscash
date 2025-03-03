@@ -5,6 +5,7 @@ import {
   GetDashboardWalletsResponse,
   GetTransactionsResponse,
   GetWalletsResponse,
+  Transaction,
   Wallet,
 } from '@/@types/shared'
 
@@ -17,7 +18,7 @@ const whiscashApi = axios.create({
 
 const createTransaction =
   (config: Promise<AxiosRequestConfig>) =>
-  async (data: CreateTransactionRequest) =>
+  async (data: CreateTransactionRequest): Promise<Transaction> =>
     whiscashApi.post('/transaction', data, await config).then((res) => res.data)
 
 const createWallet =
