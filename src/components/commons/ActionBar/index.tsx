@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
 import { RiCalendarEventFill } from 'react-icons/ri'
@@ -36,7 +36,7 @@ const ActionBar = () => {
     []
   )
 
-  const handleClickAddButton = () => {
+  const handleClickAddButton = useCallback(() => {
     if (pathname === Route.WALLETS) {
       setSearchParams({ create: 'wallet' })
       return
@@ -46,7 +46,7 @@ const ActionBar = () => {
 
     if (getDashboardWallets.data.length > 0)
       setSearchParams({ create: 'transaction' })
-  }
+  }, [pathname, setSearchParams, getDashboardWallets.data])
 
   return (
     <div className="fixed right-0 bottom-6 left-0 grid place-items-center">
