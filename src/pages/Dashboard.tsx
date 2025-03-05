@@ -60,21 +60,19 @@ const Dashboard = () => {
           />
         </Header>
 
-        <div className="px-3 pb-28">
-          <h1 className="mb-3 text-2xl font-bold">Recent Transactions</h1>
-          <div className="grid gap-4">
-            {shouldDisplaySkeleton &&
-              Array.from({ length: 4 }).map((_, index) => (
-                <TransactionTile.Skeleton key={index} />
-              ))}
+        <div className="pb-28">
+          <h1 className="mx-3 mb-2 text-2xl font-bold">Recent Transactions</h1>
+          {shouldDisplaySkeleton &&
+            Array.from({ length: 4 }).map((_, index) => (
+              <TransactionTile.Skeleton key={index} />
+            ))}
 
-            {shouldDisplayTransactionData &&
-              activeTransactionQuery.data.map((t) => (
-                <TransactionTile key={t.id} transaction={t} />
-              ))}
+          {shouldDisplayTransactionData &&
+            activeTransactionQuery.data.map((t) => (
+              <TransactionTile key={t.id} transaction={t} />
+            ))}
 
-            {shouldDisplayEmptyBanner && <Banner.NoTransactionsFound />}
-          </div>
+          {shouldDisplayEmptyBanner && <Banner.NoTransactionsFound />}
         </div>
       </Page>
 

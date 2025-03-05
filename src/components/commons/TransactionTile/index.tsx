@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { motion } from 'motion/react'
 import { createElement } from 'react'
 import { TransactionWithCurrency } from '@/@types/shared'
+import { SwipeActionContainer } from '@/components/commons'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency } from '@/utils/functions'
 
@@ -13,45 +14,50 @@ const TransactionTile = (props: TransactionTileProps) => {
 
   return (
     <motion.div
-      className="grid grid-cols-[auto_1fr] gap-3"
       initial={{ opacity: '0%' }}
       animate={{ opacity: '100%' }}
       exit={{ opacity: '0%' }}
+      onClick={() => console.log('click')}
     >
-      <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
-        {createElement(CATEGORY_ICON[transaction.category], {
-          className: 'text-primary-500 h-6 w-6',
-        })}
-      </div>
-
-      <div className="flex w-full items-center justify-between">
-        <div>
-          <p className="font-bold capitalize">
-            {transaction.category.toLowerCase()}
-          </p>
-          <p className="text-sm text-gray-500">{transaction.description}</p>
+      <SwipeActionContainer
+        className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2"
+        onTrigger={() => console.log('swipe trigger')}
+      >
+        <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
+          {createElement(CATEGORY_ICON[transaction.category], {
+            className: 'text-primary-500 h-6 w-6',
+          })}
         </div>
 
-        <div className="text-right">
-          <p className="text-xl">
-            {amountWithCurrency(
-              transaction.amount,
-              transaction.country,
-              transaction.currency
-            )}
-          </p>
-          <p className="text-xs text-gray-500 capitalize">
-            {DateTime.fromISO(transaction.paidAt).toRelativeCalendar()}
-          </p>
+        <div className="flex w-full items-center justify-between">
+          <div>
+            <p className="font-bold capitalize">
+              {transaction.category.toLowerCase()}
+            </p>
+            <p className="text-sm text-gray-500">{transaction.description}</p>
+          </div>
+
+          <div className="text-right">
+            <p className="text-xl">
+              {amountWithCurrency(
+                transaction.amount,
+                transaction.country,
+                transaction.currency
+              )}
+            </p>
+            <p className="text-xs text-gray-500 capitalize">
+              {DateTime.fromISO(transaction.paidAt).toRelativeCalendar()}
+            </p>
+          </div>
         </div>
-      </div>
+      </SwipeActionContainer>
     </motion.div>
   )
 }
 
 const Skeleton = () => (
   <motion.div
-    className="grid grid-cols-[auto_1fr] gap-3"
+    className="grid grid-cols-[auto_1fr] gap-3 p-2"
     initial={{ opacity: '0%' }}
     animate={{ opacity: '100%' }}
     exit={{ opacity: '0%' }}
@@ -64,7 +70,10 @@ const Skeleton = () => (
         <div className="h-5 w-18 animate-pulse rounded-lg bg-gray-200" />
       </div>
 
-      <div className="h-7 w-18 animate-pulse rounded-lg bg-gray-200" />
+      <div className="grid justify-items-end space-y-1">
+        <div className="h-7 w-18 animate-pulse rounded-lg bg-gray-200" />
+        <div className="h-4 w-14 animate-pulse rounded-sm bg-gray-200" />
+      </div>
     </div>
   </motion.div>
 )
