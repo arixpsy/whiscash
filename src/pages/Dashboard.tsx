@@ -19,7 +19,7 @@ const Dashboard = () => {
   })
   const wallets = getDashboardWallets.data || []
   const transactions = useGetDashboardWalletTransactionsQuery(
-    wallets.map(({ id }) => ({ walletId: id.toString() }))
+    wallets.map(({ id }) => ({ walletId: id.toString(), limit: '5' }))
   )
   const [activeIndex, setActiveIndex] = useState<number>(0)
 
