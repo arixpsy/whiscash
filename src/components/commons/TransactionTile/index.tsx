@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import { motion } from 'motion/react'
 import { createElement } from 'react'
 import { TransactionWithCurrency } from '@/@types/shared'
@@ -31,13 +32,18 @@ const TransactionTile = (props: TransactionTileProps) => {
           <p className="text-sm text-gray-500">{transaction.description}</p>
         </div>
 
-        <p className="text-xl">
-          {amountWithCurrency(
-            transaction.amount,
-            transaction.country,
-            transaction.currency
-          )}
-        </p>
+        <div className="text-right">
+          <p className="text-xl">
+            {amountWithCurrency(
+              transaction.amount,
+              transaction.country,
+              transaction.currency
+            )}
+          </p>
+          <p className="text-xs text-gray-500 capitalize">
+            {DateTime.fromISO(transaction.paidAt).toRelativeCalendar()}
+          </p>
+        </div>
       </div>
     </motion.div>
   )
