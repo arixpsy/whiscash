@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useSearchParams } from 'react-router'
+import { FaQuestionCircle } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
 import { MdWallet } from 'react-icons/md'
 import { TbReportSearch } from 'react-icons/tb'
@@ -9,7 +10,6 @@ const Banner = () => {
 }
 
 // TODO: country currency
-// TODO: category
 
 const AddWalletCard = () => {
   const [, setSearchParams] = useSearchParams()
@@ -33,6 +33,18 @@ const AddWalletCard = () => {
     </motion.button>
   )
 }
+
+const NoCategoryFound = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="grid place-items-center gap-2 text-sm text-gray-400"
+  >
+    <FaQuestionCircle className="h-16 w-16" />
+    Unable to find category
+  </motion.div>
+)
 
 const NoWalletsFound = () => (
   <motion.div
@@ -59,6 +71,7 @@ const NoTransactionsFound = () => (
 )
 
 Banner.AddWalletCard = AddWalletCard
+Banner.NoCategoryFound = NoCategoryFound
 Banner.NoTransactionsFound = NoTransactionsFound
 Banner.NoWalletsFound = NoWalletsFound
 

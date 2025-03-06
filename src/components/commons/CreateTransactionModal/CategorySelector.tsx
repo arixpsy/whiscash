@@ -1,12 +1,11 @@
 import { motion, TargetAndTransition } from 'motion/react'
 import { createElement, useMemo, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
-import { FaQuestionCircle } from 'react-icons/fa'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import { CreateTransactionRequest } from '@/@types/shared'
-import { Modal, SearchBar } from '@/components/commons'
+import { Banner, Modal, SearchBar } from '@/components/commons'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { Category } from '@/utils/enum'
 
@@ -85,7 +84,7 @@ const CategorySelector = (props: CategorySelectorProps) => {
               <TbArrowBackUp className="h-6 w-6" />
             </button>
 
-            <div className="text-center text-lg font-bold">Select Wallet</div>
+            <div className="text-center text-lg font-bold">Select Category</div>
 
             <SearchBar className="my-3" setValue={setSearchPhrase} />
           </div>
@@ -107,9 +106,8 @@ const CategorySelector = (props: CategorySelectorProps) => {
                 </button>
               ))
             ) : (
-              <div className="flex h-[200px] w-full flex-col items-center justify-center gap-3 text-sm text-gray-500">
-                <FaQuestionCircle className="h-16 w-16 text-gray-500" />
-                Unable to find category
+              <div className="flex h-[200px] w-full items-center justify-center">
+                <Banner.NoCategoryFound />
               </div>
             )}
           </div>
