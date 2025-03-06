@@ -51,7 +51,7 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
 
   const vibrate = () => {
     if (!('vibrate' in navigator)) return
-    navigator.vibrate(10)
+    navigator.vibrate(1)
   }
 
   return (

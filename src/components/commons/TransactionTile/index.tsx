@@ -5,12 +5,27 @@ import { TransactionWithCurrency } from '@/@types/shared'
 import { SwipeActionContainer } from '@/components/commons'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency } from '@/utils/functions'
+import useTransaction from '@/hooks/useTransaction'
+import { useQueryClient } from '@tanstack/react-query'
 
 type TransactionTileProps = {
   transaction: TransactionWithCurrency
 }
 const TransactionTile = (props: TransactionTileProps) => {
   const { transaction } = props
+  const queryClient = useQueryClient()
+  const { useDeleteTransactionMutation } = useTransaction()
+  const deleteTransaction = useDeleteTransactionMutation(
+    deleteTransactionSuccessCB
+  )
+
+  const handleDeleteTransaction = () => deleteTransaction.mutate(transaction.id)
+
+  function deleteTransactionSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'transactions', transaction.walletId.toString()],
+    })
+  }
 
   return (
     <motion.div
@@ -21,7 +36,7 @@ const TransactionTile = (props: TransactionTileProps) => {
     >
       <SwipeActionContainer
         className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2"
-        onTrigger={() => console.log('swipe trigger')}
+        onTrigger={handleDeleteTransaction}
       >
         <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
           {createElement(CATEGORY_ICON[transaction.category], {
