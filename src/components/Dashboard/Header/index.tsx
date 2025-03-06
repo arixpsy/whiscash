@@ -1,19 +1,24 @@
-import { SignOutButton, useUser } from '@clerk/clerk-react'
+import { Route } from '@/utils/constants/routes'
+import { useUser } from '@clerk/clerk-react'
 import { PropsWithChildren } from 'react'
 import { FaSearch } from 'react-icons/fa'
+import { useNavigate } from 'react-router'
 
 const Header = (props: PropsWithChildren) => {
   const { children } = props
   const { user } = useUser()
+  const navigate = useNavigate()
+
+  const handleClickProfileImage = () => navigate(Route.SETTINGS)
 
   return (
     <>
       <div className="bg-primary-500 sticky top-0 z-10 flex items-center justify-between p-3 text-white">
         {/* Profile and Search Bar */}
         <div className="flex items-center gap-3">
-          <SignOutButton>
+          <button type="button" onClick={handleClickProfileImage}>
             <img src={user?.imageUrl} className="h-10 w-10 rounded-full" />
-          </SignOutButton>
+          </button>
 
           <div>
             <p className="text-xs">Welcome back,</p>
