@@ -9,8 +9,6 @@ const Banner = () => {
   return <div />
 }
 
-// TODO: country currency
-
 const AddWalletCard = () => {
   const [, setSearchParams] = useSearchParams()
 
@@ -46,6 +44,18 @@ const NoCategoryFound = () => (
   </motion.div>
 )
 
+const NoCountryOrCurrencyFound = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="grid place-items-center gap-2 text-sm text-gray-400"
+  >
+    <FaQuestionCircle className="h-16 w-16" />
+    Unable to find country or currency
+  </motion.div>
+)
+
 const NoWalletsFound = () => (
   <motion.div
     initial={{ opacity: '0%' }}
@@ -72,6 +82,7 @@ const NoTransactionsFound = () => (
 
 Banner.AddWalletCard = AddWalletCard
 Banner.NoCategoryFound = NoCategoryFound
+Banner.NoCountryOrCurrencyFound = NoCountryOrCurrencyFound
 Banner.NoTransactionsFound = NoTransactionsFound
 Banner.NoWalletsFound = NoWalletsFound
 

@@ -2,12 +2,11 @@ import { Currency, getAllISOCodes, getParamByISO } from 'iso-country-currency'
 import { motion, TargetAndTransition } from 'motion/react'
 import { useCallback, useMemo, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
-import { FaQuestionCircle } from 'react-icons/fa'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import { CreateWalletRequest } from '@/@types/shared'
-import { Modal, SearchBar } from '@/components/commons'
+import { Banner, Modal, SearchBar } from '@/components/commons'
 
 type CountryCurrencySelectorProps = {
   control: Control<CreateWalletRequest>
@@ -130,9 +129,8 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
             {options.length > 0 ? (
               options
             ) : (
-              <div className="flex h-[200px] w-full flex-col items-center justify-center gap-3 text-sm text-gray-500">
-                <FaQuestionCircle className="h-16 w-16 text-gray-500" />
-                Unable to find country or currency
+              <div className="flex h-[200px] w-full items-center justify-center">
+                <Banner.NoCountryOrCurrencyFound />
               </div>
             )}
           </div>
