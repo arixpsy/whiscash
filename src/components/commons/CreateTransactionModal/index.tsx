@@ -71,6 +71,7 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
       ['whiscash', 'wallets', 'dashboard'],
       (current: GetDashboardWalletsResponse) => {
         // TODO: update dashboard wallet amount if paidAt falls under period
+        // TODO: update dashboard main wallet amount if paidAt falls under peroid
         const walletIndex = current.findIndex((w) => w.id === data.walletId)
         current[walletIndex].spendingPeriodTotal += data.amount
         return current

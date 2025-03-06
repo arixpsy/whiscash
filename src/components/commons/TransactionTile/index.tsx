@@ -25,6 +25,9 @@ const TransactionTile = (props: TransactionTileProps) => {
     queryClient.invalidateQueries({
       queryKey: ['whiscash', 'transactions', transaction.walletId.toString()],
     })
+    // TODO: update dashboard wallet amount
+    // TODO: update dashboard main wallet amount
+    // TODO: update dashboard main wallet transactions
   }
 
   return (
