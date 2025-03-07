@@ -93,6 +93,7 @@ const CategorySelector = (props: CategorySelectorProps) => {
             {options.length > 0 ? (
               options.map((cat) => (
                 <button
+                  key={cat}
                   className="flex items-center gap-3"
                   type="button"
                   onClick={() => handleClickOption(cat)}
