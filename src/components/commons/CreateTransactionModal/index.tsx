@@ -19,11 +19,12 @@ import WalletSelector from './WalletSelector'
 
 type CreateTransactionModalProps = {
   walletId: number
+  mainWalletId: number | null
   currency: string
 }
 
 const CreateTransactionModal = (props: CreateTransactionModalProps) => {
-  const { walletId, currency } = props
+  const { mainWalletId, walletId, currency } = props
   const queryClient = useQueryClient()
   const { useCreateTransactionMutation } = useTransaction()
   const createTransaction = useCreateTransactionMutation(
@@ -67,13 +68,27 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
     queryClient.invalidateQueries({
       queryKey: ['whiscash', 'transactions', formWalletId.toString()],
     })
+
+    if (mainWalletId) {
+      queryClient.invalidateQueries({
+        queryKey: ['whiscash', 'transactions', mainWalletId.toString()],
+      })
+    }
+
     queryClient.setQueryData(
       ['whiscash', 'wallets', 'dashboard'],
       (current: GetDashboardWalletsResponse) => {
-        // TODO: update dashboard wallet amount if paidAt falls under period
-        // TODO: update dashboard main wallet amount if paidAt falls under peroid
         const walletIndex = current.findIndex((w) => w.id === data.walletId)
+
         current[walletIndex].spendingPeriodTotal += data.amount
+
+        if (mainWalletId) {
+          const mainWalletIndex = current.findIndex(
+            (w) => w.id === mainWalletId
+          )
+          current[mainWalletIndex].spendingPeriodTotal += data.amount
+        }
+
         return current
       }
     )
