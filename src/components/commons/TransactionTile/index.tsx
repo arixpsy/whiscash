@@ -1,7 +1,10 @@
 import { DateTime } from 'luxon'
 import { motion } from 'motion/react'
 import { createElement } from 'react'
-import { TransactionWithCurrency } from '@/@types/shared'
+import {
+  GetDashboardWalletsResponse,
+  TransactionWithWallet,
+} from '@/@types/shared'
 import { SwipeActionContainer } from '@/components/commons'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency } from '@/utils/functions'
@@ -9,7 +12,7 @@ import useTransaction from '@/hooks/useTransaction'
 import { useQueryClient } from '@tanstack/react-query'
 
 type TransactionTileProps = {
-  transaction: TransactionWithCurrency
+  transaction: TransactionWithWallet
 }
 const TransactionTile = (props: TransactionTileProps) => {
   const { transaction } = props
@@ -25,9 +28,36 @@ const TransactionTile = (props: TransactionTileProps) => {
     queryClient.invalidateQueries({
       queryKey: ['whiscash', 'transactions', transaction.walletId.toString()],
     })
-    // TODO: update dashboard wallet amount
-    // TODO: update dashboard main wallet amount
-    // TODO: update dashboard main wallet transactions
+
+    if (transaction?.subWalletOf) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'whiscash',
+          'transactions',
+          transaction.subWalletOf.toString(),
+        ],
+      })
+    }
+
+    queryClient.setQueryData(
+      ['whiscash', 'wallets', 'dashboard'],
+      (current: GetDashboardWalletsResponse) => {
+        const walletIndex = current.findIndex(
+          (w) => w.id === transaction.walletId
+        )
+
+        current[walletIndex].spendingPeriodTotal -= transaction.amount
+
+        if (transaction?.subWalletOf) {
+          const mainWalletIndex = current.findIndex(
+            (w) => w.id === transaction.subWalletOf
+          )
+          current[mainWalletIndex].spendingPeriodTotal -= transaction.amount
+        }
+
+        return current
+      }
+    )
   }
 
   return (
