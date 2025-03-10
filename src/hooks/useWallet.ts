@@ -31,6 +31,13 @@ const useWallet = () => {
       queryFn: whiscashApi.getMainWallets(createRequestConfig({ params: req })),
     })
 
+  const useGetWalletQuery = (walletId?: string) =>
+    useQuery({
+      queryKey: QUERY_KEYS.WALLET(walletId),
+      queryFn: () => whiscashApi.getWallet(createRequestConfig())(walletId),
+      enabled: !!walletId,
+    })
+
   const useGetWalletsQuery = (req: GetWalletsRequest) =>
     useQuery({
       queryKey: QUERY_KEYS.WALLETS(req),
@@ -41,6 +48,7 @@ const useWallet = () => {
     useCreateWalletMutation,
     useGetDashboardWalletsQuery,
     useGetMainWalletsQuery,
+    useGetWalletQuery,
     useGetWalletsQuery,
   }
 }

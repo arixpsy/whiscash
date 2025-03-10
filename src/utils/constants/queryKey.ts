@@ -10,6 +10,7 @@ export const QUERY_KEYS = {
     'main',
     data,
   ],
+  WALLET: (walletId?: string) => [WHISCASH, 'wallets', walletId],
   WALLETS: (data: GetWalletsRequest) => [WHISCASH, 'wallets', data],
   WALLET_TRANSACTIONS: (walletId: string) => [
     WHISCASH,
