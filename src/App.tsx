@@ -4,7 +4,7 @@ import {
   Authenticated,
   MetaThemeColorRouter,
 } from '@/components/commons'
-import { Dashboard, Login, Settings, Wallets } from '@/pages'
+import { Dashboard, Login, Settings, Wallet, Wallets } from '@/pages'
 import { Route as RoutePath } from '@/utils/constants/routes'
 import 'country-flag-icons/3x2/flags.css'
 
@@ -24,6 +24,7 @@ const App = () => {
           </Route>
 
           <Route path={RoutePath.SETTINGS} element={<Settings />} />
+          <Route path={RoutePath.WALLETS + '/:walletId'} element={<Wallet />} />
         </Route>
       </Route>
     </Routes>
