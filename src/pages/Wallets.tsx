@@ -1,8 +1,15 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { useDebounce } from 'use-debounce'
-import { Banner, CreateWalletModal, Page, SearchBar } from '@/components/commons'
+import {
+  Banner,
+  CreateWalletModal,
+  Page,
+  SearchBar,
+} from '@/components/commons'
 import { WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
+import { Route } from '@/utils/constants/routes'
 
 const Wallets = () => {
   const { useGetWalletsQuery } = useWallet()
@@ -39,7 +46,9 @@ const Wallets = () => {
 
           {shouldDisplayWalletsData &&
             wallets.map((wallet) => (
-              <WalletTile key={wallet.id} wallet={wallet} />
+              <Link key={wallet.id} to={`${Route.WALLETS}/${wallet.id}`}>
+                <WalletTile wallet={wallet} />
+              </Link>
             ))}
         </div>
       </Page>
