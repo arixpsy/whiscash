@@ -4,11 +4,13 @@ import {
   Authenticated,
   MetaThemeColorRouter,
 } from '@/components/commons'
+import useNavigationTransition from '@/hooks/useNavigationTransition'
 import { Dashboard, Login, Settings, Wallet, Wallets } from '@/pages'
 import { Route as RoutePath } from '@/utils/constants/routes'
 import 'country-flag-icons/3x2/flags.css'
 
 const App = () => {
+  useNavigationTransition()
   const location = useLocation()
   const backgroundLocation = location.state?.backgroundLocation
 

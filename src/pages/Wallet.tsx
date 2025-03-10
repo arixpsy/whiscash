@@ -1,7 +1,7 @@
 import { Page } from '@/components/commons'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { RiSettings3Fill } from 'react-icons/ri'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import useWallet from '@/hooks/useWallet'
 
 const Wallet = () => {
@@ -9,8 +9,9 @@ const Wallet = () => {
   const { useGetWalletQuery } = useWallet()
   const getWallet = useGetWalletQuery(walletId)
   const wallet = getWallet.data
+  const navigate = useNavigate()
 
-  const handleClickBack = () => window.history.back()
+  const handleClickBack = () => document.startViewTransition(() => navigate(-1))
 
   return (
     <Page className="flex flex-col p-3">
