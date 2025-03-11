@@ -3,6 +3,7 @@ import { GetDashboardWalletsResponse } from '@/@types/shared'
 import { Banner, WalletCard } from '@/components/commons'
 import { cn } from '@/utils/functions'
 import 'swiper/swiper-bundle.css'
+import { SPENDING_PERIOD_DASHBOARD_LABELS } from '@/utils/constants/spendingPeriod'
 
 type WalletCarouselProps = {
   activeIndex: number
@@ -22,7 +23,7 @@ const WalletCarousel = (props: WalletCarouselProps) => {
       <Swiper className="w-full" onSlideChange={handleSlideChange}>
         {isLoading && (
           <SwiperSlide className="grid place-items-center">
-            <WalletCard.Skeleton />
+            <WalletCard.Skeleton className="relative z-20 mb-10 shadow-lg" />
           </SwiperSlide>
         )}
 
@@ -34,7 +35,14 @@ const WalletCarousel = (props: WalletCarouselProps) => {
 
         {wallets.map((w) => (
           <SwiperSlide key={w.id} className="grid place-items-center">
-            <WalletCard wallet={w} />
+            <WalletCard
+              className="relative z-20 mb-10 shadow-lg"
+              amount={w.spendingPeriodTotal}
+              amountSubText={SPENDING_PERIOD_DASHBOARD_LABELS[w.spendingPeriod]}
+              cardTitle={w.name}
+              country={w.country}
+              currency={w.currency}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

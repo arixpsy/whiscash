@@ -1,20 +1,23 @@
 import { HTMLAttributes } from 'react'
 import { motion } from 'motion/react'
-import { WalletWithSpendingPeriodTotal } from '@/@types/shared'
-import { SPENDING_PERIOD_DASHBOARD_LABELS } from '@/utils/constants/spendingPeriod'
 import { amountWithCurrency, cn } from '@/utils/functions'
 
 type WalletCardProps = {
-  wallet: WalletWithSpendingPeriodTotal
+  amount: number
+  amountSubText: string
+  cardTitle: string
+  country: string
+  currency: string
 } & HTMLAttributes<HTMLDivElement>
 
 const WalletCard = (props: WalletCardProps) => {
-  const { wallet, className } = props
+  const { amount, amountSubText, cardTitle, country, currency, className } =
+    props
 
   return (
     <motion.div
       className={cn(
-        'relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg',
+        'grid h-[140px] w-[250px] rounded-2xl bg-white p-3',
         className
       )}
       initial={{ opacity: '0%' }}
@@ -22,11 +25,11 @@ const WalletCard = (props: WalletCardProps) => {
       exit={{ opacity: '0%' }}
     >
       <div className="flex items-center justify-between self-start">
-        <p className="truncate text-xl">{wallet.name}</p>
+        <p className="truncate text-xl">{cardTitle}</p>
 
         <div className="grid h-9 w-11 shrink-0 place-items-center rounded-lg bg-gray-200">
           <div
-            className={`flag:${wallet.country}`}
+            className={`flag:${country}`}
             style={
               {
                 '--CountryFlagIcon-height': '21.33px',
@@ -38,27 +41,24 @@ const WalletCard = (props: WalletCardProps) => {
 
       <div className="flex items-end justify-between self-end">
         <div>
-          <p className="mb-1 text-xs text-gray-500">
-            {SPENDING_PERIOD_DASHBOARD_LABELS[wallet.spendingPeriod]}
-          </p>
+          <p className="mb-1 text-xs text-gray-500">{amountSubText}</p>
           <p className="text-2xl font-bold">
-            {amountWithCurrency(
-              wallet.spendingPeriodTotal,
-              wallet.country,
-              wallet.currency
-            )}
+            {amountWithCurrency(amount, country, currency)}
           </p>
         </div>
 
-        <p>{wallet.currency}</p>
+        <p>{currency}</p>
       </div>
     </motion.div>
   )
 }
 
-const Skeleton = () => (
+const Skeleton = (props: HTMLAttributes<HTMLDivElement>) => (
   <motion.div
-    className="relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg"
+    className={cn(
+      'grid h-[140px] w-[250px] rounded-2xl bg-white p-3',
+      props.className
+    )}
     initial={{ scale: '0%' }}
     animate={{ scale: '100%' }}
     exit={{ scale: '0%' }}
