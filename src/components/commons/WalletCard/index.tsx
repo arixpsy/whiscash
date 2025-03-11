@@ -1,18 +1,22 @@
+import { HTMLAttributes } from 'react'
 import { motion } from 'motion/react'
 import { WalletWithSpendingPeriodTotal } from '@/@types/shared'
 import { SPENDING_PERIOD_DASHBOARD_LABELS } from '@/utils/constants/spendingPeriod'
-import { amountWithCurrency } from '@/utils/functions'
+import { amountWithCurrency, cn } from '@/utils/functions'
 
 type WalletCardProps = {
   wallet: WalletWithSpendingPeriodTotal
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const WalletCard = (props: WalletCardProps) => {
-  const { wallet } = props
+  const { wallet, className } = props
 
   return (
     <motion.div
-      className="relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg"
+      className={cn(
+        'relative z-20 mb-10 grid h-[140px] w-[250px] rounded-2xl bg-white p-3 shadow-lg',
+        className
+      )}
       initial={{ opacity: '0%' }}
       animate={{ opacity: '100%' }}
       exit={{ opacity: '0%' }}
