@@ -1,6 +1,6 @@
 import { Page } from '@/components/commons'
 import { TbArrowBackUp } from 'react-icons/tb'
-import { RiSettings3Fill } from 'react-icons/ri'
+import { RiSettingsLine } from 'react-icons/ri'
 import { useNavigate, useParams } from 'react-router'
 import useWallet from '@/hooks/useWallet'
 
@@ -20,8 +20,8 @@ const Wallet = () => {
           <TbArrowBackUp className="h-6 w-6" />
         </button>
 
-        <button type="button" onClick={handleClickBack}>
-          <RiSettings3Fill className="h-6 w-6" />
+        <button type="button">
+          <RiSettingsLine className="h-6 w-6" />
         </button>
       </div>
 
