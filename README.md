@@ -35,17 +35,20 @@ Whether you're managing personal finances, tracking business expenses, or planni
 ## 🛠️ Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/whiscash.git
 cd whiscash
 ```
 
 2. Install dependencies:
+
 ```bash
 yarn install
 ```
 
 3. Create a `.env` file in the root directory and add your environment variables:
+
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
 VITE_WHISCASH_BE_URL=your_be_url
