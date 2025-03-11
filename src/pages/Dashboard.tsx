@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { Wallet } from '@/@types/shared'
 import {
   Banner,
@@ -10,8 +11,10 @@ import {
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
+import { Route } from '@/utils/constants/routes'
 
 const Dashboard = () => {
+  const navigate = useNavigate()
   const { useGetDashboardWalletTransactionsQuery } = useTransaction()
   const { useGetDashboardWalletsQuery } = useWallet()
   const getDashboardWallets = useGetDashboardWalletsQuery({
@@ -35,6 +38,11 @@ const Dashboard = () => {
     () => transactions[activeIndex],
     [activeIndex, transactions]
   )
+
+  const handleNavigateToTransaction = (transactionId: number) =>
+    document.startViewTransition(() =>
+      navigate(`${Route.TRANSACTIONS}/${transactionId}`)
+    )
 
   // display states
   const shouldDisplaySkeleton =
@@ -69,7 +77,11 @@ const Dashboard = () => {
 
           {shouldDisplayTransactionData &&
             activeTransactionQuery.data.map((t) => (
-              <TransactionTile key={t.id} transaction={t} />
+              <TransactionTile
+                key={t.id}
+                transaction={t}
+                onClick={() => handleNavigateToTransaction(t.id)}
+              />
             ))}
 
           {shouldDisplayEmptyBanner && <Banner.NoTransactionsFound />}

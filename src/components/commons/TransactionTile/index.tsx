@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { motion } from 'motion/react'
-import { createElement } from 'react'
+import { createElement, HTMLAttributes } from 'react'
 import {
   GetDashboardWalletsResponse,
   TransactionWithWallet,
@@ -13,9 +13,10 @@ import { useQueryClient } from '@tanstack/react-query'
 
 type TransactionTileProps = {
   transaction: TransactionWithWallet
-}
+} & HTMLAttributes<HTMLButtonElement>
+
 const TransactionTile = (props: TransactionTileProps) => {
-  const { transaction } = props
+  const { transaction, onClick } = props
   const queryClient = useQueryClient()
   const { useDeleteTransactionMutation } = useTransaction()
   const deleteTransaction = useDeleteTransactionMutation(
@@ -61,11 +62,12 @@ const TransactionTile = (props: TransactionTileProps) => {
   }
 
   return (
-    <motion.div
+    <motion.button
       initial={{ opacity: '0%' }}
       animate={{ opacity: '100%' }}
       exit={{ opacity: '0%' }}
-      onClick={() => console.log('click')}
+      onClick={onClick}
+      className="w-full"
     >
       <SwipeActionContainer
         className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2"
@@ -78,7 +80,7 @@ const TransactionTile = (props: TransactionTileProps) => {
         </div>
 
         <div className="flex w-full items-center justify-between">
-          <div>
+          <div className="text-left">
             <p className="font-bold capitalize">
               {transaction.category.toLowerCase()}
             </p>
@@ -99,7 +101,7 @@ const TransactionTile = (props: TransactionTileProps) => {
           </div>
         </div>
       </SwipeActionContainer>
-    </motion.div>
+    </motion.button>
   )
 }
 
