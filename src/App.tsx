@@ -5,7 +5,14 @@ import {
   MetaThemeColorRouter,
 } from '@/components/commons'
 import useNavigationTransition from '@/hooks/useNavigationTransition'
-import { Dashboard, Login, Settings, Wallet, Wallets } from '@/pages'
+import {
+  Dashboard,
+  Login,
+  Settings,
+  Transaction,
+  Wallet,
+  Wallets,
+} from '@/pages'
 import { Route as RoutePath } from '@/utils/constants/routes'
 import 'country-flag-icons/3x2/flags.css'
 
@@ -27,6 +34,10 @@ const App = () => {
 
           <Route path={RoutePath.SETTINGS} element={<Settings />} />
           <Route path={RoutePath.WALLETS + '/:walletId'} element={<Wallet />} />
+          <Route
+            path={RoutePath.TRANSACTIONS + '/:transactionId'}
+            element={<Transaction />}
+          />
         </Route>
       </Route>
     </Routes>
