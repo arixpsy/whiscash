@@ -6,6 +6,7 @@ import {
   GetTransactionsResponse,
   GetWalletsResponse,
   Transaction,
+  TransactionWithWallet,
   Wallet,
 } from '@/@types/shared'
 
@@ -43,6 +44,13 @@ const getMainWallets =
   async (): Promise<GetWalletsResponse> =>
     whiscashApi.get('/wallet/main', await config).then((res) => res.data)
 
+const getTransaction =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (transactionId?: string): Promise<TransactionWithWallet> =>
+    whiscashApi
+      .get(`/transaction/${transactionId}`, await config)
+      .then((res) => res.data)
+
 const getWallet =
   (config: Promise<AxiosRequestConfig>) =>
   async (walletId?: string): Promise<Wallet> =>
@@ -64,6 +72,7 @@ export default {
   deleteTransaction,
   getDashboardWallets,
   getMainWallets,
+  getTransaction,
   getWallet,
   getWallets,
   getWalletTransactions,

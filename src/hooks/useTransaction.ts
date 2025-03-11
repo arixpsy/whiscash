@@ -21,6 +21,14 @@ const useTransaction = () => {
       onSuccess,
     })
 
+  const useGetTransactionQuery = (transactionId?: string) =>
+    useQuery({
+      queryKey: QUERY_KEYS.TRANSACTION(transactionId),
+      queryFn: () =>
+        whiscashApi.getTransaction(createRequestConfig())(transactionId),
+      enabled: !!transactionId,
+    })
+
   const useGetWalletTransactionsQuery = (req: GetTransactionRequest) =>
     useQuery({
       queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(req.walletId),
@@ -44,6 +52,7 @@ const useTransaction = () => {
   return {
     useCreateTransactionMutation,
     useDeleteTransactionMutation,
+    useGetTransactionQuery,
     useGetDashboardWalletTransactionsQuery,
     useGetWalletTransactionsQuery,
   }

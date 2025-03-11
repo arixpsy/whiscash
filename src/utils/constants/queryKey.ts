@@ -17,5 +17,6 @@ export const QUERY_KEYS = {
     'transactions',
     walletId,
   ],
+  TRANSACTION: (transactionId?: string) => [WHISCASH, 'transactions', transactionId],
   TRANSACTIONS: [WHISCASH, 'transactions'],
 } as const
