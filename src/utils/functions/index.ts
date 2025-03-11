@@ -1,5 +1,6 @@
-import { twMerge } from 'tailwind-merge'
 import { clsx, ClassValue } from 'clsx'
+import { DateTime } from 'luxon'
+import { twMerge } from 'tailwind-merge'
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
 
@@ -12,3 +13,9 @@ export const amountWithCurrency = (
     style: 'currency',
     currency: currency,
   }).format(amount)
+
+// TODO: change toLocal to setZone
+export const localDateTime = (datetime: string) =>
+  DateTime.fromISO(datetime.replace(' ', 'T'), {
+    zone: 'utc',
+  }).toLocal()

@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import { motion } from 'motion/react'
 import { createElement, HTMLAttributes } from 'react'
 import {
@@ -7,7 +6,7 @@ import {
 } from '@/@types/shared'
 import { SwipeActionContainer } from '@/components/commons'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
-import { amountWithCurrency } from '@/utils/functions'
+import { amountWithCurrency, localDateTime } from '@/utils/functions'
 import useTransaction from '@/hooks/useTransaction'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -96,7 +95,7 @@ const TransactionTile = (props: TransactionTileProps) => {
               )}
             </p>
             <p className="text-xs text-gray-500 capitalize">
-              {DateTime.fromISO(transaction.paidAt).toRelativeCalendar()}
+              {localDateTime(transaction.paidAt).toRelativeCalendar()}
             </p>
           </div>
         </div>
