@@ -1,6 +1,4 @@
 import { DropdownButton, Page } from '@/components/commons'
-import { FaTrash } from 'react-icons/fa'
-import { FiEdit } from 'react-icons/fi'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { TbDotsVertical } from 'react-icons/tb'
 import { useNavigate, useParams } from 'react-router'
@@ -34,13 +32,11 @@ const Transaction = () => {
             <TbDotsVertical className="h-6 w-6" />
           </DropdownButton.Trigger>
 
-          <DropdownButton.Content className="space-y-3">
-            <button type="button" className="flex items-center gap-3 text-sm">
-              <FiEdit className="h-4 w-4" />
+          <DropdownButton.Content className="grid min-w-24 gap-3">
+            <button type="button" className="w-full py-1 text-left text-sm">
               Edit
             </button>
-            <button type="button" className="flex items-center gap-3 text-sm">
-              <FaTrash className="h-4 w-4" />
+            <button type="button" className="w-full py-1 text-left text-sm">
               Delete
             </button>
           </DropdownButton.Content>
