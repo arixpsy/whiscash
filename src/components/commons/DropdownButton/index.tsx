@@ -98,6 +98,35 @@ const Content = (props: HTMLAttributes<HTMLDivElement>) => {
   )
 }
 
+const ContentOption = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const { children, className, onClick } = props
+  const context = useContext(DropdownButtonContext)
+
+  if (!context)
+    throw new Error(
+      'DropdownButton.ContentOption must be used within DropdownButton'
+    )
+
+  const { setIsOpen } = context
+
+  const handleClickOption = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    onClick?.(e)
+    setIsOpen(false)
+  }
+
+  return (
+    <button
+      type="button"
+      className={cn('w-full py-1 text-left text-sm', className)}
+      onClick={handleClickOption}
+    >
+      {children}
+    </button>
+  )
+}
+
 const Trigger = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
   const { children, className } = props
   const context = useContext(DropdownButtonContext)
@@ -115,6 +144,7 @@ const Trigger = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
 }
 
 DropdownButton.Content = Content
+DropdownButton.ContentOption = ContentOption
 DropdownButton.Trigger = Trigger
 
 export default DropdownButton
