@@ -3,22 +3,31 @@ import { cn } from '@/utils/functions'
 
 type LoaderProps = {
   size?: 'xs' | 's' | 'm'
-  color?: 'primary' | 'inherit'
+  color?: 'primary' | 'inherit' | 'white'
+  trackColor?: 'gray' | 'red'
 } & HTMLAttributes<SVGElement>
 
 const Loader = (props: LoaderProps) => {
-  const { size = 'm', color = 'primary', className } = props
+  const {
+    size = 'm',
+    color = 'primary',
+    className,
+    trackColor = 'gray',
+  } = props
 
   return (
     <svg
       aria-hidden="true"
       className={cn(
-        'animate-spin fill-gray-300',
+        'animate-spin',
         {
           'h-5 w-5': size === 'xs',
           'h-8 w-8': size === 's',
           'h-12 w-12': size === 'm',
           'text-primary-500': color === 'primary',
+          'text-white': color === 'white',
+          'fill-red-300': trackColor === 'red',
+          'fill-gray-300': trackColor === 'gray',
         },
         className
       )}
