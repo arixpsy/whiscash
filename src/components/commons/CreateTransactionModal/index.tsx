@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
+import { DateTime } from 'luxon'
 import { motion, TargetAndTransition } from 'motion/react'
 import { useForm } from 'react-hook-form'
 import { FaFileInvoiceDollar } from 'react-icons/fa6'
@@ -53,6 +54,12 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
 
   const handleFormSubmit = handleSubmit((data: CreateTransactionRequest) => {
     if (createTransaction.isPending) return
+
+    if (data.paidAt) {
+      const paidAtJSDate = DateTime.fromJSDate(new Date(data.paidAt)).toUTC().toISO()
+      data.paidAt = paidAtJSDate || undefined
+    }
+
     createTransaction.mutate(data)
   })
 
