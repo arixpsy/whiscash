@@ -13,7 +13,16 @@ const MetaThemeColorRouter = () => {
 
     if (!metaElement) return
 
-    if (searchParams.get('create') || searchParams.get('field')) {
+    if (searchParams.get('create') && pathname === Route.DASHBOARD) {
+      metaElement.content = '#083D7F'
+      return
+    }
+
+    if (
+      searchParams.get('create') ||
+      searchParams.get('field') ||
+      searchParams.get('confirmation')
+    ) {
       metaElement.content = '#7F7F7F'
       return
     }
