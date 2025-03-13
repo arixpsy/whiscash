@@ -22,7 +22,11 @@ const Wallets = () => {
   const wallets = getWallets?.data || []
 
   const handleNavigateToWallet = (walletId: number) =>
-    document.startViewTransition(() => navigate(`${Route.WALLETS}/${walletId}`))
+    document.startViewTransition(() =>
+      navigate(`${Route.WALLETS}/${walletId}`, {
+        state: { from: Route.WALLETS },
+      })
+    )
 
   // display states
   const shouldDisplaySkeleton = getWallets.isPending

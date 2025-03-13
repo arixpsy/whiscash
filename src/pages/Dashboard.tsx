@@ -41,7 +41,9 @@ const Dashboard = () => {
 
   const handleNavigateToTransaction = (transactionId: number) =>
     document.startViewTransition(() =>
-      navigate(`${Route.TRANSACTIONS}/${transactionId}`)
+      navigate(`${Route.TRANSACTIONS}/${transactionId}`, {
+        state: { from: Route.DASHBOARD },
+      })
     )
 
   // display states
