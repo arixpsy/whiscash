@@ -1,18 +1,46 @@
-import { DropdownButton, Page } from '@/components/commons'
-import { TbArrowBackUp } from 'react-icons/tb'
-import { TbDotsVertical } from 'react-icons/tb'
-import { useNavigate, useParams } from 'react-router'
+import { TbArrowBackUp, TbDotsVertical } from 'react-icons/tb'
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router'
+import { ConfirmationModal, DropdownButton, Page } from '@/components/commons'
 import { TransactionDetails } from '@/components/Transaction'
 import useTransaction from '@/hooks/useTransaction'
+import { Route } from '@/utils/constants/routes'
 
 const Transaction = () => {
+  const location = useLocation()
+  const [, setSearchParams] = useSearchParams()
   const { transactionId } = useParams()
-  const { useGetTransactionQuery } = useTransaction()
-  const getTransaction = useGetTransactionQuery(transactionId)
-  const transaction = getTransaction.data
   const navigate = useNavigate()
+  const { useGetTransactionQuery, useDeleteTransactionMutation } =
+    useTransaction()
+  const getTransaction = useGetTransactionQuery(transactionId)
+  const deleteTransaction = useDeleteTransactionMutation(
+    deleteTransactionSuccessCB
+  )
+  const transaction = getTransaction.data
 
   const handleClickBack = () => document.startViewTransition(() => navigate(-1))
+
+  const handleClickDeleteOption = () =>
+    setSearchParams({ confirmation: 'delete' }, { state: location.state })
+
+  const handleDeleteTransaction = () => {
+    if (!transaction) return
+    deleteTransaction.mutate(transaction.id)
+  }
+
+  function deleteTransactionSuccessCB() {
+    const lastRoute = location.state?.from
+
+    navigate(lastRoute ?? Route.DASHBOARD, { replace: true })
+  }
+
+  // TODO:
+  // const handleClickEdit = () => console.log('open edit modal')
 
   // display states
   const shouldDisplaySkeleton = getTransaction.isPending
@@ -21,39 +49,50 @@ const Transaction = () => {
   const shouldDisplayError = getTransaction.isError
 
   return (
-    <Page className="flex flex-col p-3">
-      <div className="flex justify-between">
-        <button type="button" onClick={handleClickBack}>
-          <TbArrowBackUp className="h-6 w-6" />
-        </button>
+    <>
+      <Page className="flex flex-col p-3">
+        <div className="flex justify-between">
+          <button type="button" onClick={handleClickBack}>
+            <TbArrowBackUp className="h-6 w-6" />
+          </button>
 
-        <DropdownButton>
-          <DropdownButton.Trigger>
-            <TbDotsVertical className="h-6 w-6" />
-          </DropdownButton.Trigger>
+          <DropdownButton>
+            <DropdownButton.Trigger>
+              <TbDotsVertical className="h-6 w-6" />
+            </DropdownButton.Trigger>
 
-          <DropdownButton.Content className="grid min-w-24 gap-3">
-            <button type="button" className="w-full py-1 text-left text-sm">
-              Edit
-            </button>
-            <button type="button" className="w-full py-1 text-left text-sm">
-              Delete
-            </button>
-          </DropdownButton.Content>
-        </DropdownButton>
-      </div>
+            <DropdownButton.Content className="grid min-w-24 gap-3">
+              <DropdownButton.ContentOption>Edit</DropdownButton.ContentOption>
+              <DropdownButton.ContentOption onClick={handleClickDeleteOption}>
+                Delete
+              </DropdownButton.ContentOption>
+            </DropdownButton.Content>
+          </DropdownButton>
+        </div>
 
-      {shouldDisplaySkeleton && <TransactionDetails.Skeleton />}
+        {shouldDisplaySkeleton && <TransactionDetails.Skeleton />}
 
-      {shouldDisplayTransactionData && (
-        <TransactionDetails transaction={transaction} />
-      )}
+        {shouldDisplayTransactionData && (
+          <TransactionDetails transaction={transaction} />
+        )}
 
-      {shouldDisplayError && (
-        // TODO: add banner
-        <p className="text-center text-red-500"> Error fetching transaction </p>
-      )}
-    </Page>
+        {shouldDisplayError && (
+          // TODO: add banner
+          <p className="text-center text-red-500">
+            {' '}
+            Error fetching transaction{' '}
+          </p>
+        )}
+      </Page>
+
+      <ConfirmationModal
+        paramValue="delete"
+        title="Are you sure you want to delete this transaction?"
+        description="Deleting this transaction will remove it from your transaction history forever."
+        onConfirm={handleDeleteTransaction}
+        isConfirmLoading={deleteTransaction.isPending}
+      />
+    </>
   )
 }
 
