@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router'
+import { Routes, Route } from 'react-router'
 import {
   ActionBarLayout,
   Authenticated,
@@ -18,11 +18,9 @@ import 'country-flag-icons/3x2/flags.css'
 
 const App = () => {
   useNavigationTransition()
-  const location = useLocation()
-  const backgroundLocation = location.state?.backgroundLocation
 
   return (
-    <Routes location={backgroundLocation || location}>
+    <Routes>
       <Route element={<MetaThemeColorRouter />}>
         <Route index element={<Login />} />
         <Route element={<Authenticated />}>
