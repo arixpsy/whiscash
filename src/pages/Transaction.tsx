@@ -5,7 +5,12 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router'
-import { ConfirmationModal, DropdownButton, Page } from '@/components/commons'
+import {
+  Banner,
+  ConfirmationModal,
+  DropdownButton,
+  Page,
+} from '@/components/commons'
 import { TransactionDetails } from '@/components/Transaction'
 import useTransaction from '@/hooks/useTransaction'
 import { Route } from '@/utils/constants/routes'
@@ -25,8 +30,10 @@ const Transaction = () => {
 
   const handleClickBack = () => document.startViewTransition(() => navigate(-1))
 
-  const handleClickDeleteOption = () =>
+  const handleClickDeleteOption = () => {
+    if (!transaction) return
     setSearchParams({ confirmation: 'delete' }, { state: location.state })
+  }
 
   const handleDeleteTransaction = () => {
     if (!transaction) return
@@ -77,11 +84,9 @@ const Transaction = () => {
         )}
 
         {shouldDisplayError && (
-          // TODO: add banner
-          <p className="text-center text-red-500">
-            {' '}
-            Error fetching transaction{' '}
-          </p>
+          <div className="flex flex-1 items-center justify-center">
+            <Banner.TransactionDoesNotExist />
+          </div>
         )}
       </Page>
 

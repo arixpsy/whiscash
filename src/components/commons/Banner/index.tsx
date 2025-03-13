@@ -56,18 +56,6 @@ const NoCountryOrCurrencyFound = () => (
   </motion.div>
 )
 
-const NoWalletsFound = () => (
-  <motion.div
-    initial={{ opacity: '0%' }}
-    animate={{ opacity: '100%' }}
-    exit={{ opacity: '0%' }}
-    className="grid place-items-center gap-2 text-sm text-gray-400"
-  >
-    <MdWallet className="h-16 w-16" />
-    No wallets found
-  </motion.div>
-)
-
 const NoTransactionsFound = () => (
   <motion.div
     initial={{ opacity: '0%' }}
@@ -80,10 +68,35 @@ const NoTransactionsFound = () => (
   </motion.div>
 )
 
+const NoWalletsFound = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="grid place-items-center gap-2 text-sm text-gray-400"
+  >
+    <MdWallet className="h-16 w-16" />
+    No wallets found
+  </motion.div>
+)
+
+const TransactionDoesNotExist = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="grid place-items-center gap-2 text-center text-sm text-gray-400"
+  >
+    <TbReportSearch className="h-16 w-16" />
+    Transaction does not exist
+  </motion.div>
+)
+
 Banner.AddWalletCard = AddWalletCard
 Banner.NoCategoryFound = NoCategoryFound
 Banner.NoCountryOrCurrencyFound = NoCountryOrCurrencyFound
 Banner.NoTransactionsFound = NoTransactionsFound
 Banner.NoWalletsFound = NoWalletsFound
+Banner.TransactionDoesNotExist = TransactionDoesNotExist
 
 export default Banner
