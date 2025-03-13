@@ -14,6 +14,7 @@ import { FormField, Loader, Modal } from '@/components/commons'
 import useTransaction from '@/hooks/useTransaction'
 import { cn } from '@/utils/functions'
 import CategorySelector from './CategorySelector'
+import DateTimePicker from './DateTimePicker'
 import TransactionAmountInput from './TransactionAmountInput'
 import WalletSelector from './WalletSelector'
 
@@ -98,14 +99,14 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   return (
     <Modal paramKey="create" paramValue="transaction">
       <motion.div
-        className="h-full w-full rounded-t-2xl bg-white p-3"
+        className="grid h-full w-full grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
         initial={{ translateY: '100%' }}
         animate={{ translateY: '0%' }}
         exit={{ translateY: '100%' }}
         transition={{ type: 'tween', ease: 'easeOut' }}
         onAnimationComplete={handleModalAnimationComplete}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between p-3">
           <button type="button" onClick={handleCloseModal}>
             <IoClose className="h-6 w-6" />
           </button>
@@ -126,8 +127,11 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
           </button>
         </div>
 
-        <form onSubmit={handleFormSubmit} className="grid place-items-center">
-          <FaFileInvoiceDollar className="text-primary-300 mt-9 mb-3 h-16 w-16" />
+        <form
+          onSubmit={handleFormSubmit}
+          className="grid auto-rows-min justify-items-center overflow-auto p-3"
+        >
+          <FaFileInvoiceDollar className="text-primary-300 mb-3 h-16 w-16" />
 
           <TransactionAmountInput
             register={register}
@@ -152,18 +156,12 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
               <CategorySelector control={control} />
             </FormField>
 
-            {/* TODO: */}
-            {/* <FormField
+            <FormField
               label="Payment made on"
               hasError={!!errors.paidAt?.message}
             >
-              <button
-                type="button"
-                className="w-full rounded-lg bg-gray-100 px-3 py-2"
-              >
-                Select
-              </button>
-            </FormField> */}
+              <DateTimePicker register={register} watch={watch} />
+            </FormField>
 
             <FormField label="Wallet" hasError={!!errors.walletId?.message}>
               <WalletSelector control={control} />
