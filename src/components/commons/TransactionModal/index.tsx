@@ -19,13 +19,13 @@ import DateTimePicker from './DateTimePicker'
 import TransactionAmountInput from './TransactionAmountInput'
 import WalletSelector from './WalletSelector'
 
-type CreateTransactionModalProps = {
+type TransactionModalProps = {
   walletId: number
   mainWalletId: number | null
   currency: string
 }
 
-const CreateTransactionModal = (props: CreateTransactionModalProps) => {
+const TransactionModal = (props: TransactionModalProps) => {
   const { mainWalletId, walletId, currency } = props
   const queryClient = useQueryClient()
   const { useCreateTransactionMutation } = useTransaction()
@@ -180,4 +180,4 @@ const CreateTransactionModal = (props: CreateTransactionModalProps) => {
   )
 }
 
-export default CreateTransactionModal
+export default TransactionModal

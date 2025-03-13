@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { Wallet } from '@/@types/shared'
 import {
   Banner,
-  CreateTransactionModal,
+  TransactionModal,
   CreateWalletModal,
   Page,
   TransactionTile,
@@ -91,7 +91,7 @@ const Dashboard = () => {
       </Page>
 
       {activeWallet && (
-        <CreateTransactionModal
+        <TransactionModal
           key={activeWallet.id}
           walletId={activeWallet.id}
           mainWalletId={activeWallet.subWalletOf}
