@@ -10,6 +10,7 @@ import {
   ConfirmationModal,
   DropdownButton,
   Page,
+  TransactionModal,
 } from '@/components/commons'
 import { TransactionDetails } from '@/components/Transaction'
 import useTransaction from '@/hooks/useTransaction'
@@ -46,8 +47,10 @@ const Transaction = () => {
     navigate(lastRoute ?? Route.DASHBOARD, { replace: true })
   }
 
-  // TODO:
-  // const handleClickEdit = () => console.log('open edit modal')
+  const handleClickEditOption = () => {
+    if (!transaction) return
+    setSearchParams({ update: 'transaction' }, { state: location.state })
+  }
 
   // display states
   const shouldDisplaySkeleton = getTransaction.isPending
@@ -69,7 +72,9 @@ const Transaction = () => {
             </DropdownButton.Trigger>
 
             <DropdownButton.Content className="grid min-w-24 gap-3">
-              <DropdownButton.ContentOption>Edit</DropdownButton.ContentOption>
+              <DropdownButton.ContentOption onClick={handleClickEditOption}>
+                Edit
+              </DropdownButton.ContentOption>
               <DropdownButton.ContentOption onClick={handleClickDeleteOption}>
                 Delete
               </DropdownButton.ContentOption>
@@ -89,6 +94,16 @@ const Transaction = () => {
           </div>
         )}
       </Page>
+
+      {!!transaction && (
+        <TransactionModal
+          action="update"
+          walletId={transaction.walletId}
+          mainWalletId={transaction.subWalletOf}
+          currency={transaction.currency}
+          existingTransaction={transaction}
+        />
+      )}
 
       <ConfirmationModal
         paramValue="delete"

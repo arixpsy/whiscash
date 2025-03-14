@@ -45,7 +45,7 @@ const ActionBar = () => {
     if (!getDashboardWallets.data) return
 
     if (getDashboardWallets.data.length > 0)
-      setSearchParams({ create: 'transaction' })
+      setSearchParams({ create: 'transaction' }, { state: { from: pathname } })
   }, [pathname, setSearchParams, getDashboardWallets.data])
 
   return (
