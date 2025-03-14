@@ -19,6 +19,7 @@
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.5.18",
+    "d3": "^7.9.0",
     "iso-country-currency": "^0.7.2",
     "luxon": "^3.5.0",
     "motion": "^12.4.7",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/d3": "^7.4.3",
     "@types/luxon": "^3.4.2",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
