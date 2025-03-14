@@ -41,9 +41,13 @@ const TransactionModal = (props: TransactionModalProps) => {
   const location = useLocation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { useCreateTransactionMutation } = useTransaction()
+  const { useCreateTransactionMutation, useUpdateTransactionMutation } =
+    useTransaction()
   const createTransaction = useCreateTransactionMutation(
     createTransactionSuccessCB
+  )
+  const updateTransaction = useUpdateTransactionMutation(
+    updateTransactionSuccessCB
   )
   const {
     control,
@@ -63,7 +67,7 @@ const TransactionModal = (props: TransactionModalProps) => {
 
   const handleFormSubmit = handleSubmit((data: CreateTransactionRequest) => {
     if (createTransaction.isPending) return
-    // if (updateTransaction.isPending) return
+    if (updateTransaction.isPending) return
 
     if (data.paidAt) {
       const paidAtJSDate = DateTime.fromJSDate(new Date(data.paidAt))
@@ -76,8 +80,12 @@ const TransactionModal = (props: TransactionModalProps) => {
 
     if (action === 'create') {
       createTransaction.mutate(data)
-    } else {
-      // updateTransaction.mutate(data)
+      return
+    }
+
+    if (existingTransaction) {
+      updateTransaction.mutate({ id: existingTransaction.id, ...data })
+      return
     }
   })
 
@@ -151,9 +159,37 @@ const TransactionModal = (props: TransactionModalProps) => {
         return current
       }
     )
+
     handleCloseModal()
   }
 
+  function updateTransactionSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'transactions', formWalletId.toString()],
+    })
+
+    if (mainWalletId) {
+      queryClient.invalidateQueries({
+        queryKey: ['whiscash', 'transactions', mainWalletId.toString()],
+      })
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'wallets', 'dashboard'],
+    })
+
+    if (existingTransaction) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'whiscash',
+          'transactions',
+          existingTransaction.id.toString(),
+        ],
+      })
+    }
+
+    handleCloseModal()
+  }
   return (
     <Modal paramKey={action} paramValue="transaction">
       <motion.div
@@ -177,9 +213,17 @@ const TransactionModal = (props: TransactionModalProps) => {
             <Loader
               size="xs"
               color="inherit"
-              className={cn(!createTransaction.isPending && 'invisible')}
+              className={cn(
+                !(createTransaction.isPending || updateTransaction.isPending) &&
+                  'invisible'
+              )}
             />
-            <p className={cn(createTransaction.isPending && 'invisible')}>
+            <p
+              className={cn(
+                (createTransaction.isPending || updateTransaction.isPending) &&
+                  'invisible'
+              )}
+            >
               {action === 'create' ? 'Add' : 'Save'}
             </p>
           </button>

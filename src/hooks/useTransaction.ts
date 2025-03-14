@@ -49,12 +49,19 @@ const useTransaction = () => {
       })),
     })
 
+  const useUpdateTransactionMutation = (onSuccess: () => void) =>
+    useMutation({
+      mutationFn: whiscashApi.updateTransaction(createRequestConfig()),
+      onSuccess,
+    })
+
   return {
     useCreateTransactionMutation,
     useDeleteTransactionMutation,
     useGetTransactionQuery,
     useGetDashboardWalletTransactionsQuery,
     useGetWalletTransactionsQuery,
+    useUpdateTransactionMutation,
   }
 }
 
