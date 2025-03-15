@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
 import {
   GetDashboardWalletsRequest,
   GetWalletsRequest,
@@ -7,6 +7,7 @@ import {
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
+import { SpendingPeriod } from '@/utils/enum'
 
 const useWallet = () => {
   const { createRequestConfig } = useToken()
@@ -38,6 +39,32 @@ const useWallet = () => {
       enabled: !!walletId,
     })
 
+  const useGetWalletChartDataQuery = ({
+    unit,
+    walletId,
+  }: {
+    unit?: SpendingPeriod
+    walletId?: number
+  }) =>
+    useInfiniteQuery({
+      queryKey: QUERY_KEYS.WALLET_CHART_DATA(walletId, unit),
+      initialPageParam: {
+        unit,
+        walletId,
+        limit: 10,
+        offset: 0,
+      },
+      queryFn: ({ pageParam }) =>
+        whiscashApi.getWalletChartData(
+          createRequestConfig({ params: pageParam })
+        )(walletId?.toString()),
+      getNextPageParam: (_, __, lastPage) => ({
+        ...lastPage,
+        offset: lastPage.offset + lastPage.limit,
+      }),
+      enabled: !!walletId,
+    })
+
   const useGetWalletsQuery = (req: GetWalletsRequest) =>
     useQuery({
       queryKey: QUERY_KEYS.WALLETS(req),
@@ -49,6 +76,7 @@ const useWallet = () => {
     useGetDashboardWalletsQuery,
     useGetMainWalletsQuery,
     useGetWalletQuery,
+    useGetWalletChartDataQuery,
     useGetWalletsQuery,
   }
 }
