@@ -21,7 +21,8 @@ const MetaThemeColorRouter = () => {
     if (
       searchParams.get('create') ||
       searchParams.get('field') ||
-      searchParams.get('confirmation')
+      searchParams.get('confirmation') ||
+      searchParams.get('filter')
     ) {
       metaElement.content = '#7F7F7F'
       return
