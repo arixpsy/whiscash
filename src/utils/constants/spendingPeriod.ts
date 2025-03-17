@@ -33,3 +33,11 @@ export const SPENDING_PERIOD_WALLET_LABELS: Record<SpendingPeriod, string> = {
   [SpendingPeriod.Year]: 'Yearly Tracking',
   [SpendingPeriod.All]: 'All Time Tracking',
 }
+
+export const SPENDING_PERIOD_UNIT_LABELS: Record<SpendingPeriod, string> = {
+  [SpendingPeriod.Day]: 'Daily',
+  [SpendingPeriod.Week]: 'Weekly',
+  [SpendingPeriod.Month]: 'Monthly',
+  [SpendingPeriod.Year]: 'Yearly',
+  [SpendingPeriod.All]: 'All Time',
+}

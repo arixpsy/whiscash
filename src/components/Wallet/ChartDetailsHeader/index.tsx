@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
 import { useMemo } from 'react'
+import { useSearchParams } from 'react-router'
 import { FaChevronDown } from 'react-icons/fa'
 import { GetWalletChartDataResponse, Wallet } from '@/@types/shared'
+import { SPENDING_PERIOD_UNIT_LABELS } from '@/utils/constants/spendingPeriod'
 import { SpendingPeriod } from '@/utils/enum'
 import { amountWithCurrency } from '@/utils/functions'
 
@@ -14,6 +16,7 @@ type ChartDetailsHeaderProps = {
 
 const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
   const { data, selectedIndex, unit, wallet } = props
+  const [, setSearchParams] = useSearchParams()
 
   const spendingLabel = useMemo(() => {
     if (unit === SpendingPeriod.All) return ''
@@ -48,20 +51,7 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
     }
   }, [unit, selectedIndex, data])
 
-  const dropdownLabel = useMemo(() => {
-    switch (unit) {
-      case SpendingPeriod.Year:
-        return 'Yearly'
-      case SpendingPeriod.Month:
-        return 'Monthly'
-      case SpendingPeriod.Week:
-        return 'Weekly'
-      case SpendingPeriod.Day:
-        return 'Daily'
-      default:
-        return 'All Time'
-    }
-  }, [unit])
+  const handleClickUnitSelector = () => setSearchParams({ filter: 'unit' })
 
   return (
     <div className="flex flex-col bg-white p-3">
@@ -74,9 +64,12 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
           )}
         </p>
 
-        <div className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold">
+        <div
+          className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold"
+          onClick={handleClickUnitSelector}
+        >
           <FaChevronDown className="h-3 w-3" />
-          <span>{dropdownLabel}</span>
+          <span>{unit && SPENDING_PERIOD_UNIT_LABELS[unit]}</span>
         </div>
       </div>
 

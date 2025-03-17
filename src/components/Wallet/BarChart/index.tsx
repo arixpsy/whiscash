@@ -40,6 +40,7 @@ const BarChart = (props: BarChartProps) => {
   )
   const [hasMounted, setHasMounted] = useState(false)
 
+  {/* TODO: change format based on unit */}
   const GetXAxisLabel = useCallback(
     (v: d3.NumberValue) =>
       DateTime.fromISO(
