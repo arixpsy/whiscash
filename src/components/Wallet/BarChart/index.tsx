@@ -1,7 +1,8 @@
 import * as d3 from 'd3'
 import { DateTime } from 'luxon'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { GetWalletChartDataResponse } from '@/@types/shared'
+import { Loader } from '@/components/commons'
 import {
   BAR_WIDTH,
   CHART_HEIGHT,
@@ -12,13 +13,24 @@ import {
 } from '@/components/Wallet/BarChart/chartConfig'
 
 type BarChartProps = {
-  data: Array<GetWalletChartDataResponse>
+  data: GetWalletChartDataResponse
+  selectedIndex: number
+  setSelectedIndex: (selectedIndex: number) => void
+  isFetchingMoreData: boolean
+  handleFetchMoreData: () => void
 }
 
 const BarChart = (props: BarChartProps) => {
-  const { data } = props
+  const {
+    data,
+    selectedIndex,
+    setSelectedIndex,
+    handleFetchMoreData,
+    isFetchingMoreData,
+  } = props
   const axisElementRef = useRef(null)
   const chartElementRef = useRef(null)
+  const scrollableRef = useRef<HTMLDivElement>(null)
   const yScaleRef = useRef<d3.ScaleLinear<number, number, never>>(
     d3.scaleLinear()
   )
@@ -27,14 +39,25 @@ const BarChart = (props: BarChartProps) => {
   )
   const [hasMounted, setHasMounted] = useState(false)
 
-  const aggChartData = useMemo(() => data.flat(1), [data])
-
   const GetXAxisLabel = useCallback(
     (v: d3.NumberValue) =>
       DateTime.fromISO(
-        aggChartData[v as number].startPeriod.replace(' ', 'T')
+        data[v as number].startPeriod.replace(' ', 'T')
       ).toFormat('LLL yy'),
-    [aggChartData]
+    [data]
+  )
+
+  const handleScroll = useCallback(
+    (e: Event) => {
+      const screenWidth = (e.target as HTMLElement).clientWidth
+      const maxScrollWidth = (e.target as HTMLElement).scrollWidth * -1
+      const scrollLeft = (e.target as HTMLElement).scrollLeft - screenWidth
+
+      if (maxScrollWidth === scrollLeft) {
+        handleFetchMoreData()
+      }
+    },
+    [handleFetchMoreData]
   )
 
   const renderChart = useCallback(() => {
@@ -46,9 +69,7 @@ const BarChart = (props: BarChartProps) => {
     if (!yScale) return
     if (!xScale) return
 
-    const maxY = d3.max(
-      aggChartData.flatMap((d) => parseFloat(d.spendingPeriodTotal))
-    )
+    const maxY = d3.max(data.flatMap((d) => d.spendingPeriodTotal))
 
     const yMaxDomain = parseInt(
       Math.ceil(maxY || 400)
@@ -59,20 +80,14 @@ const BarChart = (props: BarChartProps) => {
     )
 
     xScaleRef.current
-      .domain([aggChartData.length - 1, 0])
-      .range([
-        0,
-        CHART_WIDTH(aggChartData.length) - PADDING.LEFT - PADDING.RIGHT,
-      ])
+      .domain([data.length - 1, 0])
+      .range([0, CHART_WIDTH(data.length) - PADDING.LEFT - PADDING.RIGHT])
 
     yScaleRef.current
       .domain([0, yMaxDomain])
       .range([CHART_HEIGHT - PADDING.BOTTOM - PADDING.TOP, 0])
 
-    d3.select(chartElementRef.current).attr(
-      'width',
-      CHART_WIDTH(aggChartData.length)
-    )
+    d3.select(chartElementRef.current).attr('width', CHART_WIDTH(data.length))
 
     // X Axis
     d3.select(chartElementRef.current).select('.x-tick').remove()
@@ -81,7 +96,7 @@ const BarChart = (props: BarChartProps) => {
       .call(
         d3
           .axisBottom(xScaleRef.current)
-          .ticks(aggChartData.length)
+          .ticks(data.length)
           .tickFormat(GetXAxisLabel)
       )
       .call((g) => g.select('.domain').remove())
@@ -110,11 +125,11 @@ const BarChart = (props: BarChartProps) => {
       )
       .attr('transform', `translate(${PADDING.LEFT}, ${PADDING.TOP})`)
 
-    if (aggChartData.length === 0) return
+    if (data.length === 0) return
 
     d3.select(chartElementRef.current)
       .selectAll('rect')
-      .data(aggChartData)
+      .data(data)
       .join(
         (enter) =>
           enter
@@ -125,14 +140,21 @@ const BarChart = (props: BarChartProps) => {
             .attr('y', yScale(0))
             .attr('rx', 5)
             .attr('transform', `translate(${X_OFFSET_BAR}, ${PADDING.TOP})`)
-            .attr('fill', '#e8e8e8')
-            .on('click', (_, t) => console.log(t)),
+            .attr('fill', (_, i) =>
+              selectedIndex === i ? '#007bff' : '#e8e8e8'
+            )
+            .on('click', (_, t) => {
+              const index = data.findIndex(
+                (d) => d.startPeriod === t.startPeriod
+              )
+              setSelectedIndex(index)
+            }),
         (update) => update.attr('x', (_, i) => xScale(i))
       )
 
     d3.select(chartElementRef.current)
       .selectAll('rect')
-      .data(aggChartData)
+      .data(data)
       .join('rect')
       .transition()
       .duration(750)
@@ -142,10 +164,12 @@ const BarChart = (props: BarChartProps) => {
           CHART_HEIGHT -
           PADDING.TOP -
           PADDING.BOTTOM -
-          yScale(parseFloat(v.spendingPeriodTotal))
+          yScale(v.spendingPeriodTotal)
       )
-      .attr('y', (v) => yScale(parseFloat(v.spendingPeriodTotal)))
-  }, [GetXAxisLabel, aggChartData])
+      .attr('y', (v) => yScale(v.spendingPeriodTotal))
+      .duration(350)
+      .attr('fill', (_, i) => (selectedIndex === i ? '#007bff' : '#e8e8e8'))
+  }, [GetXAxisLabel, data, selectedIndex, setSelectedIndex])
 
   // Mount chart base
   useEffect(() => {
@@ -166,16 +190,34 @@ const BarChart = (props: BarChartProps) => {
   }, [])
 
   useEffect(() => {
+    const scrollableDiv = scrollableRef.current
+
+    if (!scrollableDiv) return
+
+    scrollableDiv.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => scrollableDiv.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
+  useEffect(() => {
     if (!hasMounted) return
     renderChart()
   }, [hasMounted, renderChart])
 
   return (
-    <div className="relative grid max-w-lg overflow-x-auto" dir="rtl">
+    <div className="relative isolate grid max-w-lg overflow-x-auto" dir="rtl">
+      {isFetchingMoreData && (
+        <div className="absolute top-1 right-3">
+          <Loader size="xs" />
+        </div>
+      )}
+
       <svg ref={axisElementRef} />
+
       <div
-        className="hide-scrollbar overflow-x-auto"
+        className="hide-scrollbar relative overflow-x-auto"
         style={{ marginLeft: `${PADDING.LEFT}px` }}
+        ref={scrollableRef}
       >
         <svg ref={chartElementRef} />
       </div>
