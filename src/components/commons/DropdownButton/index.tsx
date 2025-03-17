@@ -22,8 +22,10 @@ const DropdownButtonContext = createContext<DropdownButtonContextProps>({
   setIsOpen: () => {},
 })
 
-const DropdownButton = (props: PropsWithChildren) => {
-  const { children } = props
+const DropdownButton = (
+  props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>
+) => {
+  const { children, className } = props
   const [isOpen, setIsOpen] = useState(false)
 
   const { triggerElement, contentElement } = useMemo(() => {
@@ -46,7 +48,10 @@ const DropdownButton = (props: PropsWithChildren) => {
 
   return (
     <DropdownButtonContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className="relative isolate" style={{ display: 'inherit' }}>
+      <div
+        className={cn('relative isolate', className)}
+        style={{ display: 'inherit' }}
+      >
         {triggerElement}
 
         {isOpen && (
