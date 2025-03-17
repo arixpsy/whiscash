@@ -1,12 +1,11 @@
-import { useMemo, useState } from 'react'
-import { FaChevronDown } from 'react-icons/fa'
+import { useEffect, useMemo, useState } from 'react'
 import { TbArrowBackUp, TbDotsVertical } from 'react-icons/tb'
 import { useNavigate, useParams } from 'react-router'
 import { DropdownButton, Page } from '@/components/commons'
-import { BarChart } from '@/components/Wallet'
+import { BarChart, ChartDetailsHeader } from '@/components/Wallet'
 import useWallet from '@/hooks/useWallet'
 import { SpendingPeriod } from '@/utils/enum'
-import { amountWithCurrency } from '@/utils/functions'
+import { cn } from '@/utils/functions'
 
 const Wallet = () => {
   const { walletId } = useParams()
@@ -14,7 +13,9 @@ const Wallet = () => {
   const { useGetWalletQuery, useGetWalletChartDataQuery } = useWallet()
   const getWallet = useGetWalletQuery(walletId)
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(0)
-  const [selectedUnit] = useState(getDefaultUnit())
+  const [selectedUnit, setSelectedUnit] = useState<SpendingPeriod | undefined>(
+    undefined
+  )
   const getChartData = useGetWalletChartDataQuery({
     unit: selectedUnit,
     walletId: getWallet.data?.id,
@@ -28,27 +29,31 @@ const Wallet = () => {
 
   const handleClickBack = () => document.startViewTransition(() => navigate(-1))
 
-  function getDefaultUnit(unit?: SpendingPeriod) {
-    if (!unit) return SpendingPeriod.Month
-    if (unit === SpendingPeriod.All) return SpendingPeriod.Year
-    return unit
-  }
+  useEffect(() => {
+    if (wallet) setSelectedUnit(wallet.spendingPeriod)
+  }, [wallet])
 
   return (
     <Page className="grid auto-rows-min items-start bg-gray-100">
       <div className="bg-white">
         {/* Page Header */}
         <div className="sticky top-0 z-10 grid">
-          <div className="grid grid-cols-[1fr_auto_1fr] bg-white p-3">
+          <div className="grid h-[52px] grid-cols-[1fr_auto_1fr] bg-white p-3">
             <button type="button" onClick={handleClickBack}>
               <TbArrowBackUp className="h-6 w-6" />
             </button>
 
-            <p className="self-center text-center text-lg font-bold">
+            <p
+              className={cn(
+                'h-7 min-w-32 self-center rounded-lg text-center text-lg font-bold',
+                getWallet.isPending && 'animate-pulse bg-gray-200'
+              )}
+            >
               {wallet?.name}
             </p>
 
-            <DropdownButton>
+            {/* TODO: */}
+            <DropdownButton className="z-20">
               <DropdownButton.Trigger className="justify-self-end">
                 <TbDotsVertical className="h-6 w-6" />
               </DropdownButton.Trigger>
@@ -68,27 +73,16 @@ const Wallet = () => {
           </div>
 
           {/* Chart Header */}
-          <div className="flex items-start justify-between bg-white p-3">
-            <div className="text-3xl">
-              {!!wallet &&
-                amountWithCurrency(
-                  aggChartData[selectedPeriodIndex]?.spendingPeriodTotal,
-                  wallet.country,
-                  wallet.currency
-                )}
-              <p className="text-xs text-gray-500">
-                Total spendings{' '}
-                {selectedPeriodIndex === 0
-                  ? 'this month'
-                  : aggChartData[selectedPeriodIndex]?.startPeriod}
-              </p>
-            </div>
-
-            <div className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold">
-              <FaChevronDown className="h-3 w-3" />
-              <span>Monthly</span>
-            </div>
-          </div>
+          {getWallet.isPending ? (
+            <ChartDetailsHeader.Skeleton />
+          ) : wallet ? (
+            <ChartDetailsHeader
+              data={aggChartData}
+              selectedIndex={selectedPeriodIndex}
+              unit={selectedUnit}
+              wallet={wallet}
+            />
+          ) : undefined}
         </div>
 
         {/* Chart */}
@@ -101,7 +95,7 @@ const Wallet = () => {
         />
       </div>
 
-      <div className="h-full p-3 py-6">
+      <div className="p-3 py-6">
         <p className="mb-1 text-lg font-bold">Breakdown</p>
 
         <div className="flex rounded-lg bg-white p-6 shadow-lg">
