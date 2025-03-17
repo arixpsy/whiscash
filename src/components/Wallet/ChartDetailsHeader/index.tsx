@@ -64,8 +64,8 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
   }, [unit])
 
   return (
-    <div className="flex items-start justify-between bg-white p-3">
-      <div>
+    <div className="flex flex-col bg-white p-3">
+      <div className="flex items-start justify-between">
         <p className="text-3xl">
           {amountWithCurrency(
             data[selectedIndex]?.spendingPeriodTotal || 0,
@@ -73,25 +73,25 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
             wallet.currency
           )}
         </p>
-        <p className="text-xs text-gray-500">Total spendings {spendingLabel}</p>
+
+        <div className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold">
+          <FaChevronDown className="h-3 w-3" />
+          <span>{dropdownLabel}</span>
+        </div>
       </div>
 
-      <div className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold">
-        <FaChevronDown className="h-3 w-3" />
-        <span>{dropdownLabel}</span>
-      </div>
+      <p className="text-xs text-gray-500">Total spendings {spendingLabel}</p>
     </div>
   )
 }
 
 const Skeleton = () => (
-  <div className="flex items-start justify-between bg-white p-3">
-    <div className="space-y-1">
+  <div className="flex flex-col bg-white p-3">
+    <div className="mb-1 flex items-start justify-between">
       <div className="h-9 w-32 animate-pulse rounded-lg bg-gray-200" />
-      <div className="h-3 w-38 animate-pulse rounded-md bg-gray-200" />
+      <div className="h-6 w-20 animate-pulse rounded-full bg-gray-200" />
     </div>
-
-    <div className="h-6 w-20 animate-pulse rounded-full bg-gray-200" />
+    <div className="h-3 w-38 animate-pulse rounded-md bg-gray-200" />
   </div>
 )
 
