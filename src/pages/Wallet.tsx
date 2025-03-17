@@ -86,13 +86,17 @@ const Wallet = () => {
         </div>
 
         {/* Chart */}
-        <BarChart
-          data={aggChartData}
-          selectedIndex={selectedPeriodIndex}
-          setSelectedIndex={setSelectedPeriodIndex}
-          handleFetchMoreData={() => getChartData.fetchNextPage()}
-          isFetchingMoreData={getChartData.isFetchingNextPage}
-        />
+        {getWallet.isPending || getChartData.isPending ? (
+          <BarChart.Skeleton />
+        ) : (
+          <BarChart
+            data={aggChartData}
+            selectedIndex={selectedPeriodIndex}
+            setSelectedIndex={setSelectedPeriodIndex}
+            handleFetchMoreData={() => getChartData.fetchNextPage()}
+            isFetchingMoreData={getChartData.isFetchingNextPage}
+          />
+        )}
       </div>
 
       <div className="p-3 py-6">

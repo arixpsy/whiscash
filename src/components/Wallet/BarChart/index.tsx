@@ -10,7 +10,8 @@ import {
   PADDING,
   X_OFFSET_AXIS,
   X_OFFSET_BAR,
-} from '@/components/Wallet/BarChart/chartConfig'
+} from './chartConfig'
+import BarChartSkeleton from './Skeleton'
 
 type BarChartProps = {
   data: GetWalletChartDataResponse
@@ -224,5 +225,7 @@ const BarChart = (props: BarChartProps) => {
     </div>
   )
 }
+
+BarChart.Skeleton = BarChartSkeleton
 
 export default BarChart
