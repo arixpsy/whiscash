@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { GetWalletChartDataResponse } from '@/@types/shared'
 import { Loader } from '@/components/commons'
+import { SpendingPeriod } from '@/utils/enum'
 import {
   BAR_WIDTH,
   CHART_HEIGHT,
@@ -15,19 +16,21 @@ import BarChartSkeleton from './Skeleton'
 
 type BarChartProps = {
   data: GetWalletChartDataResponse
+  handleFetchMoreData: () => void
+  isFetchingMoreData: boolean
   selectedIndex: number
   setSelectedIndex: (selectedIndex: number) => void
-  isFetchingMoreData: boolean
-  handleFetchMoreData: () => void
+  unit?: SpendingPeriod
 }
 
 const BarChart = (props: BarChartProps) => {
   const {
     data,
-    selectedIndex,
-    setSelectedIndex,
     handleFetchMoreData,
     isFetchingMoreData,
+    selectedIndex,
+    setSelectedIndex,
+    unit,
   } = props
   const axisElementRef = useRef(null)
   const chartElementRef = useRef(null)
@@ -40,13 +43,22 @@ const BarChart = (props: BarChartProps) => {
   )
   const [hasMounted, setHasMounted] = useState(false)
 
-  {/* TODO: change format based on unit */}
   const GetXAxisLabel = useCallback(
-    (v: d3.NumberValue) =>
-      DateTime.fromISO(
+    (v: d3.NumberValue) => {
+      const dateTime = DateTime.fromISO(
         data[v as number].startPeriod.replace(' ', 'T')
-      ).toFormat('LLL yy'),
-    [data]
+      )
+
+      switch (unit) {
+        case SpendingPeriod.Year:
+          return dateTime.toFormat('yyyy')
+        case SpendingPeriod.Month:
+          return dateTime.toFormat('LLL yy')
+        default:
+          return dateTime.toFormat('d LLL')
+      }
+    },
+    [data, unit]
   )
 
   const handleScroll = useCallback(

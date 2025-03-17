@@ -96,10 +96,11 @@ const Wallet = () => {
           ) : (
             <BarChart
               data={aggChartData}
-              selectedIndex={selectedPeriodIndex}
-              setSelectedIndex={setSelectedPeriodIndex}
               handleFetchMoreData={() => getChartData.fetchNextPage()}
               isFetchingMoreData={getChartData.isFetchingNextPage}
+              selectedIndex={selectedPeriodIndex}
+              setSelectedIndex={setSelectedPeriodIndex}
+              unit={selectedUnit}
             />
           )}
         </div>
@@ -117,6 +118,7 @@ const Wallet = () => {
         <UnitSelectorModal
           selectedUnit={selectedUnit}
           setSelectedUnit={setSelectedUnit}
+          setSelectedPeriodIndex={setSelectedPeriodIndex}
         />
       )}
     </>

@@ -5,11 +5,12 @@ import { cn } from '@/utils/functions'
 
 type UnitSelectorModalProps = {
   selectedUnit: SpendingPeriod
+  setSelectedPeriodIndex: (index: number) => void
   setSelectedUnit: (sp: SpendingPeriod) => void
 }
 
 const UnitSelectorModal = (props: UnitSelectorModalProps) => {
-  const { selectedUnit, setSelectedUnit } = props
+  const { selectedUnit, setSelectedPeriodIndex,setSelectedUnit } = props
 
   const handleCloseModal = () => window.history.back()
 
@@ -29,6 +30,7 @@ const UnitSelectorModal = (props: UnitSelectorModalProps) => {
             key={sp}
             onClick={() => {
               setSelectedUnit(sp)
+              setSelectedPeriodIndex(0)
               handleCloseModal()
             }}
             className={cn(selectedUnit === sp && 'font-bold')}
