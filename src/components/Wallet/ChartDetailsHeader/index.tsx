@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import { FaChevronDown } from 'react-icons/fa'
 import { GetWalletChartDataResponse, Wallet } from '@/@types/shared'
+import { FeedbackButton } from '@/components/commons'
 import { SPENDING_PERIOD_UNIT_LABELS } from '@/utils/constants/spendingPeriod'
 import { SpendingPeriod } from '@/utils/enum'
 import { amountWithCurrency } from '@/utils/functions'
@@ -64,14 +65,14 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
           )}
         </p>
 
-        <button
+        <FeedbackButton
           type="button"
           className="bg-primary-100 text-primary-500 flex items-center gap-1 rounded-full px-2 py-1 text-xs font-bold"
           onClick={handleClickUnitSelector}
         >
           <FaChevronDown className="h-3 w-3" />
           <span>{unit && SPENDING_PERIOD_UNIT_LABELS[unit]}</span>
-        </button>
+        </FeedbackButton>
       </div>
 
       <p className="text-xs text-gray-500">Total spendings {spendingLabel}</p>
