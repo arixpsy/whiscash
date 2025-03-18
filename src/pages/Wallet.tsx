@@ -5,6 +5,7 @@ import { DropdownButton, Page } from '@/components/commons'
 import {
   BarChart,
   ChartDetailsHeader,
+  PieChart,
   UnitSelectorModal,
 } from '@/components/Wallet'
 import useWallet from '@/hooks/useWallet'
@@ -108,9 +109,12 @@ const Wallet = () => {
         <div className="p-3 py-6">
           <p className="mb-1 text-lg font-bold">Breakdown</p>
 
-          <div className="flex rounded-lg bg-white p-6 shadow-lg">
-            <div className="bg-primary-100 h-[100px] w-[100px] rounded-full" />
-          </div>
+          {wallet && (
+            <PieChart
+              data={aggChartData[selectedPeriodIndex] || []}
+              wallet={wallet}
+            />
+          )}
         </div>
       </Page>
 
