@@ -141,6 +141,12 @@ const BarChart = (props: BarChartProps) => {
 
     if (data.length === 0) return
 
+    const setAttrScaleX = (_: unknown, i: number) => xScale(i)
+    const setOnClick = (_: unknown, t: GetWalletChartDataResponse[0]) => {
+      const index = data.findIndex((d) => d.startPeriod === t.startPeriod)
+      setSelectedIndex(index)
+    }
+
     d3.select(chartElementRef.current)
       .selectAll('rect')
       .data(data)
@@ -150,20 +156,15 @@ const BarChart = (props: BarChartProps) => {
             .append('rect')
             .attr('width', BAR_WIDTH)
             .attr('height', 0)
-            .attr('x', (_, i) => xScale(i))
+            .attr('x', setAttrScaleX)
             .attr('y', yScale(0))
             .attr('rx', 5)
             .attr('transform', `translate(${X_OFFSET_BAR}, ${PADDING.TOP})`)
             .attr('fill', (_, i) =>
               selectedIndex === i ? '#007bff' : '#e8e8e8'
             )
-            .on('click', (_, t) => {
-              const index = data.findIndex(
-                (d) => d.startPeriod === t.startPeriod
-              )
-              setSelectedIndex(index)
-            }),
-        (update) => update.attr('x', (_, i) => xScale(i))
+            .on('click', setOnClick),
+        (update) => update.attr('x', setAttrScaleX).on('click', setOnClick)
       )
 
     d3.select(chartElementRef.current)
