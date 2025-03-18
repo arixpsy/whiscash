@@ -24,11 +24,6 @@ type BarChartProps = {
 }
 
 const BarChart = (props: BarChartProps) => {
-  const [scrollValues, setScrollValues] = useState({
-    screenWidth: 0,
-    maxScrollWidth: 0,
-    scrollLeft: 0,
-  })
   const {
     data,
     handleFetchMoreData,
@@ -72,13 +67,7 @@ const BarChart = (props: BarChartProps) => {
       const maxScrollWidth = (e.target as HTMLElement).scrollWidth * -1
       const scrollLeft = (e.target as HTMLElement).scrollLeft - screenWidth
 
-      setScrollValues({
-        screenWidth,
-        maxScrollWidth,
-        scrollLeft,
-      })
-
-      if (maxScrollWidth === scrollLeft) {
+      if (scrollLeft <= maxScrollWidth) {
         handleFetchMoreData()
       }
     },
@@ -230,28 +219,23 @@ const BarChart = (props: BarChartProps) => {
   }, [hasMounted, renderChart])
 
   return (
-    <>
-      <div className="relative isolate grid max-w-lg overflow-x-auto" dir="rtl">
-        {isFetchingMoreData && (
-          <div className="absolute top-1 right-3">
-            <Loader size="xs" />
-          </div>
-        )}
-
-        <svg ref={axisElementRef} />
-
-        <div
-          className="hide-scrollbar relative overflow-x-auto"
-          style={{ marginLeft: `${PADDING.LEFT}px` }}
-          ref={scrollableRef}
-        >
-          <svg ref={chartElementRef} />
+    <div className="relative isolate grid max-w-lg overflow-x-auto" dir="rtl">
+      {isFetchingMoreData && (
+        <div className="absolute top-1 right-3">
+          <Loader size="xs" />
         </div>
+      )}
+
+      <svg ref={axisElementRef} />
+
+      <div
+        className="hide-scrollbar relative overflow-x-auto"
+        style={{ marginLeft: `${PADDING.LEFT}px` }}
+        ref={scrollableRef}
+      >
+        <svg ref={chartElementRef} />
       </div>
-      <div className='text-sm whitespace-pre'>{scrollValues?.screenWidth}</div>
-      <div className='text-sm whitespace-pre'>{scrollValues?.maxScrollWidth}</div>
-      <div className='text-sm whitespace-pre'>{scrollValues?.scrollLeft}</div>
-    </>
+    </div>
   )
 }
 
