@@ -1,9 +1,9 @@
 import { PiePlot } from '@mui/x-charts/PieChart'
 import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer'
 import * as d3 from 'd3'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Transaction, Wallet } from '@/@types/shared'
-import { amountWithCurrency } from '@/utils/functions'
+import { amountWithCurrency, cn } from '@/utils/functions'
 
 type PieChartProps = {
   wallet: Wallet
@@ -12,6 +12,7 @@ type PieChartProps = {
 
 const PieChart = (props: PieChartProps) => {
   const { data, wallet } = props
+  const [shouldShowPercentage, setShouldShowPercentage] = useState(false)
 
   const pieData = useMemo(() => {
     const totalSpending = data.reduce((value, t) => value + t.amount, 0)
@@ -53,9 +54,15 @@ const PieChart = (props: PieChartProps) => {
       >
         <PiePlot />
       </ResponsiveChartContainer>
-      <div className="grid gap-2 self-center justify-self-center">
-        {pieData.map(({ color, id, value }) => (
-          <div key={id} className="flex items-center justify-between gap-6 text-xs">
+      <div
+        onClick={() => setShouldShowPercentage((b) => !b)}
+        className="grid gap-2 self-center justify-self-center"
+      >
+        {pieData.map(({ color, id, value, total }) => (
+          <div
+            key={id}
+            className="flex items-center justify-between gap-6 text-xs"
+          >
             <div className="flex items-center gap-1">
               <div
                 className="h-4 w-4 rounded"
@@ -64,9 +71,22 @@ const PieChart = (props: PieChartProps) => {
               <p className="capitalize">{id.toLowerCase()}</p>
             </div>
 
-            <p>
-              {amountWithCurrency(value, wallet?.country, wallet?.currency)}
-            </p>
+            <div className="grid-stack justify-items-end">
+              <p
+                className={cn(
+                  'transition-opacity',
+                  !shouldShowPercentage && 'opacity-0'
+                )}
+              >{`${Math.round((value / total) * 100)}%`}</p>
+              <p
+                className={cn(
+                  'transition-opacity',
+                  shouldShowPercentage && 'opacity-0'
+                )}
+              >
+                {amountWithCurrency(value, wallet?.country, wallet?.currency)}
+              </p>
+            </div>
           </div>
         ))}
       </div>
