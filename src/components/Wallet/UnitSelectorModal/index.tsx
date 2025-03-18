@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import Modal from '@/components/commons/Modal'
+import { SPENDING_PERIOD_UNIT_LABELS } from '@/utils/constants/spendingPeriod'
 import { SpendingPeriod } from '@/utils/enum'
 import { cn } from '@/utils/functions'
 
@@ -10,9 +11,15 @@ type UnitSelectorModalProps = {
 }
 
 const UnitSelectorModal = (props: UnitSelectorModalProps) => {
-  const { selectedUnit, setSelectedPeriodIndex,setSelectedUnit } = props
+  const { selectedUnit, setSelectedPeriodIndex, setSelectedUnit } = props
 
   const handleCloseModal = () => window.history.back()
+
+  const handleSelectOption = (sp: SpendingPeriod) => {
+    setSelectedUnit(sp)
+    setSelectedPeriodIndex(0)
+    handleCloseModal()
+  }
 
   return (
     <Modal paramKey="filter" paramValue="unit">
@@ -23,19 +30,30 @@ const UnitSelectorModal = (props: UnitSelectorModalProps) => {
         exit={{ translateY: '100%' }}
         transition={{ type: 'tween', ease: 'easeOut' }}
       >
-        Select Unit
-        {/* TODO: cleanup */}
+        <p className="text-center text-xl font-bold">Chart View</p>
+
+        <p className="text-center text-xs text-gray-500">
+          Select how would you like to view your spendings
+        </p>
+
         {Object.values(SpendingPeriod).map((sp) => (
           <div
             key={sp}
-            onClick={() => {
-              setSelectedUnit(sp)
-              setSelectedPeriodIndex(0)
-              handleCloseModal()
-            }}
-            className={cn(selectedUnit === sp && 'font-bold')}
+            onClick={() => handleSelectOption(sp)}
+            className={cn(
+              'flex items-center justify-between rounded-lg border border-gray-300 p-3'
+            )}
           >
-            {sp}
+            {SPENDING_PERIOD_UNIT_LABELS[sp]}
+
+            <div className="grid h-6 w-6 place-items-center rounded-full border border-gray-200">
+              <div
+                className={cn(
+                  'bg-primary-500 h-4 w-4 scale-0 rounded-full transition-transform',
+                  sp === selectedUnit && 'scale-100'
+                )}
+              />
+            </div>
           </div>
         ))}
       </motion.div>
