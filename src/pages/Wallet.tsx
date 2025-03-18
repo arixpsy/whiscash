@@ -113,15 +113,23 @@ const Wallet = () => {
         </div>
 
         <div className="p-3 py-6">
-          {wallet && selectedUnit !== SpendingPeriod.All && (
+          {getWallet.isPending ||
+          (selectedUnit !== SpendingPeriod.All && getChartData.isPending) ? (
             <>
-              <p className="mb-1 text-lg font-bold">Breakdown</p>
-
-              <PieChart
-                data={aggChartData[selectedPeriodIndex]?.transactions || []}
-                wallet={wallet}
-              />
+              <div className="mb-3 h-5 w-22 animate-pulse rounded-lg bg-gray-200" />
+              <PieChart.Skeleton />
             </>
+          ) : (
+            wallet &&
+            selectedUnit !== SpendingPeriod.All && (
+              <>
+                <p className="mb-1 text-lg font-bold">Breakdown</p>
+                <PieChart
+                  data={aggChartData[selectedPeriodIndex]?.transactions || []}
+                  wallet={wallet}
+                />
+              </>
+            )
           )}
         </div>
       </Page>

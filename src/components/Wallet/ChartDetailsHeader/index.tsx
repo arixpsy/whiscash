@@ -45,7 +45,7 @@ const ChartDetailsHeader = (props: ChartDetailsHeaderProps) => {
       case SpendingPeriod.Month:
         return `for ${dateTime.toFormat('LLLL yyyy')}`
       case SpendingPeriod.Week:
-        return `for ${dateTime.toFormat('d LLLL')}`
+        return `for the week of ${dateTime.toFormat('d LLLL')}`
       case SpendingPeriod.Day:
       default:
         return `for ${dateTime.toFormat('d LLLL')}`
