@@ -4,6 +4,7 @@ import * as d3 from 'd3'
 import { useMemo, useState } from 'react'
 import { Transaction, Wallet } from '@/@types/shared'
 import { amountWithCurrency, cn } from '@/utils/functions'
+import PieChartSkeleton from './Skeleton'
 
 type PieChartProps = {
   wallet: Wallet
@@ -93,5 +94,7 @@ const PieChart = (props: PieChartProps) => {
     </div>
   )
 }
+
+PieChart.Skeleton = PieChartSkeleton
 
 export default PieChart
