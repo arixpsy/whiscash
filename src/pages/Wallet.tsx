@@ -92,28 +92,36 @@ const Wallet = () => {
           </div>
 
           {/* Chart */}
-          {getWallet.isPending || getChartData.isPending ? (
+          {getWallet.isPending ||
+          (selectedUnit !== SpendingPeriod.All && getChartData.isPending) ? (
             <BarChart.Skeleton />
           ) : (
-            <BarChart
-              data={aggChartData}
-              handleFetchMoreData={() => getChartData.fetchNextPage()}
-              isFetchingMoreData={getChartData.isFetchingNextPage}
-              selectedIndex={selectedPeriodIndex}
-              setSelectedIndex={setSelectedPeriodIndex}
-              unit={selectedUnit}
-            />
+            wallet &&
+            (selectedUnit === SpendingPeriod.All ? (
+              <PieChart data={[]} wallet={wallet} /> // TODO:
+            ) : (
+              <BarChart
+                data={aggChartData}
+                handleFetchMoreData={() => getChartData.fetchNextPage()}
+                isFetchingMoreData={getChartData.isFetchingNextPage}
+                selectedIndex={selectedPeriodIndex}
+                setSelectedIndex={setSelectedPeriodIndex}
+                unit={selectedUnit}
+              />
+            ))
           )}
         </div>
 
         <div className="p-3 py-6">
-          <p className="mb-1 text-lg font-bold">Breakdown</p>
+          {wallet && selectedUnit !== SpendingPeriod.All && (
+            <>
+              <p className="mb-1 text-lg font-bold">Breakdown</p>
 
-          {wallet && (
-            <PieChart
-              data={aggChartData[selectedPeriodIndex] || []}
-              wallet={wallet}
-            />
+              <PieChart
+                data={aggChartData[selectedPeriodIndex]?.transactions || []}
+                wallet={wallet}
+              />
+            </>
           )}
         </div>
       </Page>
