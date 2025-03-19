@@ -18,7 +18,7 @@ const Settings = () => {
         </button>
 
         <div className="mt-9 grid place-items-center gap-1">
-          <img src={user?.imageUrl} className="h-20 w-20 rounded-full" />
+          <img src={user?.imageUrl} className="h-20 w-20 rounded-full" alt='profile avatar' />
           <div className="text-center">
             <p>{user?.fullName}</p>
             <p className="text-sm text-gray-500">

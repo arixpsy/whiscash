@@ -17,7 +17,7 @@ const Header = (props: PropsWithChildren) => {
         {/* Profile and Search Bar */}
         <div className="flex items-center gap-3">
           <button type="button" onClick={handleClickProfileImage}>
-            <img src={user?.imageUrl} className="h-10 w-10 rounded-full" />
+            <img src={user?.imageUrl} className="h-10 w-10 rounded-full" alt='profile avatar' />
           </button>
 
           <div>

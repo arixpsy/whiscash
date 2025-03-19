@@ -56,6 +56,7 @@ const WalletCarousel = (props: WalletCarouselProps) => {
             src="/whiscash.png"
             className="h-12"
             style={{ animation: 'swim 2s infinite' }}
+            alt='whiscash swimmming'
           />
         </div>
       </div>
