@@ -1,7 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { TbArrowBackUp, TbDotsVertical } from 'react-icons/tb'
-import { useNavigate, useParams } from 'react-router'
-import { DropdownButton, Page } from '@/components/commons'
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router'
+import { ConfirmationModal, DropdownButton, Page } from '@/components/commons'
 import {
   BarChart,
   ChartDetailsHeader,
@@ -9,13 +15,24 @@ import {
   UnitSelectorModal,
 } from '@/components/Wallet'
 import useWallet from '@/hooks/useWallet'
+import { Route } from '@/utils/constants/routes'
 import { SpendingPeriod } from '@/utils/enum'
 import { cn } from '@/utils/functions'
 
 const Wallet = () => {
   const { walletId } = useParams()
+  const location = useLocation()
+  const [, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { useGetWalletQuery, useGetWalletChartDataQuery } = useWallet()
+  const queryClient = useQueryClient()
+  const {
+    useArchiveWalletMutation,
+    useDeleteWalletMutation,
+    useGetWalletQuery,
+    useGetWalletChartDataQuery,
+  } = useWallet()
+  const archiveWallet = useArchiveWalletMutation(archiveWalletSuccessCB)
+  const deleteWallet = useDeleteWalletMutation(deleteWalletSuccessCB)
   const getWallet = useGetWalletQuery(walletId)
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(0)
   const [selectedUnit, setSelectedUnit] = useState<SpendingPeriod | undefined>(
@@ -33,6 +50,46 @@ const Wallet = () => {
   )
 
   const handleClickBack = () => document.startViewTransition(() => navigate(-1))
+
+  const handleClickArchiveOption = () => {
+    if (!wallet) return
+    setSearchParams({ confirmation: 'archive' })
+  }
+
+  const handleArchiveWallet = () => {
+    if (!wallet) return
+    archiveWallet.mutate(wallet.id)
+  }
+
+  const handleClickDeleteOption = () => {
+    if (!wallet) return
+    setSearchParams({ confirmation: 'delete' })
+  }
+
+  const handleDeleteWallet = () => {
+    if (!wallet) return
+    deleteWallet.mutate(wallet.id)
+  }
+
+  function archiveWalletSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'wallets', 'dashboard'],
+    })
+
+    if (wallet) {
+      queryClient.invalidateQueries({
+        queryKey: ['whiscash', 'wallets', wallet.id.toString()],
+      })
+    }
+
+    navigate(-1)
+  }
+
+  function deleteWalletSuccessCB() {
+    const lastRoute = location.state?.from
+
+    navigate(lastRoute ?? Route.WALLETS, { replace: true })
+  }
 
   useEffect(() => {
     if (wallet) setSelectedUnit(wallet.spendingPeriod)
@@ -58,20 +115,24 @@ const Wallet = () => {
                 {wallet?.name}
               </p>
 
-              {/* TODO: */}
               <DropdownButton className="z-20">
                 <DropdownButton.Trigger className="justify-self-end">
                   <TbDotsVertical className="h-6 w-6" />
                 </DropdownButton.Trigger>
 
                 <DropdownButton.Content className="grid min-w-24 gap-3">
+                  {/* TODO: */}
                   <DropdownButton.ContentOption>
                     Edit
                   </DropdownButton.ContentOption>
-                  <DropdownButton.ContentOption>
+                  <DropdownButton.ContentOption
+                    onClick={handleClickArchiveOption}
+                  >
                     Archive
                   </DropdownButton.ContentOption>
-                  <DropdownButton.ContentOption>
+                  <DropdownButton.ContentOption
+                    onClick={handleClickDeleteOption}
+                  >
                     Delete
                   </DropdownButton.ContentOption>
                 </DropdownButton.Content>
@@ -141,6 +202,22 @@ const Wallet = () => {
           setSelectedPeriodIndex={setSelectedPeriodIndex}
         />
       )}
+
+      <ConfirmationModal
+        paramValue="archive"
+        title="Archive this wallet?"
+        description="Archiving a wallet will remove it from the dashboard view. You will still be able to view this wallet in your wallets list."
+        onConfirm={handleArchiveWallet}
+        isConfirmLoading={archiveWallet.isPending}
+      />
+
+      <ConfirmationModal
+        paramValue="delete"
+        title="Delete this wallet?"
+        description="Deleting this wallet will remove it from your wallet list forever. Deleting a wallet will also remove all associated transactions as well."
+        onConfirm={handleDeleteWallet}
+        isConfirmLoading={false}
+      />
     </>
   )
 }

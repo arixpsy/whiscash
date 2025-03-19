@@ -12,9 +12,21 @@ import { SpendingPeriod } from '@/utils/enum'
 const useWallet = () => {
   const { createRequestConfig } = useToken()
 
+  const useArchiveWalletMutation = (onSuccess: (data: Wallet) => void) =>
+    useMutation({
+      mutationFn: whiscashApi.archiveWallet(createRequestConfig()),
+      onSuccess,
+    })
+
   const useCreateWalletMutation = (onSuccess: (data: Wallet) => void) =>
     useMutation({
       mutationFn: whiscashApi.createWallet(createRequestConfig()),
+      onSuccess,
+    })
+
+  const useDeleteWalletMutation = (onSuccess: (data: Wallet) => void) =>
+    useMutation({
+      mutationFn: whiscashApi.deleteWallet(createRequestConfig()),
       onSuccess,
     })
 
@@ -72,7 +84,9 @@ const useWallet = () => {
     })
 
   return {
+    useArchiveWalletMutation,
     useCreateWalletMutation,
+    useDeleteWalletMutation,
     useGetDashboardWalletsQuery,
     useGetMainWalletsQuery,
     useGetWalletQuery,

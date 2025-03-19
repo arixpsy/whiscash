@@ -107,7 +107,7 @@ const Transaction = () => {
 
       <ConfirmationModal
         paramValue="delete"
-        title="Are you sure you want to delete this transaction?"
+        title="Delete this transaction?"
         description="Deleting this transaction will remove it from your transaction history forever."
         onConfirm={handleDeleteTransaction}
         isConfirmLoading={deleteTransaction.isPending}

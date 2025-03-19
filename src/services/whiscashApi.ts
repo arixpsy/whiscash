@@ -19,6 +19,13 @@ const whiscashApi = axios.create({
   },
 })
 
+const archiveWallet =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (walletId: number): Promise<Wallet> =>
+    whiscashApi
+      .put(`/wallet/${walletId}/archive`, undefined, await config)
+      .then((res) => res.data)
+
 const createTransaction =
   (config: Promise<AxiosRequestConfig>) =>
   async (data: CreateTransactionRequest): Promise<Transaction> =>
@@ -34,6 +41,13 @@ const deleteTransaction =
   async (transactionId: number): Promise<null> =>
     whiscashApi
       .delete(`/transaction/${transactionId}`, await config)
+      .then((res) => res.data)
+
+const deleteWallet =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (walletId: number): Promise<Wallet> =>
+    whiscashApi
+      .delete(`/wallet/${walletId}`, await config)
       .then((res) => res.data)
 
 const getDashboardWallets =
@@ -61,7 +75,9 @@ const getWallet =
 const getWalletChartData =
   (config: Promise<AxiosRequestConfig>) =>
   async (walletId?: string): Promise<GetWalletChartDataResponse> =>
-    whiscashApi.get(`/wallet/${walletId}/chart`, await config).then((res) => res.data)
+    whiscashApi
+      .get(`/wallet/${walletId}/chart`, await config)
+      .then((res) => res.data)
 
 const getWallets =
   (config: Promise<AxiosRequestConfig>) =>
@@ -81,9 +97,11 @@ const updateTransaction =
       .then((res) => res.data)
 
 export default {
+  archiveWallet,
   createTransaction,
   createWallet,
   deleteTransaction,
+  deleteWallet,
   getDashboardWallets,
   getMainWallets,
   getTransaction,
