@@ -140,12 +140,16 @@ const Wallet = () => {
                 {wallet?.name}
               </p>
 
-              <DropdownButton className="z-20">
+              <DropdownButton className="z-20 justify-self-end">
                 <DropdownButton.Trigger className="justify-self-end">
                   <TbDotsVertical className="h-6 w-6" />
                 </DropdownButton.Trigger>
 
-                <DropdownButton.Content className="grid min-w-24 gap-3">
+                <DropdownButton.Content
+                  className="grid min-w-24 gap-3"
+                  triggerAnchor="topRight"
+                  contentAnchor="topRight"
+                >
                   {/* TODO: */}
                   <DropdownButton.ContentOption>
                     Edit

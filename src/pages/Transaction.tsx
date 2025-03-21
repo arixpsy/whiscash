@@ -71,7 +71,11 @@ const Transaction = () => {
               <TbDotsVertical className="h-6 w-6" />
             </DropdownButton.Trigger>
 
-            <DropdownButton.Content className="grid min-w-24 gap-3">
+            <DropdownButton.Content
+              className="grid min-w-24 gap-3"
+              triggerAnchor="topRight"
+              contentAnchor="topRight"
+            >
               <DropdownButton.ContentOption onClick={handleClickEditOption}>
                 Edit
               </DropdownButton.ContentOption>

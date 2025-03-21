@@ -49,7 +49,7 @@ const DropdownButton = (
   return (
     <DropdownButtonContext.Provider value={{ isOpen, setIsOpen }}>
       <div
-        className={cn('relative isolate', className)}
+        className={cn('relative isolate w-min', className)}
         style={{ display: 'inherit' }}
       >
         {triggerElement}
@@ -64,8 +64,18 @@ const DropdownButton = (
   )
 }
 
-const Content = (props: HTMLAttributes<HTMLDivElement>) => {
-  const { children, className } = props
+type ContentProps = {
+  contentAnchor?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
+  triggerAnchor?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight'
+} & HTMLAttributes<HTMLDivElement>
+
+const Content = (props: ContentProps) => {
+  const {
+    children,
+    className,
+    contentAnchor = 'topLeft',
+    triggerAnchor = 'topleft',
+  } = props
   const context = useContext(DropdownButtonContext)
 
   if (!context)
@@ -79,22 +89,73 @@ const Content = (props: HTMLAttributes<HTMLDivElement>) => {
         <motion.div
           key="dropdown-menu"
           className={cn(
-            'absolute top-0 right-0 rounded-lg bg-gray-100 p-3 shadow-lg',
+            'absolute min-w-max rounded-lg bg-gray-100 p-3 shadow-lg',
+            {
+              'top-0 left-0':
+                triggerAnchor === 'topLeft' && contentAnchor === 'topLeft',
+              'top-0 right-[100%]':
+                triggerAnchor === 'topLeft' && contentAnchor === 'topRight',
+              'bottom-[100%] left-0':
+                triggerAnchor === 'topLeft' && contentAnchor === 'bottomLeft',
+              'right-[100%] bottom-[100%]':
+                triggerAnchor === 'topLeft' && contentAnchor === 'bottomRight',
+
+              'top-0 left-[100%]':
+                triggerAnchor === 'topRight' && contentAnchor === 'topLeft',
+              'top-0 right-0':
+                triggerAnchor === 'topRight' && contentAnchor === 'topRight',
+              'bottom-[100%] left-[100%]':
+                triggerAnchor === 'topRight' && contentAnchor === 'bottomLeft',
+              'right-0 bottom-[100%]':
+                triggerAnchor === 'topRight' && contentAnchor === 'bottomRight',
+
+              'top-[100%] left-0':
+                triggerAnchor === 'bottomLeft' && contentAnchor === 'topLeft',
+              'top-[100%] right-[100%]':
+                triggerAnchor === 'bottomLeft' && contentAnchor === 'topRight',
+              'bottom-0 left-0':
+                triggerAnchor === 'bottomLeft' &&
+                contentAnchor === 'bottomLeft',
+              'right-[100%] bottom-0':
+                triggerAnchor === 'bottomLeft' &&
+                contentAnchor === 'bottomRight',
+
+              'top-[100%] left-[100%]':
+                triggerAnchor === 'bottomRight' && contentAnchor === 'topLeft',
+              'top-[100%] right-0':
+                triggerAnchor === 'bottomRight' && contentAnchor === 'topRight',
+              'bottom-0 left-[100%]':
+                triggerAnchor === 'bottomRight' &&
+                contentAnchor === 'bottomLeft',
+              'right-0 bottom-0':
+                triggerAnchor === 'bottomRight' &&
+                contentAnchor === 'bottomRight',
+            },
             className
           )}
           initial={{
             opacity: 0,
             scaleX: 0,
             scaleY: 0,
-            originX: 1,
-            originY: 0,
+            originX:
+              contentAnchor === 'topRight' || contentAnchor === 'bottomRight'
+                ? 1
+                : 0,
+            originY:
+              contentAnchor === 'topRight' || contentAnchor === 'topLeft'
+                ? 0
+                : 1,
           }}
           animate={{
             opacity: 1,
             scaleX: 1,
             scaleY: 1,
           }}
-          exit={{ opacity: 0, scaleX: 0, scaleY: 0 }}
+          exit={{
+            opacity: 0,
+            scaleX: 0,
+            scaleY: 0,
+          }}
         >
           {children}
         </motion.div>
