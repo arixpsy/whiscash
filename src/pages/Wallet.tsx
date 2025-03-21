@@ -128,7 +128,7 @@ const Wallet = () => {
                   <DropdownButton.ContentOption
                     onClick={handleClickArchiveOption}
                   >
-                    Archive
+                    {wallet?.archivedAt ? 'Unarchive' : 'Archive'}
                   </DropdownButton.ContentOption>
                   <DropdownButton.ContentOption
                     onClick={handleClickDeleteOption}
