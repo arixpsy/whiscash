@@ -2,7 +2,7 @@ import { HTMLAttributes } from 'react'
 import { cn } from '@/utils/functions'
 
 type LoaderProps = {
-  size?: 'xs' | 's' | 'm'
+  size?: 'xxs' | 'xs' | 's' | 'm'
   color?: 'primary' | 'inherit' | 'white'
   trackColor?: 'gray' | 'red'
 } & HTMLAttributes<SVGElement>
@@ -21,6 +21,7 @@ const Loader = (props: LoaderProps) => {
       className={cn(
         'animate-spin',
         {
+          'h-3 w-3': size === 'xxs',
           'h-5 w-5': size === 'xs',
           'h-8 w-8': size === 's',
           'h-12 w-12': size === 'm',

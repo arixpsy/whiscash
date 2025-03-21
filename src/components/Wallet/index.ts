@@ -1,3 +1,4 @@
+export { default as ArchiveBanner } from './ArchiveBanner'
 export { default as BarChart } from './BarChart'
 export { default as ChartDetailsHeader } from './ChartDetailsHeader'
 export { default as PieChart } from './PieChart'

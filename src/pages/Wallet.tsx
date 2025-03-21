@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { AnimatePresence } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 import { TbArrowBackUp, TbDotsVertical } from 'react-icons/tb'
 import {
@@ -9,6 +10,7 @@ import {
 } from 'react-router'
 import { ConfirmationModal, DropdownButton, Page } from '@/components/commons'
 import {
+  ArchiveBanner,
   BarChart,
   ChartDetailsHeader,
   PieChart,
@@ -32,6 +34,7 @@ const Wallet = () => {
     useGetWalletChartDataQuery,
   } = useWallet()
   const archiveWallet = useArchiveWalletMutation(archiveWalletSuccessCB)
+  const unarchiveWallet = useArchiveWalletMutation(unarchiveWalletSuccessCB)
   const deleteWallet = useDeleteWalletMutation(deleteWalletSuccessCB)
   const getWallet = useGetWalletQuery(walletId)
   const [selectedPeriodIndex, setSelectedPeriodIndex] = useState(0)
@@ -61,6 +64,11 @@ const Wallet = () => {
     archiveWallet.mutate(wallet.id)
   }
 
+  const handleUnarchiveWallet = () => {
+    if (!wallet) return
+    unarchiveWallet.mutate(wallet.id)
+  }
+
   const handleClickDeleteOption = () => {
     if (!wallet) return
     setSearchParams({ confirmation: 'delete' })
@@ -85,6 +93,18 @@ const Wallet = () => {
     navigate(-1)
   }
 
+  function unarchiveWalletSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'wallets', 'dashboard'],
+    })
+
+    if (wallet) {
+      queryClient.invalidateQueries({
+        queryKey: ['whiscash', 'wallets', wallet.id.toString()],
+      })
+    }
+  }
+
   function deleteWalletSuccessCB() {
     const lastRoute = location.state?.from
 
@@ -97,7 +117,12 @@ const Wallet = () => {
 
   return (
     <>
-      <Page className="grid auto-rows-min items-start bg-gray-100">
+      <Page
+        className={cn(
+          'grid auto-rows-min items-start bg-gray-100',
+          wallet?.archivedAt && 'pb-[50px]'
+        )}
+      >
         <div className="bg-white">
           {/* Page Header */}
           <div className="sticky top-0 z-10 grid">
@@ -125,11 +150,14 @@ const Wallet = () => {
                   <DropdownButton.ContentOption>
                     Edit
                   </DropdownButton.ContentOption>
-                  <DropdownButton.ContentOption
-                    onClick={handleClickArchiveOption}
-                  >
-                    {wallet?.archivedAt ? 'Unarchive' : 'Archive'}
-                  </DropdownButton.ContentOption>
+                  {wallet && !wallet.archivedAt && (
+                    <DropdownButton.ContentOption
+                      onClick={handleClickArchiveOption}
+                    >
+                      Archive
+                    </DropdownButton.ContentOption>
+                  )}
+
                   <DropdownButton.ContentOption
                     onClick={handleClickDeleteOption}
                   >
@@ -193,6 +221,15 @@ const Wallet = () => {
             )
           )}
         </div>
+
+        <AnimatePresence>
+          {wallet && wallet.archivedAt && (
+            <ArchiveBanner
+              onClickRevert={handleUnarchiveWallet}
+              isLoading={unarchiveWallet.isPending}
+            />
+          )}
+        </AnimatePresence>
       </Page>
 
       {!!selectedUnit && (
@@ -216,7 +253,7 @@ const Wallet = () => {
         title="Delete this wallet?"
         description="Deleting this wallet will remove it from your wallet list forever. Deleting a wallet will also remove all associated transactions as well."
         onConfirm={handleDeleteWallet}
-        isConfirmLoading={false}
+        isConfirmLoading={deleteWallet.isPending}
       />
     </>
   )
