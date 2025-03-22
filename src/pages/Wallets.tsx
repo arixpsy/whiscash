@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { BiFilter } from 'react-icons/bi'
-import { PiSquaresFour } from 'react-icons/pi'
-import { useNavigate } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import {
   Banner,
@@ -9,16 +8,24 @@ import {
   Page,
   SearchBar,
 } from '@/components/commons'
-import { WalletTile } from '@/components/Wallets'
+import { FilterModal, WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
+import { WalletFilterOptions } from '@/utils/constants/filter'
 import { Route } from '@/utils/constants/routes'
 
 const Wallets = () => {
   const navigate = useNavigate()
+  const [, setSearchParams] = useSearchParams()
   const { useGetWalletsQuery } = useWallet()
   const [searchPhrase, setSearchPhrase] = useState('')
+  const [filters, setFilters] = useState<{ type: WalletFilterOptions }>({
+    type: WalletFilterOptions.ALL,
+  })
   const [debounceSearchPhrase] = useDebounce(searchPhrase, 250)
-  const getWallets = useGetWalletsQuery({ searchPhrase: debounceSearchPhrase })
+  const getWallets = useGetWalletsQuery({
+    searchPhrase: debounceSearchPhrase,
+    ...filters,
+  })
   const wallets = getWallets?.data || []
 
   const handleNavigateToWallet = (walletId: number) =>
@@ -28,6 +35,8 @@ const Wallets = () => {
       })
     )
 
+  const handleClickFilter = () => setSearchParams({ filter: 'wallet' })
+
   // display states
   const shouldDisplaySkeleton = getWallets.isPending
   const shouldDisplayWalletsData = !getWallets.isPending && wallets.length > 0
@@ -36,18 +45,19 @@ const Wallets = () => {
   return (
     <>
       <Page className="grid max-h-svh grid-rows-[auto_1fr]">
-        <div className="p-3">
-          <div className="flex w-full justify-between">
-            <button type="button">
+        <div className="grid gap-3 p-3">
+          <div className="grid grid-cols-[1fr_auto_1fr]">
+            <div />
+            <h1 className="text-center text-lg font-bold">Wallets</h1>
+
+            <button
+              type="button"
+              className="justify-self-end"
+              onClick={handleClickFilter}
+            >
               <BiFilter className="h-6 w-6" />
             </button>
-
-            <button type="button">
-              <PiSquaresFour className="h-6 w-6" />
-            </button>
           </div>
-
-          <h1 className="my-3 text-center text-2xl font-bold">Wallets</h1>
 
           <SearchBar setValue={setSearchPhrase} />
         </div>
@@ -76,6 +86,8 @@ const Wallets = () => {
       </Page>
 
       <CreateWalletModal />
+
+      <FilterModal filters={filters} setFilters={setFilters} />
     </>
   )
 }

@@ -1,8 +1,7 @@
 import { motion } from 'motion/react'
-import Modal from '@/components/commons/Modal'
+import { Modal, ModalRadioOption } from '@/components/commons'
 import { SPENDING_PERIOD_UNIT_LABELS } from '@/utils/constants/spendingPeriod'
 import { SpendingPeriod } from '@/utils/enum'
-import { cn } from '@/utils/functions'
 
 type UnitSelectorModalProps = {
   selectedUnit: SpendingPeriod
@@ -37,24 +36,12 @@ const UnitSelectorModal = (props: UnitSelectorModalProps) => {
         </p>
 
         {Object.values(SpendingPeriod).map((sp) => (
-          <div
+          <ModalRadioOption
             key={sp}
+            label={SPENDING_PERIOD_UNIT_LABELS[sp]}
             onClick={() => handleSelectOption(sp)}
-            className={cn(
-              'flex items-center justify-between rounded-lg border border-gray-300 p-3'
-            )}
-          >
-            {SPENDING_PERIOD_UNIT_LABELS[sp]}
-
-            <div className="grid h-6 w-6 place-items-center rounded-full border border-gray-200">
-              <div
-                className={cn(
-                  'bg-primary-500 h-4 w-4 scale-0 rounded-full transition-transform',
-                  sp === selectedUnit && 'scale-100'
-                )}
-              />
-            </div>
-          </div>
+            isSelected={sp === selectedUnit}
+          />
         ))}
       </motion.div>
     </Modal>
