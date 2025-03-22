@@ -1,7 +1,7 @@
 export const WalletFilterOptions = {
   ALL: 'ALL',
   ACTIVE: 'ACTIVE',
-  ARCHIVED: 'archived',
+  ARCHIVED: 'ARCHIVED',
 } as const
 
 export type WalletFilterOptions =

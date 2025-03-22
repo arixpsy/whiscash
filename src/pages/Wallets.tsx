@@ -12,6 +12,7 @@ import { FilterModal, WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
 import { WalletFilterOptions } from '@/utils/constants/filter'
 import { Route } from '@/utils/constants/routes'
+import { cn } from '@/utils/functions'
 
 const Wallets = () => {
   const navigate = useNavigate()
@@ -52,10 +53,17 @@ const Wallets = () => {
 
             <button
               type="button"
-              className="justify-self-end"
+              className="relative justify-self-end"
               onClick={handleClickFilter}
             >
               <BiFilter className="h-6 w-6" />
+
+              <div
+                className={cn(
+                  'bg-primary-500 absolute top-[5px] right-0 h-2 w-2 scale-0 rounded-full transition-transform',
+                  filters.type !== 'ALL' && 'scale-100'
+                )}
+              />
             </button>
           </div>
 
