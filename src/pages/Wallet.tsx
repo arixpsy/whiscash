@@ -191,7 +191,10 @@ const Wallet = () => {
           ) : (
             wallet &&
             (selectedUnit === SpendingPeriod.All ? (
-              <PieChart data={[]} wallet={wallet} /> // TODO:
+              <PieChart
+                data={aggChartData[selectedPeriodIndex]?.transactions || []}
+                wallet={wallet}
+              />
             ) : (
               <BarChart
                 data={aggChartData}

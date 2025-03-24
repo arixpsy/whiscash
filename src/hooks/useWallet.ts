@@ -74,7 +74,7 @@ const useWallet = () => {
         ...lastPage,
         offset: lastPage.offset + lastPage.limit,
       }),
-      enabled: !!walletId && !!unit && unit !== SpendingPeriod.All,
+      enabled: !!walletId && !!unit,
     })
 
   const useGetWalletsQuery = (req: GetWalletsRequest) =>

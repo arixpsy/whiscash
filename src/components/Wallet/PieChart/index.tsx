@@ -39,7 +39,7 @@ const PieChart = (props: PieChartProps) => {
   }, [data])
 
   return (
-    <div className="grid w-full grid-cols-2 rounded-lg bg-white p-6 px-3 shadow-lg">
+    <div className="grid w-full grid-cols-[minmax(120px,1fr)_1fr] rounded-lg bg-white p-6 px-3 shadow-lg">
       <ResponsiveChartContainer
         height={120}
         series={[
@@ -48,8 +48,8 @@ const PieChart = (props: PieChartProps) => {
             type: 'pie',
             innerRadius: 20,
             outerRadius: 60,
-            paddingAngle: 5,
-            cornerRadius: 5,
+            paddingAngle: 3,
+            cornerRadius: 3,
           },
         ]}
       >
@@ -62,7 +62,7 @@ const PieChart = (props: PieChartProps) => {
         {pieData.map(({ color, id, value, total }) => (
           <div
             key={id}
-            className="flex items-center justify-between gap-6 text-xs"
+            className="flex items-center justify-between gap-4 text-xs"
           >
             <div className="flex items-center gap-1">
               <div

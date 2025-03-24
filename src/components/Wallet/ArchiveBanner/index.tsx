@@ -12,7 +12,7 @@ const ArchiveBanner = (props: ArchiveBannerProps) => {
 
   return (
     <motion.div
-      className="fixed right-0 bottom-0 left-0 flex items-center justify-center gap-3 bg-gray-600 py-3 text-center text-sm text-white"
+      className="absolute right-0 bottom-0 left-0 flex items-center justify-center gap-3 bg-gray-600 py-3 text-center text-sm text-white"
       initial={{ translateY: '100%' }}
       animate={{ translateY: '0%' }}
       exit={{ translateY: '100%' }}
