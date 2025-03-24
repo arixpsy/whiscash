@@ -49,7 +49,7 @@ const useTransaction = () => {
       })),
     })
 
-  const useUpdateTransactionMutation = (onSuccess: () => void) =>
+  const useUpdateTransactionMutation = (onSuccess: (data: Transaction) => void) =>
     useMutation({
       mutationFn: whiscashApi.updateTransaction(createRequestConfig()),
       onSuccess,

@@ -163,7 +163,19 @@ const TransactionModal = (props: TransactionModalProps) => {
     handleCloseModal()
   }
 
-  function updateTransactionSuccessCB() {
+  function updateTransactionSuccessCB(data: Transaction) {
+    if (!existingTransaction) return
+
+    reset(
+      getDefaultValues({
+        ...data,
+        currency: existingTransaction.currency,
+        country: existingTransaction.country,
+        name: existingTransaction.name,
+        subWalletOf: existingTransaction.subWalletOf,
+      })
+    )
+
     queryClient.invalidateQueries({
       queryKey: ['whiscash', 'transactions', formWalletId.toString()],
     })

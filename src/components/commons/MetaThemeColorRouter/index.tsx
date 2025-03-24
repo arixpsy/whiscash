@@ -20,6 +20,7 @@ const MetaThemeColorRouter = () => {
 
     if (
       searchParams.get('create') ||
+      searchParams.get('update') ||
       searchParams.get('field') ||
       searchParams.get('confirmation') ||
       searchParams.get('filter')
