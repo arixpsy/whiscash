@@ -1,7 +1,7 @@
 import { PiePlot } from '@mui/x-charts/PieChart'
 import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer'
 import * as d3 from 'd3'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, HTMLAttributes } from 'react'
 import { Transaction, Wallet } from '@/@types/shared'
 import { amountWithCurrency, cn } from '@/utils/functions'
 import PieChartSkeleton from './Skeleton'
@@ -9,10 +9,10 @@ import PieChartSkeleton from './Skeleton'
 type PieChartProps = {
   wallet: Wallet
   data: Array<Transaction>
-}
+} & HTMLAttributes<HTMLDivElement>
 
 const PieChart = (props: PieChartProps) => {
-  const { data, wallet } = props
+  const { className, data, wallet } = props
   const [shouldShowPercentage, setShouldShowPercentage] = useState(false)
 
   const pieData = useMemo(() => {
@@ -39,7 +39,12 @@ const PieChart = (props: PieChartProps) => {
   }, [data])
 
   return (
-    <div className="grid w-full grid-cols-[minmax(120px,1fr)_1fr] rounded-lg bg-white p-6 px-3 shadow-lg">
+    <div
+      className={cn(
+        'grid w-full grid-cols-[minmax(120px,1fr)_1fr] gap-y-3 rounded-lg bg-white p-6 px-3',
+        className
+      )}
+    >
       <ResponsiveChartContainer
         height={120}
         series={[

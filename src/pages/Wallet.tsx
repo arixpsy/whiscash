@@ -223,6 +223,7 @@ const Wallet = () => {
                 <PieChart
                   data={aggChartData[selectedPeriodIndex]?.transactions || []}
                   wallet={wallet}
+                  className="shadow-lg"
                 />
               </>
             )
