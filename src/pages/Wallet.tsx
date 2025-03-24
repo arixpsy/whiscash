@@ -112,8 +112,8 @@ const Wallet = () => {
   }
 
   useEffect(() => {
-    if (wallet) setSelectedUnit(wallet.spendingPeriod)
-  }, [wallet])
+    if (!selectedUnit && wallet) setSelectedUnit(wallet.spendingPeriod)
+  }, [selectedUnit, wallet])
 
   return (
     <>
