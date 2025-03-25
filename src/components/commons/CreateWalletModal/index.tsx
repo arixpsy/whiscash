@@ -14,7 +14,7 @@ import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
 import WalletSelector from './WalletSelector'
 
-const CreateWalletModal = () => {
+const WalletModal = () => {
   const queryClient = useQueryClient()
   const { useCreateWalletMutation } = useWallet()
   const createWallet = useCreateWalletMutation(createWalletSuccessCB)
@@ -153,4 +153,4 @@ const CreateWalletModal = () => {
   )
 }
 
-export default CreateWalletModal
+export default WalletModal
