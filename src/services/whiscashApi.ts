@@ -9,6 +9,7 @@ import {
   Transaction,
   TransactionWithWallet,
   UpdateTransactionRequest,
+  UpdateWalletRequest,
   Wallet,
 } from '@/@types/shared'
 
@@ -96,6 +97,13 @@ const updateTransaction =
       .put(`/transaction/${data.id}`, data, await config)
       .then((res) => res.data)
 
+const updateWallet =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (data: UpdateWalletRequest): Promise<Wallet> =>
+    whiscashApi
+      .put(`/wallet/${data.id}`, data, await config)
+      .then((res) => res.data)
+
 export default {
   archiveWallet,
   createTransaction,
@@ -110,4 +118,5 @@ export default {
   getWallets,
   getWalletTransactions,
   updateTransaction,
+  updateWallet,
 }

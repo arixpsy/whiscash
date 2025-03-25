@@ -4,7 +4,7 @@ import { Control, useController } from 'react-hook-form'
 import { TbArrowBackUp } from 'react-icons/tb'
 import { useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
-import { CreateWalletRequest } from '@/@types/shared'
+import { CreateWalletRequest, Wallet } from '@/@types/shared'
 import { Banner, Modal, SearchBar } from '@/components/commons'
 import WalletTile from '@/components/Wallets/WalletTile'
 import useWallet from '@/hooks/useWallet'
@@ -12,10 +12,11 @@ import useWallet from '@/hooks/useWallet'
 type WalletSelectorProps = {
   currency?: string
   control: Control<CreateWalletRequest>
+  existingWallet?: Wallet
 }
 
 const WalletSelector = (props: WalletSelectorProps) => {
-  const { control, currency } = props
+  const { control, currency, existingWallet } = props
   const [searchParam, setSearchParams] = useSearchParams()
   const { useGetMainWalletsQuery } = useWallet()
   const [searchPhrase, setSearchPhrase] = useState('')
@@ -29,7 +30,10 @@ const WalletSelector = (props: WalletSelectorProps) => {
     control,
   })
 
-  const wallets = useMemo(() => getWallets.data || [], [getWallets.data])
+  const wallets = useMemo(
+    () => getWallets.data?.filter((w) => w.id !== existingWallet?.id) || [],
+    [getWallets.data, existingWallet]
+  )
   const selectedWallet = useMemo(
     () => wallets.find((wallet) => wallet.id === subWalletOfField.value),
     [subWalletOfField.value, wallets]
@@ -74,7 +78,12 @@ const WalletSelector = (props: WalletSelectorProps) => {
         )}
       </button>
 
-      <Modal portalKey="field" paramKey="field" paramValue="subWalletOf" withoutBackground>
+      <Modal
+        portalKey="field"
+        paramKey="field"
+        paramValue="subWalletOf"
+        withoutBackground
+      >
         <motion.div
           className="grid h-full w-full grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
           initial={{ translateY: '100%' }}

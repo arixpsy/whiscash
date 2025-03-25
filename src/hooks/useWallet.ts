@@ -83,6 +83,12 @@ const useWallet = () => {
       queryFn: whiscashApi.getWallets(createRequestConfig({ params: req })),
     })
 
+  const useUpdateWalletMutation = (onSuccess: (data: Wallet) => void) =>
+    useMutation({
+      mutationFn: whiscashApi.updateWallet(createRequestConfig()),
+      onSuccess,
+    })
+
   return {
     useArchiveWalletMutation,
     useCreateWalletMutation,
@@ -92,6 +98,7 @@ const useWallet = () => {
     useGetWalletQuery,
     useGetWalletChartDataQuery,
     useGetWalletsQuery,
+    useUpdateWalletMutation,
   }
 }
 

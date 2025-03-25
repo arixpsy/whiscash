@@ -34,6 +34,7 @@ const FilterModal = (props: FilterModalProps) => {
 
         {Object.values(WalletFilterOptions).map((op) => (
           <ModalRadioOption
+            key={op}
             label={op}
             isSelected={op === filters.type}
             onClick={() => handleSelectOption(op)}

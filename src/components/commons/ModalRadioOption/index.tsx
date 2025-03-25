@@ -2,17 +2,15 @@ import { cn } from '@/utils/functions'
 
 type ModalRadioOption = {
   isSelected: boolean
-  key?: string
   label: string
   onClick: () => void
 }
 
 const ModalRadioOption = (props: ModalRadioOption) => {
-  const { isSelected, key, label, onClick } = props
+  const { isSelected, label, onClick } = props
 
   return (
     <div
-      key={key ? key : label}
       onClick={onClick}
       className={cn(
         'flex items-center justify-between rounded-lg border border-gray-300 p-3 capitalize'

@@ -95,13 +95,18 @@ export const GetWalletChartDataResponseSchema = z.array(
 export const GetWalletsRequestSchema = z.object({
   searchPhrase: z.string().optional(),
   currency: z.string().length(3).optional(),
-  type: z.string().optional()
+  type: z.string().optional(),
 })
 
 export const GetWalletsResponseSchema = z.array(WalletSchema)
 
 export const UpdateTransactionRequestSchema =
   CreateTransactionRequestSchema.merge(z.object({ id: z.number() }))
+
+export const UpdateWalletRequestSchema = CreateWalletRequestSchema.omit({
+  currency: true,
+  country: true,
+}).merge(z.object({ id: z.number() }))
 
 export type CreateTransactionRequest = z.infer<
   typeof CreateTransactionRequestSchema
@@ -130,6 +135,7 @@ export type TransactionWithWallet = z.infer<typeof TransactionWithWalletSchema>
 export type UpdateTransactionRequest = z.infer<
   typeof UpdateTransactionRequestSchema
 >
+export type UpdateWalletRequest = z.infer<typeof UpdateWalletRequestSchema>
 export type Wallet = z.infer<typeof WalletSchema>
 export type WalletWithSpendingPeriodTotal = z.infer<
   typeof WalletWithSpendingPeriodTotalSchema
