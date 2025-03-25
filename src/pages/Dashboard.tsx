@@ -4,7 +4,7 @@ import { Wallet } from '@/@types/shared'
 import {
   Banner,
   TransactionModal,
-  CreateWalletModal,
+  WalletModal,
   Page,
   TransactionTile,
 } from '@/components/commons'
@@ -99,7 +99,7 @@ const Dashboard = () => {
         />
       )}
 
-      <CreateWalletModal />
+      <WalletModal />
     </>
   )
 }

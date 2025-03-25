@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
 import {
   Banner,
-  CreateWalletModal,
+  WalletModal,
   Page,
   SearchBar,
 } from '@/components/commons'
@@ -93,7 +93,7 @@ const Wallets = () => {
         </div>
       </Page>
 
-      <CreateWalletModal />
+      <WalletModal />
 
       <FilterModal filters={filters} setFilters={setFilters} />
     </>
