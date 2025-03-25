@@ -3,21 +3,36 @@ import { useQueryClient } from '@tanstack/react-query'
 import { motion, TargetAndTransition } from 'motion/react'
 import { FocusEvent } from 'react'
 import { useForm } from 'react-hook-form'
+import { useLocation, useNavigate } from 'react-router'
 import { IoClose } from 'react-icons/io5'
 import { MdWallet } from 'react-icons/md'
-import { CreateWalletRequest, CreateWalletRequestSchema } from '@/@types/shared'
+import {
+  CreateWalletRequest,
+  CreateWalletRequestSchema,
+  Wallet,
+} from '@/@types/shared'
 import { FormField, Loader, Modal } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
+import { Route } from '@/utils/constants/routes'
 import { SpendingPeriod } from '@/utils/constants/spendingPeriod'
 import { cn } from '@/utils/functions'
 import CountryCurrencySelector from './CountryCurrencySelector'
 import SpendingPeriodRadioInput from './SpendingPeriodRadioInput'
 import WalletSelector from './WalletSelector'
 
-const WalletModal = () => {
+type WalletModalProps = {
+  action?: 'create' | 'update'
+  existingWallet?: Wallet
+}
+
+const WalletModal = (props: WalletModalProps) => {
+  const { action = 'create', existingWallet } = props
+  const location = useLocation()
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { useCreateWalletMutation } = useWallet()
+  const { useCreateWalletMutation, useUpdateWalletMutation } = useWallet()
   const createWallet = useCreateWalletMutation(createWalletSuccessCB)
+  const updateWallet = useUpdateWalletMutation(updateWalletSuccessCB)
   const {
     control,
     formState: { errors },
@@ -28,13 +43,7 @@ const WalletModal = () => {
     watch,
     reset,
   } = useForm({
-    defaultValues: {
-      name: '',
-      spendingPeriod: SpendingPeriod.Month,
-      currency: undefined,
-      country: undefined,
-      subWalletOf: undefined,
-    },
+    defaultValues: getDefaultValues(existingWallet) as CreateWalletRequest,
     resolver: zodResolver(CreateWalletRequestSchema),
   })
   const numOfChars = watch('name').length
@@ -42,10 +51,29 @@ const WalletModal = () => {
 
   const handleFormSubmit = handleSubmit((data: CreateWalletRequest) => {
     if (createWallet.isPending) return
-    createWallet.mutate(data)
+    if (updateWallet.isPending) return
+
+    if (action === 'create') {
+      createWallet.mutate(data)
+      return
+    }
+
+    if (existingWallet) {
+      updateWallet.mutate({ id: existingWallet.id, ...data })
+      return
+    }
   })
 
-  const handleCloseModal = () => window.history.back()
+  const handleCloseModal = () => {
+    const lastRoute = location.state?.from
+
+    if (lastRoute) {
+      navigate(-1)
+      return
+    }
+
+    navigate(Route.DASHBOARD)
+  }
 
   const handleNameInputBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value.trim() === '') {
@@ -60,13 +88,41 @@ const WalletModal = () => {
     if (translateY === '100%') reset()
   }
 
+  function getDefaultValues(wallet?: Wallet) {
+    if (!wallet)
+      return {
+        name: '',
+        spendingPeriod: SpendingPeriod.Month,
+        currency: undefined,
+        country: undefined,
+        subWalletOf: undefined,
+      }
+
+    return {
+      name: wallet.name,
+      spendingPeriod: wallet.spendingPeriod,
+      currency: wallet.currency,
+      country: wallet.country,
+      subWalletOf: wallet.subWalletOf || undefined,
+    }
+  }
+
   function createWalletSuccessCB() {
     queryClient.invalidateQueries({ queryKey: ['whiscash', 'wallets'] })
     handleCloseModal()
   }
 
+  function updateWalletSuccessCB(data: Wallet) {
+    if (!existingWallet) return
+
+    reset(getDefaultValues(data))
+
+    queryClient.invalidateQueries({ queryKey: ['whiscash', 'wallets'] })
+    handleCloseModal()
+  }
+
   return (
-    <Modal paramKey="create" paramValue="wallet">
+    <Modal paramKey={action} paramValue="wallet">
       <motion.div
         className="h-full w-full rounded-t-2xl bg-white p-3"
         initial={{ translateY: '100%' }}
@@ -93,7 +149,9 @@ const WalletModal = () => {
               color="inherit"
               className={cn(!createWallet.isPending && 'invisible')}
             />
-            <p className={cn(createWallet.isPending && 'invisible')}>Create</p>
+            <p className={cn(createWallet.isPending && 'invisible')}>
+              {action === 'create' ? 'Add' : 'Save'}
+            </p>
           </button>
         </div>
 
@@ -119,16 +177,18 @@ const WalletModal = () => {
           </div>
 
           <div className="mt-12 grid w-full gap-4">
-            <FormField
-              label="Country & Currency"
-              hasError={!!errors.country?.message}
-            >
-              <CountryCurrencySelector control={control} />
-            </FormField>
+            {action === 'create' && (
+              <FormField
+                label="Country & Currency"
+                hasError={!!errors.country?.message}
+              >
+                <CountryCurrencySelector control={control} />
+              </FormField>
+            )}
 
             {currency && (
               <FormField label="Main Wallet" isOptional>
-                <WalletSelector control={control} currency={currency} />
+                <WalletSelector control={control} currency={currency} existingWallet={existingWallet} />
               </FormField>
             )}
 

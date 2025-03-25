@@ -8,7 +8,12 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router'
-import { ConfirmationModal, DropdownButton, Page } from '@/components/commons'
+import {
+  ConfirmationModal,
+  DropdownButton,
+  Page,
+  WalletModal,
+} from '@/components/commons'
 import {
   ArchiveBanner,
   BarChart,
@@ -67,6 +72,11 @@ const Wallet = () => {
   const handleUnarchiveWallet = () => {
     if (!wallet) return
     unarchiveWallet.mutate(wallet.id)
+  }
+
+  const handleClickEditOption = () => {
+    if (!wallet) return
+    setSearchParams({ update: 'wallet' }, { state: location.state })
   }
 
   const handleClickDeleteOption = () => {
@@ -150,8 +160,7 @@ const Wallet = () => {
                   triggerAnchor="topRight"
                   contentAnchor="topRight"
                 >
-                  {/* TODO: */}
-                  <DropdownButton.ContentOption>
+                  <DropdownButton.ContentOption onClick={handleClickEditOption}>
                     Edit
                   </DropdownButton.ContentOption>
                   {wallet && !wallet.archivedAt && (
@@ -161,7 +170,6 @@ const Wallet = () => {
                       Archive
                     </DropdownButton.ContentOption>
                   )}
-
                   <DropdownButton.ContentOption
                     onClick={handleClickDeleteOption}
                   >
@@ -247,6 +255,8 @@ const Wallet = () => {
           setSelectedPeriodIndex={setSelectedPeriodIndex}
         />
       )}
+
+      {!!wallet && <WalletModal action="update" existingWallet={wallet} />}
 
       <ConfirmationModal
         paramValue="archive"

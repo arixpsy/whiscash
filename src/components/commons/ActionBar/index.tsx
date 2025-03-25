@@ -38,7 +38,7 @@ const ActionBar = () => {
 
   const handleClickAddButton = useCallback(() => {
     if (pathname === Route.WALLETS) {
-      setSearchParams({ create: 'wallet' })
+      setSearchParams({ create: 'wallet' }, { state: { from: pathname } })
       return
     }
 
