@@ -1,7 +1,8 @@
 import { motion } from 'motion/react'
+import { HTMLAttributes } from 'react'
+import { FaBoxArchive } from 'react-icons/fa6'
 import { Wallet } from '@/@types/shared'
 import { SPENDING_PERIOD_WALLET_LABELS } from '@/utils/constants/spendingPeriod'
-import { HTMLAttributes } from 'react'
 
 type WalletTileProps = {
   wallet: Wallet
@@ -32,7 +33,14 @@ const WalletTile = (props: WalletTileProps) => {
       </div>
 
       <div className="text-left">
-        <p className="font-bold">{wallet.name}</p>
+        <div className="flex items-center gap-2 font-bold">
+          <p>{wallet.name}</p>
+          {wallet.archivedAt && (
+            <div className="bg-accent-100 text-accent-400 rounded p-1">
+              <FaBoxArchive className="h-3 w-3" />
+            </div>
+          )}
+        </div>
         <p className="text-xs text-gray-500">
           {SPENDING_PERIOD_WALLET_LABELS[wallet.spendingPeriod]}
         </p>
