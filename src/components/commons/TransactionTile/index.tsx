@@ -69,7 +69,7 @@ const TransactionTile = (props: TransactionTileProps) => {
       className="w-full"
     >
       <SwipeActionContainer
-        className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2"
+        className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2 px-3"
         onTrigger={handleDeleteTransaction}
       >
         <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
