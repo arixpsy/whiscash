@@ -1,14 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
 import { createElement, HTMLAttributes } from 'react'
+import { MdWallet } from 'react-icons/md'
 import {
   GetDashboardWalletsResponse,
   TransactionWithWallet,
 } from '@/@types/shared'
 import { SwipeActionContainer } from '@/components/commons'
+import useTransaction from '@/hooks/useTransaction'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency, localDateTime } from '@/utils/functions'
-import useTransaction from '@/hooks/useTransaction'
-import { useQueryClient } from '@tanstack/react-query'
 
 type TransactionTileProps = {
   transaction: TransactionWithWallet
@@ -73,7 +74,7 @@ const TransactionTile = (props: TransactionTileProps) => {
         onTrigger={handleDeleteTransaction}
       >
         <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
-          {createElement(CATEGORY_ICON[transaction.category], {
+          {createElement(CATEGORY_ICON[transaction.category] || MdWallet, {
             className: 'text-primary-500 h-6 w-6',
           })}
         </div>
