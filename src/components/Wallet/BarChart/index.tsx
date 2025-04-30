@@ -143,6 +143,7 @@ const BarChart = (props: BarChartProps) => {
 
     const setAttrScaleX = (_: unknown, i: number) => xScale(i)
     const setOnClick = (_: unknown, t: GetWalletChartDataResponse[0]) => {
+      if ('vibrate' in navigator) navigator.vibrate(50)
       const index = data.findIndex((d) => d.startPeriod === t.startPeriod)
       setSelectedIndex(index)
     }
