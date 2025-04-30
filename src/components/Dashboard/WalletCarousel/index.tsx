@@ -1,9 +1,11 @@
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
+import { useNavigate } from 'react-router'
 import { GetDashboardWalletsResponse } from '@/@types/shared'
 import { Banner, WalletCard } from '@/components/commons'
 import { cn } from '@/utils/functions'
-import 'swiper/swiper-bundle.css'
+import { Route } from '@/utils/constants/routes'
 import { SPENDING_PERIOD_DASHBOARD_LABELS } from '@/utils/constants/spendingPeriod'
+import 'swiper/swiper-bundle.css'
 
 type WalletCarouselProps = {
   activeIndex: number
@@ -14,9 +16,17 @@ type WalletCarouselProps = {
 
 const WalletCarousel = (props: WalletCarouselProps) => {
   const { activeIndex, isLoading, setActiveIndex, wallets } = props
+  const navigate = useNavigate()
 
   const handleSlideChange = (swiper: SwiperClass) =>
     setActiveIndex(swiper.activeIndex)
+
+  const handleNavigateToWallet = (walletId: number) =>
+    document.startViewTransition(() =>
+      navigate(`${Route.WALLETS}/${walletId}`, {
+        state: { from: Route.WALLETS },
+      })
+    )
 
   return (
     <div className="grid-stack isolate">
@@ -34,7 +44,11 @@ const WalletCarousel = (props: WalletCarouselProps) => {
         )}
 
         {wallets.map((w) => (
-          <SwiperSlide key={w.id} className="grid place-items-center">
+          <SwiperSlide
+            key={w.id}
+            className="grid place-items-center"
+            onClick={() => handleNavigateToWallet(w.id)}
+          >
             <WalletCard
               className="relative z-20 mb-10 shadow-lg"
               amount={w.spendingPeriodTotal}
@@ -56,7 +70,7 @@ const WalletCarousel = (props: WalletCarouselProps) => {
             src="/whiscash.png"
             className="h-12"
             style={{ animation: 'swim 2s infinite' }}
-            alt='whiscash swimmming'
+            alt="whiscash swimmming"
           />
         </div>
       </div>
