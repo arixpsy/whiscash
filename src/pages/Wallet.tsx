@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { AnimatePresence } from 'motion/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { TbArrowBackUp, TbDotsVertical } from 'react-icons/tb'
 import {
   useLocation,
@@ -56,6 +56,10 @@ const Wallet = () => {
   const aggChartData = useMemo(
     () => getChartData.data?.pages.flat(1) || [],
     [getChartData.data]
+  )
+
+  const periodChartData = useDeferredValue(
+    aggChartData[selectedPeriodIndex]?.transactions || []
   )
 
   const handleClickBack = () => document.startViewTransition(() => navigate(-1))
@@ -228,7 +232,7 @@ const Wallet = () => {
               <div>
                 <p className="mb-1 text-lg font-bold">Breakdown</p>
                 <PieChart
-                  data={aggChartData[selectedPeriodIndex]?.transactions || []}
+                  data={periodChartData}
                   wallet={wallet}
                   className="shadow-lg"
                 />
@@ -238,14 +242,11 @@ const Wallet = () => {
         </div>
 
         <div className="bg-white">
-        {getChartData.isPending ? (
+          {getChartData.isPending ? (
             <div>LOADING</div>
           ) : (
             wallet && (
-              <TransactionsCard
-                data={aggChartData[selectedPeriodIndex]?.transactions || []}
-                wallet={wallet}
-              />
+              <TransactionsCard data={periodChartData} wallet={wallet} />
             )
           )}
         </div>
