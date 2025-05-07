@@ -173,6 +173,9 @@ const BarChart = (props: BarChartProps) => {
       .data(data)
       .join('rect')
       .transition()
+      .duration(150)
+      .attr('fill', (_, i) => (selectedIndex === i ? '#007bff' : '#e8e8e8'))
+      .transition()
       .duration(750)
       .attr(
         'height',
@@ -183,8 +186,6 @@ const BarChart = (props: BarChartProps) => {
           yScale(v.spendingPeriodTotal)
       )
       .attr('y', (v) => yScale(v.spendingPeriodTotal))
-      .duration(350)
-      .attr('fill', (_, i) => (selectedIndex === i ? '#007bff' : '#e8e8e8'))
   }, [GetXAxisLabel, data, selectedIndex, setSelectedIndex])
 
   // Mount chart base
