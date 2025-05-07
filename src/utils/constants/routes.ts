@@ -9,4 +9,4 @@ export const Route = {
   CREATE_TRANSACTION: '/create-transaction',
 } as const
 
-type Route = (typeof Route)[keyof typeof Route]
+export type Route = (typeof Route)[keyof typeof Route]
