@@ -17,6 +17,7 @@ const TransactionsCard = (props: TransactionsCardProps) => {
       <div className="rounded-lg bg-white">
         {data.slice().reverse().map((r) => (
           <TransactionTile
+            key={r.id}
             transaction={{
               ...r,
               name: wallet.name,
