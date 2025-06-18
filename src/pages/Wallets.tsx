@@ -45,7 +45,7 @@ const Wallets = () => {
 
   return (
     <>
-      <Page className="grid max-h-svh grid-rows-[auto_1fr]">
+      <Page className="grid max-h-dvh grid-rows-[auto_1fr]">
         <div className="grid gap-3 p-3">
           <div className="grid grid-cols-[1fr_auto_1fr]">
             <div />
