@@ -243,7 +243,7 @@ const Wallet = () => {
 
         <div className="bg-white">
           {getChartData.isPending ? (
-            <div>LOADING</div>
+            <TransactionsCard.Skeleton />
           ) : (
             wallet && (
               <TransactionsCard data={periodChartData} wallet={wallet} />

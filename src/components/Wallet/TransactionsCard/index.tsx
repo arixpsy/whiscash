@@ -73,4 +73,15 @@ const TransactionsCard = (props: TransactionsCardProps) => {
   )
 }
 
+TransactionsCard.Skeleton = () => {
+  return (
+    <div className="py-3">
+      <div className="mx-3 mb-1 h-5 w-26 animate-pulse rounded-lg bg-gray-200" />
+      {Array.from({ length: 5 }).map((_, index) => (
+        <TransactionTile.Skeleton key={index} />
+      ))}
+    </div>
+  )
+}
+
 export default TransactionsCard
