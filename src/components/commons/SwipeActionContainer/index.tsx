@@ -5,10 +5,11 @@ import { cn } from '@/utils/functions'
 
 type SwipeActionContainerProps = {
   onTrigger: () => void
+  isDisabled: boolean
 } & HTMLAttributes<HTMLDivElement>
 
 const SwipeActionContainer = (props: SwipeActionContainerProps) => {
-  const { className, children, onTrigger } = props
+  const { className, children, onTrigger, isDisabled } = props
   const containerRef = useRef<HTMLDivElement>(null)
   const dragX = useMotionValue(0)
   const opacity = useTransform(() => (dragX.get() * -1) / 100)
@@ -18,6 +19,7 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
   })
 
   const handleDrag = (_: TouchEvent, info: PanInfo) => {
+    if (isDisabled) return
     if (!containerRef.current) return
 
     const triggerOffset = (containerRef.current.clientWidth / 100) * 30 * -1
@@ -38,6 +40,7 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
   }
 
   const handleDragEnd = (_: TouchEvent, info: PanInfo) => {
+    if (isDisabled) return
     if (!containerRef.current) return
 
     const triggerOffset = (containerRef.current.clientWidth / 100) * 30 * -1
@@ -78,7 +81,7 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
           left: 0,
         }}
         dragTransition={{ bounceStiffness: 500, bounceDamping: 50 }}
-        dragElastic={{ right: 0, left: 1 }}
+        dragElastic={{ right: 0, left: isDisabled ? 0 : 1 }}
         _dragX={dragX}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}

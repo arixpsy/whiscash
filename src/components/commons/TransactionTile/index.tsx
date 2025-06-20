@@ -9,10 +9,11 @@ import { useSearchParams } from 'react-router'
 
 type TransactionTileProps = {
   transaction: TransactionWithWallet
+  swipable?: boolean
 } & HTMLAttributes<HTMLButtonElement>
 
 const TransactionTile = (props: TransactionTileProps) => {
-  const { transaction, onClick } = props
+  const { transaction, onClick, swipable = false } = props
   const [, setSearchParams] = useSearchParams()
 
   const handleTriggerDelete = () => {
@@ -30,6 +31,7 @@ const TransactionTile = (props: TransactionTileProps) => {
       <SwipeActionContainer
         className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2 px-3"
         onTrigger={handleTriggerDelete}
+        isDisabled={!swipable}
       >
         <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
           {createElement(CATEGORY_ICON[transaction.category] || MdWallet, {

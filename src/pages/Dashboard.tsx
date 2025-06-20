@@ -122,6 +122,7 @@ const Dashboard = () => {
                 key={t.id}
                 transaction={t}
                 onClick={() => handleNavigateToTransaction(t.id)}
+                swipable
               />
             ))}
 
