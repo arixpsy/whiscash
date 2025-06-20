@@ -134,7 +134,7 @@ const Wallet = () => {
     <>
       <Page
         className={cn(
-          'grid auto-rows-min items-start bg-gray-100',
+          'grid auto-rows-min items-start',
           wallet?.archivedAt && 'pb-[50px]'
         )}
       >
@@ -219,7 +219,7 @@ const Wallet = () => {
           )}
         </div>
 
-        <div className="p-3 py-6">
+        <div className="bg-gray-100 p-3 py-6">
           {getWallet.isPending ||
           (selectedUnit !== SpendingPeriod.All && getChartData.isPending) ? (
             <div>
