@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate, useSearchParams } from 'react-router'
 import { Wallet } from '@/@types/shared'
 import {
   Banner,
@@ -7,15 +7,25 @@ import {
   WalletModal,
   Page,
   TransactionTile,
+  ConfirmationModal,
 } from '@/components/commons'
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
 import { Route } from '@/utils/constants/routes'
+import { useQueryClient } from '@tanstack/react-query'
 
 const Dashboard = () => {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
-  const { useGetDashboardWalletTransactionsQuery } = useTransaction()
+  const [searchParams] = useSearchParams()
+  const {
+    useGetDashboardWalletTransactionsQuery,
+    useDeleteTransactionMutation,
+  } = useTransaction()
+  const deleteTransaction = useDeleteTransactionMutation(
+    deleteTransactionSuccessCB
+  )
   const { useGetDashboardWalletsQuery } = useWallet()
   const getDashboardWallets = useGetDashboardWalletsQuery({
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -39,12 +49,41 @@ const Dashboard = () => {
     [activeIndex, transactions]
   )
 
+  const handleDeleteTransaction = () => {
+    const id = Number(searchParams.get('id'))
+    if (!id || isNaN(id)) return
+    deleteTransaction.mutate(id)
+  }
+
   const handleNavigateToTransaction = (transactionId: number) =>
     document.startViewTransition(() =>
       navigate(`${Route.TRANSACTIONS}/${transactionId}`, {
         state: { from: Route.DASHBOARD },
       })
     )
+
+  function deleteTransactionSuccessCB() {
+    if (!activeWallet) return
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'transactions', activeWallet.id.toString()],
+    })
+
+    if (activeWallet?.subWalletOf) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'whiscash',
+          'transactions',
+          activeWallet.subWalletOf.toString(),
+        ],
+      })
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'wallets', 'dashboard'],
+    })
+
+    navigate(Route.DASHBOARD, { replace: true })
+  }
 
   // display states
   const shouldDisplaySkeleton =
@@ -100,6 +139,14 @@ const Dashboard = () => {
       )}
 
       <WalletModal />
+
+      <ConfirmationModal
+        paramValue="delete"
+        title="Delete this transaction?"
+        description="Deleting this transaction will remove it forever."
+        onConfirm={handleDeleteTransaction}
+        isConfirmLoading={deleteTransaction.isPending}
+      />
     </>
   )
 }

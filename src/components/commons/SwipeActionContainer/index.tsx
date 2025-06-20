@@ -12,7 +12,6 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const dragX = useMotionValue(0)
   const opacity = useTransform(() => (dragX.get() * -1) / 100)
-  const [isTriggered, setIsTriggered] = useState(false)
   const [hasTriggeredPoint, setHasTriggeredPoint] = useState({
     fromLeft: false,
     fromRight: false,
@@ -44,7 +43,6 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
     const triggerOffset = (containerRef.current.clientWidth / 100) * 30 * -1
 
     if (info.offset.x <= triggerOffset) {
-      setIsTriggered(true)
       setTimeout(onTrigger, 150)
     }
   }
@@ -58,7 +56,6 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
     <motion.div
       className="grid-stack overflow-hidden"
       ref={containerRef}
-      animate={isTriggered && { height: 0 }}
       transition={{ delay: 0.15 }}
     >
       {/* TODO: make this props */}
@@ -68,15 +65,7 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
         </motion.div>
       </div>
 
-      <motion.div
-        className={cn(className)}
-        style={{
-          translateX: isTriggered
-            ? `-${containerRef.current?.clientWidth}px`
-            : dragX,
-          transition: isTriggered ? 'linear 150ms' : undefined,
-        }}
-      >
+      <motion.div className={cn(className)} style={{ translateX: dragX }}>
         {children}
       </motion.div>
 

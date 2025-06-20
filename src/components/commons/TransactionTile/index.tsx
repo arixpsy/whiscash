@@ -1,15 +1,11 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'motion/react'
 import { createElement, HTMLAttributes } from 'react'
 import { MdWallet } from 'react-icons/md'
-import {
-  GetDashboardWalletsResponse,
-  TransactionWithWallet,
-} from '@/@types/shared'
+import { TransactionWithWallet } from '@/@types/shared'
 import { SwipeActionContainer } from '@/components/commons'
-import useTransaction from '@/hooks/useTransaction'
 import { CATEGORY_ICON } from '@/utils/constants/categories'
 import { amountWithCurrency, localDateTime } from '@/utils/functions'
+import { useSearchParams } from 'react-router'
 
 type TransactionTileProps = {
   transaction: TransactionWithWallet
@@ -17,48 +13,10 @@ type TransactionTileProps = {
 
 const TransactionTile = (props: TransactionTileProps) => {
   const { transaction, onClick } = props
-  const queryClient = useQueryClient()
-  const { useDeleteTransactionMutation } = useTransaction()
-  const deleteTransaction = useDeleteTransactionMutation(
-    deleteTransactionSuccessCB
-  )
+  const [, setSearchParams] = useSearchParams()
 
-  const handleDeleteTransaction = () => deleteTransaction.mutate(transaction.id)
-
-  function deleteTransactionSuccessCB() {
-    queryClient.invalidateQueries({
-      queryKey: ['whiscash', 'transactions', transaction.walletId.toString()],
-    })
-
-    if (transaction?.subWalletOf) {
-      queryClient.invalidateQueries({
-        queryKey: [
-          'whiscash',
-          'transactions',
-          transaction.subWalletOf.toString(),
-        ],
-      })
-    }
-
-    queryClient.setQueryData(
-      ['whiscash', 'wallets', 'dashboard'],
-      (current: GetDashboardWalletsResponse) => {
-        const walletIndex = current.findIndex(
-          (w) => w.id === transaction.walletId
-        )
-
-        current[walletIndex].spendingPeriodTotal -= transaction.amount
-
-        if (transaction?.subWalletOf) {
-          const mainWalletIndex = current.findIndex(
-            (w) => w.id === transaction.subWalletOf
-          )
-          current[mainWalletIndex].spendingPeriodTotal -= transaction.amount
-        }
-
-        return current
-      }
-    )
+  const handleTriggerDelete = () => {
+    setSearchParams({ confirmation: 'delete', id: transaction.id.toString() })
   }
 
   return (
@@ -71,7 +29,7 @@ const TransactionTile = (props: TransactionTileProps) => {
     >
       <SwipeActionContainer
         className="grid grid-cols-[auto_1fr] gap-3 bg-white p-2 px-3"
-        onTrigger={handleDeleteTransaction}
+        onTrigger={handleTriggerDelete}
       >
         <div className="bg-primary-100 grid h-12 w-12 place-items-center rounded-lg">
           {createElement(CATEGORY_ICON[transaction.category] || MdWallet, {
