@@ -1,7 +1,6 @@
 import { motion, PanInfo, useMotionValue, useTransform } from 'motion/react'
 import { HTMLAttributes, useRef, useState } from 'react'
 import { FaTrash } from 'react-icons/fa6'
-import { cn } from '@/utils/functions'
 
 type SwipeActionContainerProps = {
   onTrigger: () => void
@@ -12,7 +11,8 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
   const { className, children, onTrigger, isDisabled } = props
   const containerRef = useRef<HTMLDivElement>(null)
   const dragX = useMotionValue(0)
-  const opacity = useTransform(() => (dragX.get() * -1) / 100)
+  const opacityIcon = useTransform(() => (dragX.get() * -1) / 100)
+  const opacityBg = useTransform(() => dragX.get() * -1)
   const [hasTriggeredPoint, setHasTriggeredPoint] = useState({
     fromLeft: false,
     fromRight: false,
@@ -62,13 +62,16 @@ const SwipeActionContainer = (props: SwipeActionContainerProps) => {
       transition={{ delay: 0.15 }}
     >
       {/* TODO: make this props */}
-      <div className="flex items-center justify-end bg-red-400">
-        <motion.div style={{ opacity }}>
+      <motion.div
+        className="flex items-center justify-end bg-red-400"
+        style={{ opacity: opacityBg }}
+      >
+        <motion.div style={{ opacity: opacityIcon }}>
           <FaTrash className="mr-6 h-4 w-4 text-white" />
         </motion.div>
-      </div>
+      </motion.div>
 
-      <motion.div className={cn(className)} style={{ translateX: dragX }}>
+      <motion.div className={className} style={{ translateX: dragX }}>
         {children}
       </motion.div>
 
