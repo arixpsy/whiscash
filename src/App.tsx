@@ -7,6 +7,7 @@ import {
 import useNavigationTransition from '@/hooks/useNavigationTransition'
 import {
   Dashboard,
+  History,
   Login,
   Settings,
   Transaction,
@@ -26,7 +27,7 @@ const App = () => {
         <Route element={<Authenticated />}>
           <Route element={<ActionBarLayout />}>
             <Route path={RoutePath.DASHBOARD} element={<Dashboard />} />
-            <Route path={RoutePath.HISTORY} element={<div>history</div>} />
+            <Route path={RoutePath.HISTORY} element={<History />} />
             <Route path={RoutePath.WALLETS} element={<Wallets />} />
           </Route>
 
