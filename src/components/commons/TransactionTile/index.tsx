@@ -67,7 +67,7 @@ const TransactionTile = (props: TransactionTileProps) => {
 
 const Skeleton = () => (
   <motion.div
-    className="grid grid-cols-[auto_1fr] gap-3 p-2"
+    className="grid grid-cols-[auto_1fr] gap-3 p-2 px-3"
     initial={{ opacity: '0%' }}
     animate={{ opacity: '100%' }}
     exit={{ opacity: '0%' }}
