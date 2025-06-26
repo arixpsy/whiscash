@@ -15,7 +15,7 @@ const useTransaction = () => {
       onSuccess,
     })
 
-  const useDeleteTransactionMutation = (onSuccess: () => void) =>
+  const useDeleteTransactionMutation = (onSuccess: VoidFunction) =>
     useMutation({
       mutationFn: whiscashApi.deleteTransaction(createRequestConfig()),
       onSuccess,
@@ -41,7 +41,9 @@ const useTransaction = () => {
       })),
     })
 
-  const useUpdateTransactionMutation = (onSuccess: (data: Transaction) => void) =>
+  const useUpdateTransactionMutation = (
+    onSuccess: (data: Transaction) => void
+  ) =>
     useMutation({
       mutationFn: whiscashApi.updateTransaction(createRequestConfig()),
       onSuccess,

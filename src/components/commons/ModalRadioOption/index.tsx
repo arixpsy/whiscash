@@ -3,7 +3,7 @@ import { cn } from '@/utils/functions'
 type ModalRadioOption = {
   isSelected: boolean
   label: string
-  onClick: () => void
+  onClick: VoidFunction
 }
 
 const ModalRadioOption = (props: ModalRadioOption) => {

@@ -3,7 +3,7 @@ import { HTMLAttributes, useRef, useState } from 'react'
 import { FaTrash } from 'react-icons/fa6'
 
 type SwipeActionContainerProps = {
-  onTrigger: () => void
+  onTrigger: VoidFunction
   isDisabled: boolean
 } & HTMLAttributes<HTMLDivElement>
 

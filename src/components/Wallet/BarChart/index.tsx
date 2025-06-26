@@ -16,7 +16,7 @@ import BarChartSkeleton from './Skeleton'
 
 type BarChartProps = {
   data: GetWalletChartDataResponse
-  handleFetchMoreData: () => void
+  handleFetchMoreData: VoidFunction
   isFetchingMoreData: boolean
   selectedIndex: number
   setSelectedIndex: (selectedIndex: number) => void

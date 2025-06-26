@@ -8,7 +8,7 @@ type ConfirmationModalProps = {
   confirmText?: string
   description: string
   isConfirmLoading?: boolean
-  onConfirm: () => void
+  onConfirm: VoidFunction
   paramValue: string
   title: string
 }

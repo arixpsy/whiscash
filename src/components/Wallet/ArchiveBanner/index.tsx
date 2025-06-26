@@ -3,7 +3,7 @@ import { FeedbackButton, Loader } from '@/components/commons'
 import { cn } from '@/utils/functions'
 
 type ArchiveBannerProps = {
-  onClickRevert: () => void
+  onClickRevert: VoidFunction
   isLoading: boolean
 }
 
