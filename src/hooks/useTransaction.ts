@@ -1,5 +1,5 @@
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
-import { GetTransactionRequest, Transaction } from '@/@types/shared'
+import { GetWalletTransactionsRequest, Transaction } from '@/@types/shared'
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -30,14 +30,15 @@ const useTransaction = () => {
     })
 
   const useGetDashboardWalletTransactionsQuery = (
-    reqs: Array<GetTransactionRequest>
+    reqs: Array<GetWalletTransactionsRequest>
   ) =>
     useQueries({
       queries: reqs.map((req) => ({
         queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(req.walletId),
-        queryFn: whiscashApi.getWalletTransactions(
-          createRequestConfig({ params: req })
-        ),
+        queryFn: () =>
+          whiscashApi.getWalletTransactions(
+            createRequestConfig({ params: req })
+          )(req.walletId),
       })),
     })
 
