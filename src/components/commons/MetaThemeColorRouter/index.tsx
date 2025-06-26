@@ -29,7 +29,7 @@ const MetaThemeColorRouter = () => {
       return
     }
 
-    if (pathname === Route.DASHBOARD) {
+    if (pathname === Route.DASHBOARD || pathname === Route.HISTORY) {
       metaElement.content = '#007bff'
       return
     }
