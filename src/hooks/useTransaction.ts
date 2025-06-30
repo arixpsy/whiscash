@@ -1,4 +1,9 @@
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueries,
+  useQuery,
+} from '@tanstack/react-query'
 import { GetWalletTransactionsRequest, Transaction } from '@/@types/shared'
 import useToken from '@/hooks/useToken'
 import whiscashApi from '@/services/whiscashApi'
@@ -29,6 +34,23 @@ const useTransaction = () => {
       enabled: !!transactionId,
     })
 
+  const useGetTransactionsQuery = (date: string) =>
+    useInfiniteQuery({
+      initialPageParam: {
+        limit: 10,
+        offset: 0,
+      },
+      queryKey: QUERY_KEYS.TRANSACTIONS(date),
+      queryFn: ({ pageParam }) =>
+        whiscashApi.getTransactions(
+          createRequestConfig({ params: { ...pageParam, date } })
+        )(),
+      getNextPageParam: (_, __, lastPage) => ({
+        ...lastPage,
+        offset: lastPage.offset + lastPage.limit,
+      }),
+    })
+
   const useGetDashboardWalletTransactionsQuery = (
     reqs: Array<GetWalletTransactionsRequest>
   ) =>
@@ -54,6 +76,7 @@ const useTransaction = () => {
     useCreateTransactionMutation,
     useDeleteTransactionMutation,
     useGetTransactionQuery,
+    useGetTransactionsQuery,
     useGetDashboardWalletTransactionsQuery,
     useUpdateTransactionMutation,
   }

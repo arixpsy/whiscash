@@ -68,6 +68,11 @@ const getTransaction =
       .get(`/transaction/${transactionId}`, await config)
       .then((res) => res.data)
 
+const getTransactions =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (): Promise<GetTransactionsResponse> =>
+    whiscashApi.get('/transaction', await config).then((res) => res.data)
+
 const getWallet =
   (config: Promise<AxiosRequestConfig>) =>
   async (walletId?: string): Promise<Wallet> =>
@@ -88,7 +93,9 @@ const getWallets =
 const getWalletTransactions =
   (config: Promise<AxiosRequestConfig>) =>
   async (walletId?: string): Promise<GetTransactionsResponse> =>
-    whiscashApi.get(`/wallet/${walletId}/transaction`, await config).then((res) => res.data)
+    whiscashApi
+      .get(`/wallet/${walletId}/transaction`, await config)
+      .then((res) => res.data)
 
 const updateTransaction =
   (config: Promise<AxiosRequestConfig>) =>
@@ -113,6 +120,7 @@ export default {
   getDashboardWallets,
   getMainWallets,
   getTransaction,
+  getTransactions,
   getWallet,
   getWalletChartData,
   getWallets,

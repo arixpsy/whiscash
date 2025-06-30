@@ -30,5 +30,5 @@ export const QUERY_KEYS = {
     'transactions',
     transactionId,
   ],
-  TRANSACTIONS: [WHISCASH, 'transactions'],
+  TRANSACTIONS: (date: string) => [WHISCASH, 'transactions', date],
 } as const

@@ -1,14 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { DateTime } from 'luxon'
 import { VirtualizerHandle } from 'virtua'
 import { Page, TransactionTile } from '@/components/commons'
 import { CalendarCarousel, CalendarHeader } from '@/components/History'
+import useTransaction from '@/hooks/useTransaction'
+import { useNavigate } from 'react-router'
+import { Route } from '@/utils/constants/routes'
 
 const THRESHOLD = 7
 const INIT_SIZE = 35
 
 const History = () => {
-  const [selectedDate, setSelectedDate] = useState(DateTime.now().toISO())
+  // TODO: derive seleceted Day from params
+  // TODO: allow swipe delete
+  // TODO: allow add new transaction
+  const navigate = useNavigate()
+  const { useGetTransactionsQuery } = useTransaction()
+  const [selectedDate, setSelectedDate] = useState(DateTime.now().toISODate())
+  const getTransactions = useGetTransactionsQuery(selectedDate)
   const virtualizerRef = useRef<VirtualizerHandle>(null)
   const ready = useRef(false)
   const startFetchedCountRef = useRef(-1)
@@ -19,6 +28,10 @@ const History = () => {
   const [items, setItems] = useState(initDays)
   const [showReturn, setShowReturn] = useState<-1 | 0 | 1>(0)
   const count = items.length
+  const aggTransactionData = useMemo(
+    () => getTransactions.data?.pages.flat(1) || [],
+    [getTransactions.data]
+  )
 
   function initDays() {
     return Array.from({ length: INIT_SIZE }, (_, i) => {
@@ -34,13 +47,13 @@ const History = () => {
   }
 
   const handleSelectDate = (date: DateTime) =>
-    setSelectedDate(date.toISO() || '')
+    setSelectedDate(date.toISODate() || '')
 
   const handleGoToToday = () => {
     virtualizerRef.current?.scrollToIndex(thisWeekIndex.current, {
       smooth: true,
     })
-    setSelectedDate(DateTime.now().toISO())
+    setSelectedDate(DateTime.now().toISODate())
   }
 
   const prepend = () => {
@@ -100,6 +113,13 @@ const History = () => {
     }
   }
 
+  const handleNavigateToTransaction = (transactionId: number) =>
+    document.startViewTransition(() =>
+      navigate(`${Route.TRANSACTIONS}/${transactionId}`, {
+        state: { from: Route.HISTORY },
+      })
+    )
+
   useEffect(() => {
     if (!virtualizerRef.current) return
     if (items.length === INIT_SIZE) {
@@ -128,12 +148,17 @@ const History = () => {
       </div>
 
       <div className="pt-3">
-        <TransactionTile.Skeleton />
-        <TransactionTile.Skeleton />
-        <TransactionTile.Skeleton />
-        <TransactionTile.Skeleton />
-        <TransactionTile.Skeleton />
-        <TransactionTile.Skeleton />
+        {getTransactions.isPending
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <TransactionTile.Skeleton key={index} />
+            ))
+          : aggTransactionData.map((transaction) => (
+              <TransactionTile
+                key={transaction.id}
+                transaction={transaction}
+                onClick={() => handleNavigateToTransaction(transaction.id)}
+              />
+            ))}
       </div>
     </Page>
   )
