@@ -8,7 +8,9 @@ const FeedbackButton = (props: FeedbackButtonProps) => {
   const { children, onClick, vibratePattern = 50, ...rest } = props
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    navigator.vibrate(vibratePattern)
+    if (('vibrate' in navigator)) {
+      navigator.vibrate(vibratePattern)
+    }
     onClick?.(event)
   }
   return (
