@@ -1,22 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router'
 import { DateTime } from 'luxon'
 import { VirtualizerHandle } from 'virtua'
 import { Page, TransactionTile } from '@/components/commons'
 import { CalendarCarousel, CalendarHeader } from '@/components/History'
 import useTransaction from '@/hooks/useTransaction'
-import { useNavigate } from 'react-router'
 import { Route } from '@/utils/constants/routes'
 
 const THRESHOLD = 7
 const INIT_SIZE = 35
 
 const History = () => {
-  // TODO: derive seleceted Day from params
   // TODO: allow swipe delete
   // TODO: allow add new transaction
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { useGetTransactionsQuery } = useTransaction()
-  const [selectedDate, setSelectedDate] = useState(DateTime.now().toISODate())
+  const [selectedDate, setSelectedDate] = useState(initSelectedDay)
   const getTransactions = useGetTransactionsQuery(selectedDate)
   const virtualizerRef = useRef<VirtualizerHandle>(null)
   const ready = useRef(false)
@@ -46,14 +46,30 @@ const History = () => {
     })
   }
 
-  const handleSelectDate = (date: DateTime) =>
-    setSelectedDate(date.toISODate() || '')
+  function initSelectedDay() {
+    const dateParam = searchParams.get('date')
+    const parseDate = dateParam ? DateTime.fromISO(dateParam) : DateTime.now()
+
+    if (parseDate.isValid) {
+      return parseDate.toISODate()
+    }
+
+    return DateTime.now().toISODate()
+  }
+
+  const handleSelectDate = (date: DateTime<true>) => {
+    const dateString = date.toISODate()
+    searchParams.set('date', dateString)
+    navigate(`${Route.HISTORY}?${searchParams.toString()}`, { replace: true })
+    setSelectedDate(dateString)
+  }
 
   const handleGoToToday = () => {
     virtualizerRef.current?.scrollToIndex(thisWeekIndex.current, {
       smooth: true,
     })
-    setSelectedDate(DateTime.now().toISODate())
+
+    handleSelectDate(DateTime.now())
   }
 
   const prepend = () => {
@@ -116,7 +132,7 @@ const History = () => {
   const handleNavigateToTransaction = (transactionId: number) =>
     document.startViewTransition(() =>
       navigate(`${Route.TRANSACTIONS}/${transactionId}`, {
-        state: { from: Route.HISTORY },
+        state: { from: Route.HISTORY + '?' + searchParams.toString() },
       })
     )
 
