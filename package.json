@@ -28,6 +28,7 @@
     "iso-country-currency": "^0.7.2",
     "luxon": "^3.5.0",
     "motion": "^12.4.7",
+    "posthog-js": "^1.255.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
