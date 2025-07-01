@@ -40,9 +40,9 @@ const TransactionModal = (props: TransactionModalProps) => {
     currency,
     existingTransaction,
   } = props
+  const [searchParams] = useSearchParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const [searchParam, setSearchParams] = useSearchParams()
   const queryClient = useQueryClient()
   const { useCreateTransactionMutation, useUpdateTransactionMutation } =
     useTransaction()
@@ -106,13 +106,8 @@ const TransactionModal = (props: TransactionModalProps) => {
   const handleModalAnimationComplete = ({
     translateY,
   }: TargetAndTransition) => {
-    if (translateY === '0%') setFocus('amount')
+    if (translateY === '0%' && !searchParams.get('field')) setFocus('amount')
     if (translateY === '100%') reset()
-  }
-
-  const handleOpenCamera = () => {
-    searchParam.append('field', 'camera')
-    setSearchParams(searchParam)
   }
 
   function getDefaultValues(transaction?: TransactionWithWallet) {
@@ -257,10 +252,7 @@ const TransactionModal = (props: TransactionModalProps) => {
             onSubmit={handleFormSubmit}
             className="grid auto-rows-min justify-items-center overflow-auto p-3"
           >
-            <FaFileInvoiceDollar
-              className="text-primary-300 mb-3 h-16 w-16"
-              onClick={handleOpenCamera}
-            />
+            <FaFileInvoiceDollar className="text-primary-300 mb-3 h-16 w-16" />
 
             <TransactionAmountInput
               register={register}

@@ -34,17 +34,23 @@ const ActionBar = () => {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   })
 
-  const handleClickAddButton = useCallback(() => {
-    if (pathname === Route.WALLETS) {
-      setSearchParams({ create: 'wallet' }, { state: { from: pathname } })
-      return
-    }
+  const handleClickAddButton = useCallback(
+    (longPress?: boolean) => {
+      if (pathname === Route.WALLETS) {
+        setSearchParams({ create: 'wallet' }, { state: { from: pathname } })
+        return
+      }
 
-    if (!getDashboardWallets.data) return
+      if (!getDashboardWallets.data) return
 
-    if (getDashboardWallets.data.length > 0)
-      setSearchParams({ create: 'transaction' }, { state: { from: pathname } })
-  }, [pathname, setSearchParams, getDashboardWallets.data])
+      if (getDashboardWallets.data.length > 0)
+        setSearchParams(
+          { create: 'transaction', ...(longPress ? { field: 'camera' } : {}) },
+          { state: { from: pathname } }
+        )
+    },
+    [pathname, setSearchParams, getDashboardWallets.data]
+  )
 
   return (
     <div className="fixed right-0 bottom-6 left-0 grid place-items-center">
@@ -73,7 +79,8 @@ const ActionBar = () => {
               <FeedbackButton
                 type="button"
                 className="bg-primary-500 h-12 w-12 rounded-full p-3 text-white shadow-2xl"
-                onClick={handleClickAddButton}
+                onClick={() => handleClickAddButton(false)}
+                onLongPress={() => handleClickAddButton(true)}
               >
                 {getDashboardWallets.isPending ? (
                   <LoadingDots />
