@@ -4,11 +4,12 @@ import { FaPlus } from 'react-icons/fa6'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useSearchParams } from 'react-router'
+import { AnimatePresence, motion } from 'motion/react'
 import { FeedbackButton } from '@/components/commons'
+import NavItem from '@/components/commons/ActionBar/NavItem'
 import useWallet from '@/hooks/useWallet'
 import { Route } from '@/utils/constants/routes'
 import LoadingDots from './LoadingDots'
-import NavItem from '@/components/commons/ActionBar/NavItem'
 
 const navItems = [
   {
@@ -59,17 +60,30 @@ const ActionBar = () => {
           ))}
         </div>
 
-        <FeedbackButton
-          type="button"
-          className="bg-primary-500 h-12 w-12 rounded-full p-3 text-white shadow-2xl"
-          onClick={handleClickAddButton}
-        >
-          {getDashboardWallets.isPending ? (
-            <LoadingDots />
-          ) : (
-            <FaPlus className="h-6 w-6" />
+        <AnimatePresence>
+          {pathname !== Route.HISTORY && (
+            <motion.div
+              initial={{
+                width: 0,
+                opacity: 0,
+              }}
+              animate={{ width: 48, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+            >
+              <FeedbackButton
+                type="button"
+                className="bg-primary-500 h-12 w-12 rounded-full p-3 text-white shadow-2xl"
+                onClick={handleClickAddButton}
+              >
+                {getDashboardWallets.isPending ? (
+                  <LoadingDots />
+                ) : (
+                  <FaPlus className="h-6 w-6" />
+                )}
+              </FeedbackButton>
+            </motion.div>
           )}
-        </FeedbackButton>
+        </AnimatePresence>
       </div>
     </div>
   )
