@@ -14,10 +14,12 @@ type TransactionTileProps = {
 
 const TransactionTile = (props: TransactionTileProps) => {
   const { transaction, onClick, swipable = false } = props
-  const [, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const handleTriggerDelete = () => {
-    setSearchParams({ confirmation: 'delete', id: transaction.id.toString() })
+    searchParams.append('confirmation', 'delete')
+    searchParams.append('id', transaction.id.toString())
+    setSearchParams(searchParams)
   }
 
   return (

@@ -1,23 +1,29 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { DateTime } from 'luxon'
 import { VirtualizerHandle } from 'virtua'
-import { Page, TransactionTile } from '@/components/commons'
+import { ConfirmationModal, Page, TransactionTile } from '@/components/commons'
 import { CalendarCarousel, CalendarHeader } from '@/components/History'
 import useTransaction from '@/hooks/useTransaction'
+import { QUERY_KEYS } from '@/utils/constants/queryKey'
 import { Route } from '@/utils/constants/routes'
 
 const THRESHOLD = 7
 const INIT_SIZE = 35
 
 const History = () => {
-  // TODO: allow swipe delete
   // TODO: allow add new transaction
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { useGetTransactionsQuery } = useTransaction()
+  const queryClient = useQueryClient()
+  const { useGetTransactionsQuery, useDeleteTransactionMutation } =
+    useTransaction()
   const [selectedDate, setSelectedDate] = useState(initSelectedDay)
   const getTransactions = useGetTransactionsQuery(selectedDate)
+  const deleteTransaction = useDeleteTransactionMutation(
+    deleteTransactionSuccessCB
+  )
   const virtualizerRef = useRef<VirtualizerHandle>(null)
   const ready = useRef(false)
   const startFetchedCountRef = useRef(-1)
@@ -136,6 +142,27 @@ const History = () => {
       })
     )
 
+  const handleDeleteTransaction = () => {
+    const id = Number(searchParams.get('id'))
+    if (!id || isNaN(id)) return
+    deleteTransaction.mutate(id)
+  }
+
+  function deleteTransactionSuccessCB() {
+    queryClient.invalidateQueries({
+      queryKey: ['whiscash', 'wallets', 'transactions'],
+    })
+
+    queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.TRANSACTIONS(selectedDate),
+    })
+
+    searchParams.delete('confirmation')
+    searchParams.delete('id')
+
+    navigate(Route.HISTORY + '?' + searchParams.toString(), { replace: true })
+  }
+
   useEffect(() => {
     if (!virtualizerRef.current) return
     if (items.length === INIT_SIZE) {
@@ -145,38 +172,49 @@ const History = () => {
   }, [items])
 
   return (
-    <Page>
-      <div className="bg-primary-500 text-white">
-        <CalendarHeader
-          onClickTodayButton={handleGoToToday}
-          selectedDate={selectedDate}
-          showReturnState={showReturn}
-        />
+    <>
+      <Page>
+        <div className="bg-primary-500 text-white">
+          <CalendarHeader
+            onClickTodayButton={handleGoToToday}
+            selectedDate={selectedDate}
+            showReturnState={showReturn}
+          />
 
-        <CalendarCarousel
-          items={items}
-          onDateSelect={handleSelectDate}
-          onScroll={handleScroll}
-          ref={virtualizerRef}
-          selectedDate={selectedDate}
-          virtualizerShift={shift}
-        />
-      </div>
+          <CalendarCarousel
+            items={items}
+            onDateSelect={handleSelectDate}
+            onScroll={handleScroll}
+            ref={virtualizerRef}
+            selectedDate={selectedDate}
+            virtualizerShift={shift}
+          />
+        </div>
 
-      <div className="pt-3">
-        {getTransactions.isPending
-          ? Array.from({ length: 5 }).map((_, index) => (
-              <TransactionTile.Skeleton key={index} />
-            ))
-          : aggTransactionData.map((transaction) => (
-              <TransactionTile
-                key={transaction.id}
-                transaction={transaction}
-                onClick={() => handleNavigateToTransaction(transaction.id)}
-              />
-            ))}
-      </div>
-    </Page>
+        <div className="pt-3">
+          {getTransactions.isPending
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <TransactionTile.Skeleton key={index} />
+              ))
+            : aggTransactionData.map((transaction) => (
+                <TransactionTile
+                  key={transaction.id}
+                  transaction={transaction}
+                  onClick={() => handleNavigateToTransaction(transaction.id)}
+                  swipable
+                />
+              ))}
+        </div>
+      </Page>
+
+      <ConfirmationModal
+        paramValue="delete"
+        title="Delete this transaction?"
+        description="Deleting this transaction will remove it forever."
+        onConfirm={handleDeleteTransaction}
+        isConfirmLoading={deleteTransaction.isPending}
+      />
+    </>
   )
 }
 

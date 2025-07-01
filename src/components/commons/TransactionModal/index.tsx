@@ -15,6 +15,7 @@ import {
 } from '@/@types/shared'
 import { FormField, Loader, Modal } from '@/components/commons'
 import useTransaction from '@/hooks/useTransaction'
+import { QUERY_KEYS } from '@/utils/constants/queryKey'
 import { Route } from '@/utils/constants/routes'
 import { cn } from '@/utils/functions'
 import CategorySelector from './CategorySelector'
@@ -133,12 +134,12 @@ const TransactionModal = (props: TransactionModalProps) => {
 
   function createTransactionSuccessCB(data: Transaction) {
     queryClient.invalidateQueries({
-      queryKey: ['whiscash', 'transactions', formWalletId.toString()],
+      queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(formWalletId.toString()),
     })
 
     if (mainWalletId) {
       queryClient.invalidateQueries({
-        queryKey: ['whiscash', 'transactions', mainWalletId.toString()],
+        queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(mainWalletId.toString()),
       })
     }
 
@@ -177,12 +178,12 @@ const TransactionModal = (props: TransactionModalProps) => {
     )
 
     queryClient.invalidateQueries({
-      queryKey: ['whiscash', 'transactions', formWalletId.toString()],
+      queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(formWalletId.toString()),
     })
 
     if (mainWalletId) {
       queryClient.invalidateQueries({
-        queryKey: ['whiscash', 'transactions', mainWalletId.toString()],
+        queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(mainWalletId.toString()),
       })
     }
 

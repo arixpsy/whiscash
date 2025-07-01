@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { Wallet } from '@/@types/shared'
@@ -12,8 +13,8 @@ import {
 import { Header, WalletCarousel } from '@/components/Dashboard'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
+import { QUERY_KEYS } from '@/utils/constants/queryKey'
 import { Route } from '@/utils/constants/routes'
-import { useQueryClient } from '@tanstack/react-query'
 
 const Dashboard = () => {
   const queryClient = useQueryClient()
@@ -65,7 +66,7 @@ const Dashboard = () => {
   function deleteTransactionSuccessCB() {
     if (!activeWallet) return
     queryClient.invalidateQueries({
-      queryKey: ['whiscash', 'transactions', activeWallet.id.toString()],
+      queryKey: QUERY_KEYS.WALLET_TRANSACTIONS(activeWallet.id.toString()),
     })
 
     if (activeWallet?.subWalletOf) {
