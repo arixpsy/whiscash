@@ -1,15 +1,18 @@
-import { useCallback } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
 import { RiCalendarEventFill } from 'react-icons/ri'
 import { MdWallet } from 'react-icons/md'
 import { useLocation, useSearchParams } from 'react-router'
 import { AnimatePresence, motion } from 'motion/react'
+import { Controller } from 'swiper/modules'
+import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
 import { FeedbackButton } from '@/components/commons'
-import NavItem from '@/components/commons/ActionBar/NavItem'
 import useWallet from '@/hooks/useWallet'
 import { Route } from '@/utils/constants/routes'
+import Camera from './Camera'
 import LoadingDots from './LoadingDots'
+import NavItem from './NavItem'
 
 const navItems = [
   {
@@ -33,24 +36,36 @@ const ActionBar = () => {
   const getDashboardWallets = useGetDashboardWalletsQuery({
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   })
+  const isAnimating = useRef(false)
+  const [controlledSwiper, setControlledSwiper] = useState<SwiperClass | null>(
+    null
+  )
+  const cameraInputRef = useRef<HTMLInputElement>(null)
+  const isDashboardPage = pathname === Route.DASHBOARD
 
-  const handleClickAddButton = useCallback(
-    (longPress?: boolean) => {
-      if (pathname === Route.WALLETS) {
-        setSearchParams({ create: 'wallet' }, { state: { from: pathname } })
-        return
-      }
+  const handleClickAddButton = useCallback(() => {
+    if (isAnimating.current) return
 
-      if (!getDashboardWallets.data) return
+    if (pathname === Route.WALLETS) {
+      setSearchParams({ create: 'wallet' }, { state: { from: pathname } })
+      return
+    }
 
-      if (getDashboardWallets.data.length > 0)
+    if (!getDashboardWallets.data || getDashboardWallets.data.length === 0)
+      return
+
+    switch (controlledSwiper?.realIndex) {
+      case 0:
         setSearchParams(
-          { create: 'transaction', ...(longPress ? { field: 'camera' } : {}) },
+          { create: 'transaction' },
           { state: { from: pathname } }
         )
-    },
-    [pathname, setSearchParams, getDashboardWallets.data]
-  )
+        break
+      case 1:
+        cameraInputRef.current?.click()
+        break
+    }
+  }, [pathname, setSearchParams, getDashboardWallets.data, controlledSwiper])
 
   return (
     <div className="fixed right-0 bottom-6 left-0 grid place-items-center">
@@ -69,23 +84,48 @@ const ActionBar = () => {
         <AnimatePresence>
           {pathname !== Route.HISTORY && (
             <motion.div
+              className="h-12"
               initial={{
                 width: 0,
                 opacity: 0,
               }}
-              animate={{ width: 48, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
+              animate={{
+                width: 48,
+                opacity: 1,
+              }}
+              exit={{
+                width: 0,
+                opacity: 0,
+              }}
+              onAnimationStart={() => (isAnimating.current = true)}
+              onAnimationComplete={() => (isAnimating.current = false)}
             >
               <FeedbackButton
                 type="button"
-                className="bg-primary-500 h-12 w-12 rounded-full p-3 text-white shadow-2xl"
-                onClick={() => handleClickAddButton(false)}
-                onLongPress={() => handleClickAddButton(true)}
+                className="bg-primary-500 h-12 w-12 overflow-hidden rounded-full p-3 text-white shadow-2xl"
+                onClick={handleClickAddButton}
               >
                 {getDashboardWallets.isPending ? (
                   <LoadingDots />
                 ) : (
-                  <FaPlus className="h-6 w-6" />
+                  <Swiper
+                    direction="vertical"
+                    loop={isDashboardPage}
+                    height={48}
+                    pagination={false}
+                    scrollbar={false}
+                    modules={[Controller]}
+                    onSwiper={setControlledSwiper}
+                  >
+                    <SwiperSlide>
+                      <FaPlus className="h-6 w-6" />
+                    </SwiperSlide>
+                    {isDashboardPage && (
+                      <SwiperSlide>
+                        <Camera ref={cameraInputRef} />
+                      </SwiperSlide>
+                    )}
+                  </Swiper>
                 )}
               </FeedbackButton>
             </motion.div>
