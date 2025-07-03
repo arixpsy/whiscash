@@ -3,6 +3,7 @@ import {
   CreateTransactionRequest,
   CreateWalletRequest,
   GetDashboardWalletsResponse,
+  GetImageTransactionDetailsResponse,
   GetTransactionsResponse,
   GetWalletChartDataResponse,
   GetWalletsResponse,
@@ -55,6 +56,11 @@ const getDashboardWallets =
   (config: Promise<AxiosRequestConfig>) =>
   async (): Promise<GetDashboardWalletsResponse> =>
     whiscashApi.get('/wallet/dashboard', await config).then((res) => res.data)
+
+const getImageTransactionDetails =
+  (config: Promise<AxiosRequestConfig>) =>
+  async (formData: FormData): Promise<GetImageTransactionDetailsResponse> =>
+    whiscashApi.post('/image', formData, await config).then((res) => res.data)
 
 const getMainWallets =
   (config: Promise<AxiosRequestConfig>) =>
@@ -118,6 +124,7 @@ export default {
   deleteTransaction,
   deleteWallet,
   getDashboardWallets,
+  getImageTransactionDetails,
   getMainWallets,
   getTransaction,
   getTransactions,

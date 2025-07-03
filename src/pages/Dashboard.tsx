@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useMemo, useState } from 'react'
+import { use, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { Wallet } from '@/@types/shared'
 import {
@@ -11,6 +11,7 @@ import {
   ConfirmationModal,
 } from '@/components/commons'
 import { Header, WalletCarousel } from '@/components/Dashboard'
+import ImageContext from '@/contexts/useImage'
 import useWallet from '@/hooks/useWallet'
 import useTransaction from '@/hooks/useTransaction'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -28,6 +29,7 @@ const Dashboard = () => {
     deleteTransactionSuccessCB
   )
   const { useGetDashboardWalletsQuery } = useWallet()
+  const { image, imageBase64, query, setImage } = use(ImageContext)
   const getDashboardWallets = useGetDashboardWalletsQuery({
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   })
@@ -62,6 +64,10 @@ const Dashboard = () => {
         state: { from: Route.DASHBOARD },
       })
     )
+  
+  const handleCloseImage = () => {
+    setImage(undefined)
+  }
 
   function deleteTransactionSuccessCB() {
     if (!activeWallet) return
@@ -130,6 +136,17 @@ const Dashboard = () => {
           {shouldDisplayEmptyBanner && <Banner.NoTransactionsFound />}
         </div>
       </Page>
+
+      {image && (
+        <div className="fixed inset-0 z-20 grid place-items-center bg-black/70 text-white" onClick={handleCloseImage}>
+          <div
+            className="h-30 w-30 bg-contain bg-no-repeat"
+            style={{ backgroundImage: `url(${imageBase64})` }}
+          ></div>
+          {query?.isPending && 'LOADING'}
+          {query?.data && JSON.stringify(query.data)}
+        </div>
+      )}
 
       {activeWallet && (
         <TransactionModal

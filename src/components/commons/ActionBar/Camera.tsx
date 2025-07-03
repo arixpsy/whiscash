@@ -1,6 +1,5 @@
 import { RefObject, use } from 'react'
 import { FaCamera } from 'react-icons/fa6'
-import { useLocation, useSearchParams } from 'react-router'
 import ImageContext from '@/contexts/useImage'
 
 type CameraProps = {
@@ -9,25 +8,14 @@ type CameraProps = {
 
 const Camera = (props: CameraProps) => {
   const { ref } = props
-  const { pathname } = useLocation()
-  const [, setSearchParams] = useSearchParams()
   const { setImage } = use(ImageContext)
 
   const handleFileOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        if (reader.result) setImage(reader.result as string)
+      setImage(file)
 
-        setSearchParams(
-          { create: 'transaction', field: 'image' },
-          { state: { from: pathname } }
-        )
-
-        e.target.value = ''
-      }
-      reader.readAsDataURL(file)
+      e.target.value = ''
     }
   }
 
