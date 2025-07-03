@@ -8,7 +8,7 @@ const useImage = () => {
 
   const useUploadImageQuery = (file?: File) =>
     useQuery({
-      queryKey: QUERY_KEYS.IMAGE_UPLOAD(file),
+      queryKey: QUERY_KEYS.IMAGE_UPLOAD,
       queryFn: () => {
         const formData = new FormData()
         if (file) formData.append('image', file)

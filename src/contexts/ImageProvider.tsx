@@ -1,8 +1,11 @@
 import { useEffect, useState, type PropsWithChildren } from 'react'
 import ImageContext from '@/contexts/useImage'
 import useImage from '@/hooks/useImage'
+import { useQueryClient } from '@tanstack/react-query'
+import { QUERY_KEYS } from '@/utils/constants/queryKey'
 
 const ImageProvider = ({ children }: PropsWithChildren) => {
+  const queryClient = useQueryClient()
   const [image, setImage] = useState<File | undefined>(undefined)
   const [imageBase64, setImageBase64] = useState<string>('')
   const { useUploadImageQuery } = useImage()
@@ -16,8 +19,9 @@ const ImageProvider = ({ children }: PropsWithChildren) => {
       reader.readAsDataURL(image)
     } else {
       setImageBase64('')
+      queryClient.removeQueries({ queryKey: QUERY_KEYS.IMAGE_UPLOAD})
     }
-  }, [image])
+  }, [image, queryClient])
 
   return (
     <ImageContext.Provider

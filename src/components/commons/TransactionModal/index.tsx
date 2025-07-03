@@ -5,7 +5,7 @@ import { motion, TargetAndTransition } from 'motion/react'
 import { useForm } from 'react-hook-form'
 import { FaFileInvoiceDollar } from 'react-icons/fa6'
 import { IoClose } from 'react-icons/io5'
-import { useLocation, useNavigate, useSearchParams } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import {
   CreateTransactionRequest,
   CreateTransactionRequestSchema,
@@ -13,7 +13,7 @@ import {
   Transaction,
   TransactionWithWallet,
 } from '@/@types/shared'
-import { FormField, Loader, Modal } from '@/components/commons'
+import { FeedbackButton, FormField, Loader, Modal } from '@/components/commons'
 import useTransaction from '@/hooks/useTransaction'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
 import { Route } from '@/utils/constants/routes'
@@ -22,6 +22,8 @@ import CategorySelector from './CategorySelector'
 import DateTimePicker from './DateTimePicker'
 import TransactionAmountInput from './TransactionAmountInput'
 import WalletSelector from './WalletSelector'
+import { use } from 'react'
+import ImageContext from '@/contexts/useImage'
 
 type TransactionModalProps = {
   action?: 'create' | 'update'
@@ -39,10 +41,10 @@ const TransactionModal = (props: TransactionModalProps) => {
     currency,
     existingTransaction,
   } = props
-  const [searchParams] = useSearchParams()
   const location = useLocation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { image, imageBase64, setImage, query } = use(ImageContext)
   const { useCreateTransactionMutation, useUpdateTransactionMutation } =
     useTransaction()
   const createTransaction = useCreateTransactionMutation(
@@ -105,8 +107,23 @@ const TransactionModal = (props: TransactionModalProps) => {
   const handleModalAnimationComplete = ({
     translateY,
   }: TargetAndTransition) => {
-    if (translateY === '0%' && !searchParams.get('field')) setFocus('amount')
-    if (translateY === '100%') reset()
+    if (translateY === '0%' && !image) setFocus('amount')
+    if (translateY === '100%') {
+      reset()
+      setImage(undefined)
+    }
+  }
+
+  const handleClickContinue = () => {
+    reset(
+      {
+        ...(query && query.data ? query.data : {}),
+      },
+      {
+        keepDefaultValues: true,
+      }
+    )
+    setImage(undefined)
   }
 
   function getDefaultValues(transaction?: TransactionWithWallet) {
@@ -208,7 +225,7 @@ const TransactionModal = (props: TransactionModalProps) => {
   return (
     <Modal paramKey={action} paramValue="transaction">
       <motion.div
-        className="grid h-full w-full grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
+        className="relative grid h-full w-full grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
         initial={{ translateY: '100%' }}
         animate={{ translateY: '0%' }}
         exit={{ translateY: '100%' }}
@@ -285,6 +302,35 @@ const TransactionModal = (props: TransactionModalProps) => {
             </FormField>
           </div>
         </form>
+
+        {image && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-t-2xl bg-white p-3">
+            <p className="mb-6 text-4xl font-bold">Analyzing Image</p>
+
+            <div
+              className="h-[250px] w-[250px] rounded-2xl bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${imageBase64})` }}
+            />
+
+            <div className="mt-6 grid w-[150px] grid-cols-[1fr_auto]">
+              <p>Amount</p>
+              <Loader size="xxs" />
+              <p>Description</p>
+              <Loader size="xxs" />
+              <p>Category</p>
+              <Loader size="xxs" />
+              <p>Paid Date</p>
+              <Loader size="xxs" />
+            </div>
+
+            <FeedbackButton
+              onClick={handleClickContinue}
+              className="bg-primary-500 mt-6 w-full max-w-[300px] rounded-full p-2 text-white"
+            >
+              Continue
+            </FeedbackButton>
+          </div>
+        )}
       </motion.div>
     </Modal>
   )

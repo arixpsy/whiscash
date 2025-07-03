@@ -5,7 +5,7 @@ const WHISCASH = 'whiscash'
 
 export const QUERY_KEYS = {
   DASHBOARD: [WHISCASH, 'wallets', 'dashboard'],
-  IMAGE_UPLOAD: (file?: File) => [WHISCASH, 'image', file],
+  IMAGE_UPLOAD: [WHISCASH, 'image'],
   MAIN_WALLETS: (data: GetWalletsRequest) => [
     WHISCASH,
     'wallets',
