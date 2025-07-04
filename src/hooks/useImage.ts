@@ -22,6 +22,7 @@ const useImage = () => {
         )(formData)
       },
       enabled: !!file,
+      retry: false,
     })
 
   return {
