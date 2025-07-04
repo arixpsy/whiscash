@@ -2,7 +2,7 @@ import { use } from 'react'
 import { UseFormReset } from 'react-hook-form'
 import { motion } from 'motion/react'
 import { CreateTransactionRequest } from '@/@types/shared'
-import { FeedbackButton, Loader } from '@/components/commons'
+import { FeedbackButton, Loader, LoadingDots } from '@/components/commons'
 import ImageContext from '@/contexts/useImage'
 import { cn } from '@/utils/functions'
 
@@ -13,7 +13,7 @@ type ImageReaderProps = {
 const ImageReader = (props: ImageReaderProps) => {
   const { reset } = props
   const { imageBase64, setImage, query } = use(ImageContext)
-  const isAnalyzing = query?.isPending || true
+  const isAnalyzing = query ? query.isPending : true
 
   const handleClickContinue = () => {
     reset(
@@ -61,7 +61,7 @@ const ImageReader = (props: ImageReaderProps) => {
         className="bg-primary-500 mt-6 w-full max-w-[300px] rounded-full p-2 text-white"
         disabled={isAnalyzing}
       >
-        Continue
+        {isAnalyzing ? <LoadingDots /> : 'Continue'}
       </FeedbackButton>
     </motion.div>
   )

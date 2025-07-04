@@ -7,11 +7,10 @@ import { useLocation, useSearchParams } from 'react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { Controller } from 'swiper/modules'
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
-import { FeedbackButton } from '@/components/commons'
+import { FeedbackButton, LoadingDots } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 import { Route } from '@/utils/constants/routes'
 import Camera from './Camera'
-import LoadingDots from './LoadingDots'
 import NavItem from './NavItem'
 
 const navItems = [
