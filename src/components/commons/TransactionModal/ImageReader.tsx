@@ -1,7 +1,11 @@
 import { use } from 'react'
-import { UseFormReset } from 'react-hook-form'
 import { motion } from 'motion/react'
-import { CreateTransactionRequest } from '@/@types/shared'
+import { UseFormReset } from 'react-hook-form'
+import { FaCheck, FaTimes } from 'react-icons/fa'
+import {
+  CreateTransactionRequest,
+  GetImageTransactionDetailsResponse,
+} from '@/@types/shared'
 import { FeedbackButton, Loader, LoadingDots } from '@/components/commons'
 import ImageContext from '@/contexts/useImage'
 import { cn } from '@/utils/functions'
@@ -27,6 +31,15 @@ const ImageReader = (props: ImageReaderProps) => {
     setImage(undefined)
   }
 
+  const queryResults = (key: keyof GetImageTransactionDetailsResponse) =>
+    isAnalyzing ? (
+      <Loader size="xxs" className="self-center" />
+    ) : query?.data?.[key] ? (
+      <FaCheck className="h-3 w-3 self-center text-green-500" />
+    ) : (
+      <FaTimes className="h-3 w-3 self-center text-red-400" />
+    )
+
   return (
     <motion.div
       initial={{ translateY: '100%' }}
@@ -47,18 +60,18 @@ const ImageReader = (props: ImageReaderProps) => {
 
       <div className="mt-6 grid w-[150px] grid-cols-[1fr_auto]">
         <p>Amount</p>
-        <Loader size="xxs" />
+        {queryResults('amount')}
         <p>Description</p>
-        <Loader size="xxs" />
+        {queryResults('description')}
         <p>Category</p>
-        <Loader size="xxs" />
+        {queryResults('category')}
         <p>Paid Date</p>
-        <Loader size="xxs" />
+        {queryResults('paidAt')}
       </div>
 
       <FeedbackButton
         onClick={handleClickContinue}
-        className="bg-primary-500 mt-6 w-full max-w-[300px] rounded-full p-2 text-white"
+        className="bg-primary-500 mt-6 w-full max-w-[300px] rounded-full p-2 text-white transition-transform active:scale-105"
         disabled={isAnalyzing}
       >
         {isAnalyzing ? <LoadingDots /> : 'Continue'}
