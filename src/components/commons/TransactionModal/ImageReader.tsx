@@ -22,6 +22,7 @@ const ImageReader = (props: ImageReaderProps) => {
   const handleClickContinue = () => {
     reset(
       {
+        amount: 1,
         ...(query && query.data ? query.data : {}),
       },
       {
