@@ -10,7 +10,7 @@ import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react'
 import { FeedbackButton, LoadingDots } from '@/components/commons'
 import useWallet from '@/hooks/useWallet'
 import { Route } from '@/utils/constants/routes'
-import Camera from './Camera'
+import ImageInput from './ImageInput'
 import NavItem from './NavItem'
 
 const navItems = [
@@ -40,6 +40,7 @@ const ActionBar = () => {
     null
   )
   const cameraInputRef = useRef<HTMLInputElement>(null)
+  const galleryInputRef = useRef<HTMLInputElement>(null)
   const isDashboardPage = pathname === Route.DASHBOARD
 
   const handleClickAddButton = useCallback(() => {
@@ -62,6 +63,9 @@ const ActionBar = () => {
         break
       case 1:
         cameraInputRef.current?.click()
+        break
+      case 2:
+        galleryInputRef.current?.click()
         break
     }
   }, [pathname, setSearchParams, getDashboardWallets.data, controlledSwiper])
@@ -121,7 +125,12 @@ const ActionBar = () => {
                     </SwiperSlide>
                     {isDashboardPage && (
                       <SwiperSlide>
-                        <Camera ref={cameraInputRef} />
+                        <ImageInput ref={cameraInputRef} />
+                      </SwiperSlide>
+                    )}
+                    {isDashboardPage && (
+                      <SwiperSlide>
+                        <ImageInput ref={galleryInputRef} source="gallery" />
                       </SwiperSlide>
                     )}
                   </Swiper>

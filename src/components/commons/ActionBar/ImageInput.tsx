@@ -1,14 +1,15 @@
 import { RefObject, use } from 'react'
-import { FaCamera } from 'react-icons/fa6'
+import { FaCamera, FaImage } from 'react-icons/fa6'
 import { useLocation, useSearchParams } from 'react-router'
 import ImageContext from '@/contexts/useImage'
 
-type CameraProps = {
+type ImageInputProps = {
+  source?: 'camera' | 'gallery'
   ref: RefObject<HTMLInputElement | null>
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Camera = (props: CameraProps) => {
-  const { ref } = props
+const ImageInput = (props: ImageInputProps) => {
+  const { ref, source = 'camera' } = props
   const { setImage } = use(ImageContext)
   const [, setSearchParams] = useSearchParams()
   const pathname = useLocation()
@@ -24,13 +25,16 @@ const Camera = (props: CameraProps) => {
 
   return (
     <div className="grid h-6 w-6 place-items-center">
-      <FaCamera className="h-5 w-5" />
+      {source === 'camera' ? (
+        <FaCamera className="h-5 w-5" />
+      ) : (
+        <FaImage className="h-5 w-5" />
+      )}
       <input
         ref={ref}
-        id="camera"
         type="file"
         accept="image/*"
-        capture="environment"
+        capture={source === 'camera' ? 'environment' : undefined}
         className="hidden"
         onChange={handleFileOnChange}
       />
@@ -38,4 +42,4 @@ const Camera = (props: CameraProps) => {
   )
 }
 
-export default Camera
+export default ImageInput
