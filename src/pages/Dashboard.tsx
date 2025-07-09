@@ -93,10 +93,8 @@ const Dashboard = () => {
   const shouldDisplayTransactionData =
     transactions.length > 0 && activeTransactionQuery.data
   const shouldDisplayEmptyBanner =
-    (transactions.length > 0 &&
-      activeTransactionQuery.data &&
-      activeTransactionQuery.data.length === 0) ||
-    (getDashboardWallets.data && getDashboardWallets.data.length === 0)
+    (getDashboardWallets.data || []).length === 0 ||
+    (activeTransactionQuery.data || []).length === 0
 
   return (
     <>
