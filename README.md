@@ -4,28 +4,23 @@ A modern web application built with React, TypeScript, and Vite.
 
 ## 📝 Product Description
 
-Whiscash is a powerful personal finance management application that helps you take control of your financial life. With its intuitive interface and robust features, you can:
-
-- **Multi-Wallet Management**: Create and manage multiple wallets in different currencies
-- **Financial Dashboard**: Get a comprehensive overview of your finances with interactive charts and analytics
-- **Transaction Tracking**: Keep track of your income and expenses across all your wallets
-- **Secure Authentication**: Your financial data is protected with enterprise-grade security powered by Clerk
-- **Responsive Design**: Access your finances on any device with our mobile-first design
-- **Real-time Updates**: Stay up-to-date with your financial status through real-time data synchronization
-
-Whether you're managing personal finances, tracking business expenses, or planning for the future, Whiscash provides the tools you need to make informed financial decisions.
+Whiscash is a modern personal finance management app with multi-wallet support, analytics dashboards, transaction tracking, and secure authentication. It features real-time analytics, responsive design, and PWA support.
 
 ## 🚀 Features
 
-- Built with React 19 and TypeScript
-- Fast development and build with Vite
-- Authentication powered by Clerk
-- Styling with Tailwind CSS
-- Form handling with React Hook Form and Zod validation
-- API data fetching with React Query
-- Smooth animations with Motion
-- Responsive design
-- PWA support
+- Multi-wallet management with different currencies
+- Financial dashboard with interactive charts (Pie, Bar, etc.)
+- Transaction tracking, filtering, and categorization
+- Secure authentication (Clerk)
+- Real-time analytics and event tracking (PostHog)
+- Responsive, mobile-first UI
+- PWA support (installable app)
+- Data fetching and caching (React Query)
+- Form validation (React Hook Form + Zod)
+- Smooth animations (Motion)
+- Modular, reusable components (modals, selectors, carousels, loaders, etc.)
+- Country/currency selection, date/time pickers, image input
+- Archive, filter, and search features for transactions and wallets
 
 ## 📦 Prerequisites
 
@@ -51,7 +46,9 @@ yarn install
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=your_clerk_key
-VITE_WHISCASH_BE_URL=your_be_url
+VITE_WHISCASH_BE_URL=your_backend_url
+VITE_PUBLIC_POSTHOG_KEY=your_posthog_key
+VITE_PUBLIC_POSTHOG_HOST=your_posthog_host
 ```
 
 ## 🔧 Development
@@ -74,7 +71,7 @@ The application will be available at `http://localhost:5173`
 
 ## 📚 Tech Stack
 
-- [React](https://react.dev/) - UI Library
+- [React 19](https://react.dev/) - UI Library
 - [TypeScript](https://www.typescriptlang.org/) - Programming Language
 - [Vite](https://vitejs.dev/) - Build Tool
 - [Clerk](https://clerk.com/) - Authentication
@@ -83,6 +80,13 @@ The application will be available at `http://localhost:5173`
 - [Zod](https://zod.dev/) - Schema Validation
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Motion](https://motion.dev/) - Animations
+- [PostHog](https://posthog.com/) - Analytics
+- [MUI](https://mui.com/) - Material UI components (Pie Chart mainly)
+- [D3](https://d3js.org/) - Charts (Custom scrollable bar chart)
+- [Swiper](https://swiperjs.com/) - Carousels
+- [Virtua](https://virtuajs.dev/) - Virtualized lists
+- [Country Flag Icons](https://www.npmjs.com/package/country-flag-icons), [ISO Country Currency](https://www.npmjs.com/package/iso-country-currency)
+- [Axios](https://axios-http.com/) - API requests
 
 ## 📱 PWA Support
 
@@ -94,6 +98,8 @@ The following environment variables are required:
 
 - `VITE_CLERK_PUBLISHABLE_KEY` - Your Clerk authentication publishable key
 - `VITE_WHISCASH_BE_URL` - Backend API URL (e.g., http://localhost:9000)
+- `VITE_PUBLIC_POSTHOG_KEY` - Your PostHog public key
+- `VITE_PUBLIC_POSTHOG_HOST` - Your PostHog API host
 
 ## 📄 License
 
