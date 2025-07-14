@@ -219,7 +219,12 @@ const Wallet = () => {
           )}
         </div>
 
-        <div className="bg-gray-100 p-3 py-6">
+        <div
+          className={cn(
+            'bg-gray-100 p-3 py-6',
+            selectedUnit === SpendingPeriod.All && 'py-3'
+          )}
+        >
           {getWallet.isPending ||
           (selectedUnit !== SpendingPeriod.All && getChartData.isPending) ? (
             <div>

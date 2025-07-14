@@ -2,6 +2,7 @@ import { PiePlot } from '@mui/x-charts/PieChart'
 import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer'
 import * as d3 from 'd3'
 import { useMemo, useState, HTMLAttributes } from 'react'
+import { TbDatabaseX } from 'react-icons/tb'
 import { Transaction, Wallet } from '@/@types/shared'
 import { amountWithCurrency, cn } from '@/utils/functions'
 import PieChartSkeleton from './Skeleton'
@@ -37,6 +38,18 @@ const PieChart = (props: PieChartProps) => {
       }))
       .sort((a, b) => b.value - a.value)
   }, [data])
+
+  if (pieData.length === 0)
+    return (
+      <div className="rounded-lg bg-white p-6 px-3">
+        <div className="grid h-[120px] place-items-center">
+          <div className="grid place-items-center gap-2 text-sm text-gray-400">
+            <TbDatabaseX className="h-16 w-16" />
+            No data found
+          </div>
+        </div>
+      </div>
+    )
 
   return (
     <div

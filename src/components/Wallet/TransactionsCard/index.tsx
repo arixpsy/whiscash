@@ -2,7 +2,7 @@ import { useWindowVirtualizer } from '@tanstack/react-virtual'
 import { useRef } from 'react'
 import { useNavigate } from 'react-router'
 import { Transaction, Wallet } from '@/@types/shared'
-import { TransactionTile } from '@/components/commons'
+import { Banner, TransactionTile } from '@/components/commons'
 import { Route } from '@/utils/constants/routes'
 
 type TransactionsCardProps = {
@@ -67,6 +67,11 @@ const TransactionsCard = (props: TransactionsCardProps) => {
               />
             </div>
           ))}
+          {virtualizer.getVirtualItems().length === 0 && (
+            <div className="py-3">
+              <Banner.NoTransactionsFound />
+            </div>
+          )}
         </div>
       </div>
     </div>
