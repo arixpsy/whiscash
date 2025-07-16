@@ -3,19 +3,20 @@ import { HTMLAttributes } from 'react'
 import { FaBoxArchive } from 'react-icons/fa6'
 import { Wallet } from '@/@types/shared'
 import { SPENDING_PERIOD_WALLET_LABELS } from '@/utils/constants/spendingPeriod'
+import { cn } from '@/utils/functions'
 
 type WalletTileProps = {
   wallet: Wallet
 } & HTMLAttributes<HTMLButtonElement>
 
 const WalletTile = (props: WalletTileProps) => {
-  const { onClick, wallet } = props
+  const { onClick, wallet, className } = props
 
   return (
     <motion.button
       type="button"
       onClick={onClick}
-      className="flex gap-3"
+      className={cn('flex gap-3', className)}
       key={wallet.id}
       initial={{ opacity: '0%' }}
       animate={{ opacity: '100%' }}

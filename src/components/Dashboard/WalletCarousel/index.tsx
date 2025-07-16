@@ -24,7 +24,7 @@ const WalletCarousel = (props: WalletCarouselProps) => {
   const handleNavigateToWallet = (walletId: number) =>
     document.startViewTransition(() =>
       navigate(`${Route.WALLETS}/${walletId}`, {
-        state: { from: Route.WALLETS },
+        state: { from: Route.DASHBOARD },
       })
     )
 
