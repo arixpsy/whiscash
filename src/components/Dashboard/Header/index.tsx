@@ -1,3 +1,4 @@
+import { FeedbackButton } from '@/components/commons'
 import { Route } from '@/utils/constants/routes'
 import { useUser } from '@clerk/clerk-react'
 import { PropsWithChildren } from 'react'
@@ -11,13 +12,25 @@ const Header = (props: PropsWithChildren) => {
 
   const handleClickProfileImage = () => navigate(Route.SETTINGS)
 
+  const handleClickSearch = () => {
+    document.startViewTransition(() =>
+      navigate(Route.SEARCH, {
+        state: { from: Route.DASHBOARD },
+      })
+    )
+  }
+
   return (
     <>
       <div className="bg-primary-500 sticky top-0 z-10 flex items-center justify-between p-3 text-white">
         {/* Profile and Search Bar */}
         <div className="flex items-center gap-3">
           <button type="button" onClick={handleClickProfileImage}>
-            <img src={user?.imageUrl} className="h-10 w-10 rounded-full" alt='profile avatar' />
+            <img
+              src={user?.imageUrl}
+              className="h-10 w-10 rounded-full"
+              alt="profile avatar"
+            />
           </button>
 
           <div>
@@ -27,7 +40,9 @@ const Header = (props: PropsWithChildren) => {
         </div>
 
         <div className="rounded-full p-3">
-          <FaSearch className="h-4 w-4" />
+          <FeedbackButton onClick={handleClickSearch}>
+            <FaSearch className="h-4 w-4" />
+          </FeedbackButton>
         </div>
       </div>
 

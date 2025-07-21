@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router'
 import { FaQuestionCircle } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
 import { MdWallet } from 'react-icons/md'
-import { TbReportSearch } from 'react-icons/tb'
+import { TbReportSearch, TbSearch } from 'react-icons/tb'
 
 const Banner = () => {
   return <div />
@@ -80,6 +80,30 @@ const NoWalletsFound = () => (
   </motion.div>
 )
 
+const NoWalletsFoundOrTransaction = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="mt-12 grid place-items-center gap-2 text-sm text-gray-400"
+  >
+    <TbReportSearch className="h-16 w-16" />
+    No wallets or transactions found
+  </motion.div>
+)
+
+const SearchWalletOrTransaction = () => (
+  <motion.div
+    initial={{ opacity: '0%' }}
+    animate={{ opacity: '100%' }}
+    exit={{ opacity: '0%' }}
+    className="mt-12 grid place-items-center gap-2 text-sm text-gray-400"
+  >
+    <TbSearch className="h-16 w-16" />
+    Search for a wallet or transaction
+  </motion.div>
+)
+
 const TransactionDoesNotExist = () => (
   <motion.div
     initial={{ opacity: '0%' }}
@@ -97,6 +121,8 @@ Banner.NoCategoryFound = NoCategoryFound
 Banner.NoCountryOrCurrencyFound = NoCountryOrCurrencyFound
 Banner.NoTransactionsFound = NoTransactionsFound
 Banner.NoWalletsFound = NoWalletsFound
+Banner.NoWalletsFoundOrTransaction = NoWalletsFoundOrTransaction
+Banner.SearchWalletOrTransaction = SearchWalletOrTransaction
 Banner.TransactionDoesNotExist = TransactionDoesNotExist
 
 export default Banner

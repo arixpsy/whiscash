@@ -77,10 +77,11 @@ const useWallet = () => {
       enabled: !!walletId && !!unit,
     })
 
-  const useGetWalletsQuery = (req: GetWalletsRequest) =>
+  const useGetWalletsQuery = (req: GetWalletsRequest, enabled = true) =>
     useQuery({
       queryKey: QUERY_KEYS.WALLETS(req),
       queryFn: whiscashApi.getWallets(createRequestConfig({ params: req })),
+      enabled,
     })
 
   const useUpdateWalletMutation = (onSuccess: (data: Wallet) => void) =>

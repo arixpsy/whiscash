@@ -64,6 +64,24 @@ const useTransaction = () => {
       })),
     })
 
+  const useSearchTransactionsQuery = (searchPhrase: string, enabled: boolean) =>
+    useInfiniteQuery({
+      initialPageParam: {
+        limit: 10,
+        offset: 0,
+      },
+      queryKey: QUERY_KEYS.TRANSACTIONS_SEARCH(searchPhrase),
+      queryFn: ({ pageParam }) =>
+        whiscashApi.searchTransactions(
+          createRequestConfig({ params: { ...pageParam, searchPhrase } })
+        )(),
+      getNextPageParam: (_, __, lastPage) => ({
+        ...lastPage,
+        offset: lastPage.offset + lastPage.limit,
+      }),
+      enabled,
+    })
+
   const useUpdateTransactionMutation = (
     onSuccess: (data: Transaction) => void
   ) =>
@@ -78,6 +96,7 @@ const useTransaction = () => {
     useGetTransactionQuery,
     useGetTransactionsQuery,
     useGetDashboardWalletTransactionsQuery,
+    useSearchTransactionsQuery,
     useUpdateTransactionMutation,
   }
 }

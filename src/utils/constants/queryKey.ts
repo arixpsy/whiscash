@@ -33,4 +33,10 @@ export const QUERY_KEYS = {
     transactionId,
   ],
   TRANSACTIONS: (date: string) => [WHISCASH, 'transactions', date],
+  TRANSACTIONS_SEARCH: (searchPhrase: string) => [
+    WHISCASH,
+    'transactions',
+    'search',
+    searchPhrase,
+  ],
 } as const

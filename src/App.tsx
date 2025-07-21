@@ -9,6 +9,7 @@ import {
   Dashboard,
   History,
   Login,
+  Search,
   Settings,
   Transaction,
   Wallet,
@@ -31,6 +32,7 @@ const App = () => {
             <Route path={RoutePath.WALLETS} element={<Wallets />} />
           </Route>
 
+          <Route path={RoutePath.SEARCH} element={<Search />} />
           <Route path={RoutePath.SETTINGS} element={<Settings />} />
           <Route path={RoutePath.WALLETS + '/:walletId'} element={<Wallet />} />
           <Route
