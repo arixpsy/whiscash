@@ -86,8 +86,23 @@ type SearchResultsProps = {
 
 const SearchResults = (props: SearchResultsProps) => {
   const { getWallets, searchPhrase, searchTransactions } = props
+  const navigate = useNavigate()
   const wallets = getWallets.data || []
   const transactions = searchTransactions.data?.pages.flat(1) || []
+
+  const handleNavigateToTransaction = (transactionId: number) => () =>
+    document.startViewTransition(() =>
+      navigate(`${Route.TRANSACTIONS}/${transactionId}`, {
+        state: { from: Route.DASHBOARD },
+      })
+    )
+
+  const handleNavigateToWallet = (walletId: number) => () =>
+    document.startViewTransition(() =>
+      navigate(`${Route.WALLETS}/${walletId}`, {
+        state: { from: Route.DASHBOARD },
+      })
+    )
 
   if (searchPhrase.trim() === '') return <Banner.SearchWalletOrTransaction />
 
@@ -105,7 +120,9 @@ const SearchResults = (props: SearchResultsProps) => {
     <div className="mb-3">
       <h1 className="mx-3 text-xl font-bold">Wallets</h1>
       {wallets.map((w) => (
-        <WalletTile wallet={w} key={w.id} className="w-full px-3 py-2" />
+        <WalletTile wallet={w} key={w.id} className="w-full px-3 py-2" 
+          onClick={handleNavigateToWallet(w.id)}
+        />
       ))}
     </div>
   )
@@ -114,7 +131,11 @@ const SearchResults = (props: SearchResultsProps) => {
     <div>
       <h1 className="mx-3 text-xl font-bold">Transactions</h1>
       {transactions.map((t) => (
-        <TransactionTile key={t.id} transaction={t} />
+        <TransactionTile
+          key={t.id}
+          transaction={t}
+          onClick={handleNavigateToTransaction(t.id)}
+        />
       ))}
     </div>
   )
