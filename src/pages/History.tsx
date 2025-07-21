@@ -3,7 +3,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { DateTime } from 'luxon'
 import { VirtualizerHandle } from 'virtua'
-import { Banner, ConfirmationModal, Page, TransactionTile } from '@/components/commons'
+import {
+  Banner,
+  ConfirmationModal,
+  Page,
+  TransactionTile,
+} from '@/components/commons'
 import { CalendarCarousel, CalendarHeader } from '@/components/History'
 import useTransaction from '@/hooks/useTransaction'
 import { QUERY_KEYS } from '@/utils/constants/queryKey'
@@ -205,7 +210,9 @@ const History = () => {
                 />
               ))}
 
-          {!getTransactions.isPending && aggTransactionData.length === 0 && <Banner.NoTransactionsFound />}
+          {!getTransactions.isPending && aggTransactionData.length === 0 && (
+            <Banner.NoTransactionsFound />
+          )}
         </div>
       </Page>
 

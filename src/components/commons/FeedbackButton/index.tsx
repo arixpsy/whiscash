@@ -15,10 +15,7 @@ const FeedbackButton = (props: FeedbackButtonProps) => {
   }
 
   return (
-    <button
-      onClick={handleClick}
-      {...rest}
-    >
+    <button onClick={handleClick} {...rest}>
       {children}
     </button>
   )

@@ -188,7 +188,11 @@ const WalletModal = (props: WalletModalProps) => {
 
             {currency && (
               <FormField label="Main Wallet" isOptional>
-                <WalletSelector control={control} currency={currency} existingWallet={existingWallet} />
+                <WalletSelector
+                  control={control}
+                  currency={currency}
+                  existingWallet={existingWallet}
+                />
               </FormField>
             )}
 

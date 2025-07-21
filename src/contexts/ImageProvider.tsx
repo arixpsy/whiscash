@@ -19,7 +19,7 @@ const ImageProvider = ({ children }: PropsWithChildren) => {
       reader.readAsDataURL(image)
     } else {
       setImageBase64('')
-      queryClient.removeQueries({ queryKey: QUERY_KEYS.IMAGE_UPLOAD})
+      queryClient.removeQueries({ queryKey: QUERY_KEYS.IMAGE_UPLOAD })
     }
   }, [image, queryClient])
 

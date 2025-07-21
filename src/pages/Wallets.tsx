@@ -2,12 +2,7 @@ import { useState } from 'react'
 import { BiFilter } from 'react-icons/bi'
 import { useNavigate, useSearchParams } from 'react-router'
 import { useDebounce } from 'use-debounce'
-import {
-  Banner,
-  WalletModal,
-  Page,
-  SearchBar,
-} from '@/components/commons'
+import { Banner, WalletModal, Page, SearchBar } from '@/components/commons'
 import { FilterModal, WalletTile } from '@/components/Wallets'
 import useWallet from '@/hooks/useWallet'
 import { WalletFilterOptions } from '@/utils/constants/filter'

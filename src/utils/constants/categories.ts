@@ -1,7 +1,13 @@
 import { AiFillInsurance } from 'react-icons/ai'
 import { BiHappyBeaming, BiSolidMoviePlay } from 'react-icons/bi'
 import { FaBriefcaseMedical, FaCar } from 'react-icons/fa'
-import { FaBagShopping, FaGamepad, FaHouse, FaMoneyBillTransfer, FaPlaneDeparture } from 'react-icons/fa6'
+import {
+  FaBagShopping,
+  FaGamepad,
+  FaHouse,
+  FaMoneyBillTransfer,
+  FaPlaneDeparture,
+} from 'react-icons/fa6'
 import { GrStatusUnknown } from 'react-icons/gr'
 import { MdFastfood, MdPets, MdWork } from 'react-icons/md'
 import { IoFitness, IoGift, IoHammer } from 'react-icons/io5'

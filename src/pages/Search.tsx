@@ -120,7 +120,10 @@ const SearchResults = (props: SearchResultsProps) => {
     <div className="mb-3">
       <h1 className="mx-3 text-xl font-bold">Wallets</h1>
       {wallets.map((w) => (
-        <WalletTile wallet={w} key={w.id} className="w-full px-3 py-2" 
+        <WalletTile
+          wallet={w}
+          key={w.id}
+          className="w-full px-3 py-2"
           onClick={handleNavigateToWallet(w.id)}
         />
       ))}

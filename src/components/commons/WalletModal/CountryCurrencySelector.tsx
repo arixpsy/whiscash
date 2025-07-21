@@ -106,7 +106,12 @@ const CountryCurrencySelector = (props: CountryCurrencySelectorProps) => {
         )}
       </button>
 
-      <Modal portalKey="field" paramKey="field" paramValue="currency" withoutBackground>
+      <Modal
+        portalKey="field"
+        paramKey="field"
+        paramValue="currency"
+        withoutBackground
+      >
         <motion.div
           className="grid h-full w-full grid-rows-[auto_1fr] overflow-auto rounded-t-2xl bg-white"
           initial={{ translateY: '100%' }}
