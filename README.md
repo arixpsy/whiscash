@@ -2,6 +2,8 @@
 
 A modern web application built with React, TypeScript, and Vite.
 
+[Backend Repository](https://github.com/arixpsy/whiscash-be)
+
 ## 📝 Product Description
 
 Whiscash is a modern personal finance management app with multi-wallet support, analytics dashboards, transaction tracking, and secure authentication. It features real-time analytics, responsive design, and PWA support.
