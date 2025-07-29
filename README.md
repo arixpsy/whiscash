@@ -2,6 +2,10 @@
 
 A modern web application built with React, TypeScript, and Vite.
 
+<p align="center">
+  <img src="screenshots/whiscash-dashboard.png" alt="Whiscash dashboard" height="500" />
+</p>
+
 [Backend Repository](https://github.com/arixpsy/whiscash-be)
 
 ## 📝 Product Description
@@ -34,7 +38,7 @@ Whiscash is a modern personal finance management app with multi-wallet support, 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/whiscash.git
+git clone https://github.com/arixpsy/whiscash.git
 cd whiscash
 ```
 

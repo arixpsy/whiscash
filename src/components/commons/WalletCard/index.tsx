@@ -24,7 +24,7 @@ const WalletCard = (props: WalletCardProps) => {
       animate={{ opacity: '100%' }}
       exit={{ opacity: '0%' }}
     >
-      <div className="flex items-center justify-between self-start">
+      <div className="flex items-center justify-between self-start overflow-hidden">
         <p className="truncate text-xl">{cardTitle}</p>
 
         <div className="grid h-9 w-11 shrink-0 place-items-center rounded-lg bg-gray-200">
