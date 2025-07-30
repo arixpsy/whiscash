@@ -140,14 +140,14 @@ const Wallet = () => {
       >
         {/* Page Header */}
         <div className="sticky top-0 z-10 grid">
-          <div className="grid h-[52px] grid-cols-[1fr_auto_1fr] bg-white p-3">
+          <div className="grid h-[52px] grid-cols-[1fr_auto_1fr] gap-2 bg-white p-3">
             <button type="button" onClick={handleClickBack}>
               <TbArrowBackUp className="h-6 w-6" />
             </button>
 
             <p
               className={cn(
-                'h-7 min-w-32 self-center rounded-lg text-center text-lg font-bold',
+                'h-6 min-w-32 self-center truncate rounded-lg text-center text-lg font-bold',
                 getWallet.isPending && 'animate-pulse bg-gray-200'
               )}
             >

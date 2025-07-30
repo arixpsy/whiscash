@@ -41,9 +41,9 @@ const TransactionTile = (props: TransactionTileProps) => {
           })}
         </div>
 
-        <div className="flex w-full items-center justify-between">
-          <div className="text-left">
-            <p className="font-bold capitalize">
+        <div className="grid w-full grid-cols-[1fr_auto_auto]">
+          <div className="overflow-hidden text-left">
+            <p className="truncate font-bold capitalize">
               {transaction.category.toLowerCase()}
             </p>
             <p className="text-sm text-gray-500">{transaction.description}</p>

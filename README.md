@@ -111,17 +111,17 @@ The following environment variables are required:
 
 Below are screenshots of the main pages of Whiscash:
 
-| Page                                | Screenshot                                                                                  |
-| ----------------------------------- | ------------------------------------------------------------------------------------------- |
-| Dashboard                           | <img src="screenshots/whiscash-dashboard.png" alt="Dashboard" height="500" />  |
-| Add Transaction                     | <img src="screenshots/whiscash-add-transaction.png" alt="Add Transaction" height="500" /> |
-| Add Transaction (Receipt via camera)| <img src="screenshots/whiscash-add-transaction-receipt.gif" alt="Add Transaction (Receipt via camera)" height="500" /> |
-| Add Transaction (item via camera)   | <img src="screenshots/whiscash-add-transaction-picture.gif" alt="Add Transaction (item via camera)" height="500" /> |
-| Wallets                             | <img src="screenshots/whiscash-wallets.png" alt="Wallets" height="500" />      |
-| Add Wallet                          | <img src="screenshots/whiscash-add-wallet.png" alt="Add Wallet" height="500" />|
-| Wallet                              | <img src="screenshots/whiscash-wallet.png" alt="Wallet" height="500" />        |
-| History                             | <img src="screenshots/whiscash-history.png" alt="History" height="500" />      |
-| Transaction                         | <img src="screenshots/whiscash-transaction.png" alt="Transaction" height="500" /> |
+| Page                                 | Screenshot                                                                                                             |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Dashboard                            | <img src="screenshots/whiscash-dashboard.png" alt="Dashboard" height="500" />                                          |
+| Add Transaction                      | <img src="screenshots/whiscash-add-transaction.png" alt="Add Transaction" height="500" />                              |
+| Add Transaction (Receipt via camera) | <img src="screenshots/whiscash-add-transaction-receipt.gif" alt="Add Transaction (Receipt via camera)" height="500" /> |
+| Add Transaction (item via camera)    | <img src="screenshots/whiscash-add-transaction-picture.gif" alt="Add Transaction (item via camera)" height="500" />    |
+| Wallets                              | <img src="screenshots/whiscash-wallets.png" alt="Wallets" height="500" />                                              |
+| Add Wallet                           | <img src="screenshots/whiscash-add-wallet.png" alt="Add Wallet" height="500" />                                        |
+| Wallet                               | <img src="screenshots/whiscash-wallet.png" alt="Wallet" height="500" />                                                |
+| History                              | <img src="screenshots/whiscash-history.png" alt="History" height="500" />                                              |
+| Transaction                          | <img src="screenshots/whiscash-transaction.png" alt="Transaction" height="500" />                                      |
 
 ## �📄 License
 

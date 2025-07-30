@@ -82,7 +82,7 @@ const PieChart = (props: PieChartProps) => {
             key={id}
             className="flex items-center justify-between gap-4 text-xs"
           >
-            <div className="flex items-center gap-1">
+            <div className="grid grid-cols-[auto_auto] items-center gap-1">
               <div
                 className="h-4 w-4 rounded"
                 style={{ backgroundColor: color }}
